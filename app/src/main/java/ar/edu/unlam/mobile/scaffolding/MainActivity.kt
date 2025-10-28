@@ -32,9 +32,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
+import ar.edu.unlam.mobile.scaffolding.ui.screens.FeedTuitsScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HOME_SCREEN_ROUTE
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.LogInScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.UserScreen
 import ar.edu.unlam.mobile.scaffolding.ui.theme.ScaffoldingV2Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,7 +91,9 @@ fun MainScreen() {
 
                 Snackbar(
                     modifier =
-                        Modifier.border(2.dp, MaterialTheme.colorScheme.secondary).padding(12.dp),
+                        Modifier
+                            .border(2.dp, MaterialTheme.colorScheme.secondary)
+                            .padding(12.dp),
                     action = {
                         TextButton(
                             onClick = { if (isError) data.dismiss() else data.performAction() },
@@ -106,12 +110,26 @@ fun MainScreen() {
     ) { paddingValue ->
         // NavHost es el componente que funciona como contenedor de los otros componentes que
         // podrán ser destinos de navegación.
-        NavHost(navController = controller, startDestination = HOME_SCREEN_ROUTE) {
+//        NavHost(navController = controller, startDestination = "logInScreen") {
+        NavHost(navController = controller, startDestination = "feedTuitScreen") {
+//        NavHost(navController = controller, startDestination = HOME_SCREEN_ROUTE) {
             // composable es el componente que se usa para definir un destino de navegación.
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
             composable("home") {
                 // Home es el componente en sí que es el destino de navegación.
                 HomeScreen(modifier = Modifier.padding(paddingValue))
+            }
+
+            composable("feedTuitScreen") {
+                // Home es el componente en sí que es el destino de navegación.
+                FeedTuitsScreen()
+            }
+            composable("logInScreen") {
+                // Home es el componente en sí que es el destino de navegación.
+                LogInScreen(
+                    modifier = Modifier.padding(paddingValue),
+                    snackbarHostState = snackBarHostState,
+                )
             }
             composable("form") {
                 FormScreen(

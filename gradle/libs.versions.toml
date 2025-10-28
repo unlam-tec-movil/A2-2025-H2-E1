@@ -1,22 +1,32 @@
 [versions]
 agp = "8.13.0"
-kotlin = "2.2.10"
+coilCompose = "2.2.2"
+coilComposeVersion = "2.7.0"
+converterGson = "3.0.0"
+kotlin = "2.2.21"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-lifecycleRuntimeKtx = "2.9.2"
-activityCompose = "1.10.1"
-composeBom = "2025.08.00"
-dagger = "2.57"
+lifecycleRuntimeKtx = "2.9.4"
+activityCompose = "1.11.0"
+composeBom = "2025.10.01"
+dagger = "2.57.2"
 ksp = "2.2.10-2.0.2"
-androidXHilt = "1.2.0"
-kover = "0.9.1"
-ktlint = "13.0.0"
-material3 = "1.4.0-beta03"
+androidXHilt = "1.3.0"
+kover = "0.9.3"
+ktlint = "13.1.0"
+material3 = "1.4.0"
+materialIconsExtended = "1.3.1"
+retrofit = "3.0.0"
+roomV = "2.8.3"
+kspV = "2.0.21-1.0.25"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil-compose = { module = "io.coil.-kt:coil-compose", version.ref = "coilCompose" }
+coil-kt-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -33,9 +43,14 @@ androidx-material-icon = { group = "androidx.compose.material", name = "material
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidXHilt" }
 
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomV" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomV" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomV" }
 google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger" }
 google-dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger" }
 google-dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "dagger" }
+material-icons-extended = { module = "androix.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

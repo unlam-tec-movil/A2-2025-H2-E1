@@ -16,37 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
+import ar.edu.unlam.mobile.scaffolding.utils.validateForm
 import kotlinx.coroutines.launch
 
-const val FORM_ROUTE = "form"
+
 
 data class ValidationResult(
     val isValid: Boolean,
     val message: String,
 )
 
-fun validateForm(
-    name: String,
-    email: String,
-): ValidationResult {
-    if (name.isEmpty()) {
-        return ValidationResult(
-            isValid = false,
-            message = "El nombre no puede estar vacío",
-        )
-    }
-
-    if (!email.contains("@")) {
-        return ValidationResult(
-            isValid = false,
-            message = "El email debe ser válido",
-        )
-    }
-    return ValidationResult(
-        isValid = true,
-        message = "Formulario válido 😎",
-    )
-}
 
 @Composable
 fun FormScreen(
