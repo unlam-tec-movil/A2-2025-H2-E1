@@ -18,31 +18,27 @@ import coil.compose.AsyncImage
 
 @Composable
 fun ItemTuit(tuit: Tuit) {
-
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp, 4.dp),
-        shape = MaterialTheme.shapes.extraSmall
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp, 4.dp),
+        shape = MaterialTheme.shapes.extraSmall,
     ) {
-        Column() {
-            Row() {
+        Column {
+            Row {
                 Surface(
-
                     modifier = Modifier.size(120.dp),
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
                 ) {
                     AsyncImage(
                         model = tuit.avatar_url,
                         contentDescription = "profile image",
-                        contentScale = ContentScale.FillBounds
+                        contentScale = ContentScale.FillBounds,
                     )
                     Text(text = tuit.author)
-
-
                 }
             }
         }
     }
-
 }

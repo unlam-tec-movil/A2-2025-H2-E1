@@ -19,26 +19,23 @@ import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeedTuitsScreen(
-    tuitsViewModel: TuitsViewModel = hiltViewModel()
-
-) {
+fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
     val tuits by tuitsViewModel.tuitState.collectAsState()
     Log.d("Cantidad de tuits", "${tuits.size}")
 
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(
-                text = "Feed"
+                text = "Feed",
             )
         })
     }) { paddingValues ->
         LazyColumn(
-            modifier = Modifier
-                .padding(paddingValues = paddingValues)
-                .padding(16.dp)
+            modifier =
+                Modifier
+                    .padding(paddingValues = paddingValues)
+                    .padding(16.dp),
         ) {
-
             items(tuits) { tuit ->
                 ItemTuit(tuit)
             }

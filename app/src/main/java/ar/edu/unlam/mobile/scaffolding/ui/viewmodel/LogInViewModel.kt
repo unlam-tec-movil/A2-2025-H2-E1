@@ -9,33 +9,43 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 sealed interface LoginUIState {
     object Loading : LoginUIState
+
     object Success : LoginUIState
-    data class Error(val message: String) : LoginUIState
+
+    data class Error(
+        val message: String,
+    ) : LoginUIState
 }
+
 @HiltViewModel
-class LogInViewModel @Inject constructor(
-    private val tuitsRepo: TuitsRepository
-) : ViewModel() {
-    private val _savedTuits = MutableStateFlow<List<AuthKey>>(emptyList())
-    val savedTuits: StateFlow<List<AuthKey>> = _savedTuits
+class LogInViewModel
+    @Inject
+    constructor(
+        private val tuitsRepo: TuitsRepository,
+    ) : ViewModel() {
+        private val _savedTuits = MutableStateFlow<List<AuthKey>>(emptyList())
+        val savedTuits: StateFlow<List<AuthKey>> = _savedTuits
 
-    init {
-        viewModelScope.launch {
+        init {
+            viewModelScope.launch {
 
-            tuitsRepo.getAllSavedTuits().collect { listaDeKeys ->
-                _savedTuits.value = listaDeKeys
+                tuitsRepo.getAllSavedTuits().collect { listaDeKeys ->
+                    _savedTuits.value = listaDeKeys
+                }
+            }
+        }
+
+        fun logInVM(
+            email: String,
+            password: String,
+        ) {
+            viewModelScope.launch {
+                val loginResponse = tuitsRepo.logIn(email = email, password = password)
+                val token = AuthKey(loginResponse.token)
+                tuitsRepo.saveFavoriteTuit(token)
             }
         }
     }
-
-    fun logInVM(email: String, password: String) {
-        viewModelScope.launch {
-            val loginResponse = tuitsRepo.logIn(email = email, password = password)
-            val token = AuthKey(loginResponse.token)
-            tuitsRepo.saveFavoriteTuit(token)
-        }
-
-    }
-}

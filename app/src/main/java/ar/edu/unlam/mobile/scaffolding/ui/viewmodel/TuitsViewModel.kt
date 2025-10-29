@@ -11,16 +11,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TuitsViewModel @Inject constructor(
-    private val tuitsRepo: TuitsRepository
-) : ViewModel() {
+class TuitsViewModel
+    @Inject
+    constructor(
+        private val tuitsRepo: TuitsRepository,
+    ) : ViewModel() {
+        private val _tuitState = MutableStateFlow(emptyList<Tuit>())
+        val tuitState: StateFlow<List<Tuit>> = _tuitState
 
-    private val _tuitState = MutableStateFlow(emptyList<Tuit>())
-    val tuitState: StateFlow<List<Tuit>> = _tuitState
-
-    init {
-        viewModelScope.launch {
-            _tuitState.value = tuitsRepo.getTuits()
+        init {
+            viewModelScope.launch {
+                _tuitState.value = tuitsRepo.getTuits()
+            }
         }
     }
-}

@@ -9,32 +9,30 @@ import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class TuitsRepository @Inject constructor(
-    private val tuiterApi: TuiterApi,
-    private val tuiterDao: TuiterDao
-) {
-    suspend fun getTuits(): List<Tuit> {
-        return tuiterApi.getTuits()
-    }
+class TuitsRepository
+    @Inject
+    constructor(
+        private val tuiterApi: TuiterApi,
+        private val tuiterDao: TuiterDao,
+    ) {
+        suspend fun getTuits(): List<Tuit> = tuiterApi.getTuits()
 
-    suspend fun logIn(email: String, password: String): UserApiResponse {
-        return tuiterApi.logIn(LoginRequest(email = email, password = password))
-    }
+        suspend fun logIn(
+            email: String,
+            password: String,
+        ): UserApiResponse = tuiterApi.logIn(LoginRequest(email = email, password = password))
 
-    suspend fun saveFavoriteTuit(key: AuthKey) {
-        tuiterDao.saveKey(key)
-    }
+        suspend fun saveFavoriteTuit(key: AuthKey) {
+            tuiterDao.saveKey(key)
+        }
 
-    suspend fun deleteTuit(key: AuthKey) {
-        tuiterDao.deleteSavedTuit(key)
-    }
+        suspend fun deleteTuit(key: AuthKey) {
+            tuiterDao.deleteSavedTuit(key)
+        }
 
-    fun getAllSavedTuits(): Flow<List<AuthKey>> {
-        return tuiterDao.getAllTuits()
-    }
+        fun getAllSavedTuits(): Flow<List<AuthKey>> = tuiterDao.getAllTuits()
 
-    suspend fun deleteAllSavedTuits() {
-        tuiterDao.deleteAllTuitsSaved()
+        suspend fun deleteAllSavedTuits() {
+            tuiterDao.deleteAllTuitsSaved()
+        }
     }
-
-}

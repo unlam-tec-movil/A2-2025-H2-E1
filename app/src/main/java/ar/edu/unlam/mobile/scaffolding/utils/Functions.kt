@@ -23,6 +23,4 @@ fun validateForm(
         isValid = true,
         message = "Formulario válido 😎",
     )
-
 }
-

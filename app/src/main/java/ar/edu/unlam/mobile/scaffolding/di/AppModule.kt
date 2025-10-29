@@ -1,6 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.di
 
-
 import android.app.Application
 import androidx.room.Room
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
@@ -22,47 +21,46 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    @Provides
+    @Singleton
+    fun favoriteTuitsDatabaseProvider(contex: Application): FavoriteTuitsDatabase =
+        Room
+            .databaseBuilder(
+                context = contex,
+                klass = FavoriteTuitsDatabase::class.java,
+                name = "favoriteTuits_DB",
+            ).build()
 
     @Provides
     @Singleton
-    fun favoriteTuitsDatabaseProvider(contex: Application): FavoriteTuitsDatabase {
-        return Room.databaseBuilder(
-            context = contex,
-            klass = FavoriteTuitsDatabase::class.java,
-            name = "favoriteTuits_DB"
-        ).build()
-    }
-
-    @Provides
-    @Singleton
-    fun tuitDaoProvider(db: FavoriteTuitsDatabase): TuiterDao {
-        return db.tuitDao()
-    }
+    fun tuitDaoProvider(db: FavoriteTuitsDatabase): TuiterDao = db.tuitDao()
 
     @Provides
     @Singleton
     fun provideApi(): TuiterApi {
-
         val userToken =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFydHVyb2phczMyQGdtYWlsLmNvbSIsImV4cCI6MTc2NDEwODAzNywiaXNzIjoidW5sYW0tdHVpdGVyIiwibmFtZSI6ImFydHVyb2phczMyQGdtYWlsLmNvbSIsInN1YiI6MjgyfQ.zQsar7wJ0-qbICT7qRrVRCVa4PdPcvr3kE1NizmZKRA"
 
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val originalRequest: Request = chain.request()
-                val newRequest: Request = originalRequest.newBuilder()
-
-
-                    .header(name = "Authorization", value = userToken)
-                    .header(name = "Application-Token", value = APPLICATION_TOKEN)
-                    .build()
-                chain.proceed(newRequest)
-            }
-            .build()
+        val okHttpClient =
+            OkHttpClient
+                .Builder()
+                .addInterceptor { chain ->
+                    val originalRequest: Request = chain.request()
+                    val newRequest: Request =
+                        originalRequest
+                            .newBuilder()
+                            .header(name = "Authorization", value = userToken)
+                            .header(name = "Application-Token", value = APPLICATION_TOKEN)
+                            .build()
+                    chain.proceed(newRequest)
+                }.build()
         val retrofit =
-            Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
+            Retrofit
+                .Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(Gson()))
 
         return retrofit.build().create(TuiterApi::class.java)
-
     }
 }

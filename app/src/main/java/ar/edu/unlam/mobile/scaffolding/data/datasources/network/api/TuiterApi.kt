@@ -12,6 +12,7 @@ interface TuiterApi {
     suspend fun getTuits(): List<Tuit>
 
     @POST(value = "/api/v1/login")
-    suspend fun logIn(@Body request: LoginRequest): UserApiResponse
-
+    suspend fun logIn(
+        @Body request: LoginRequest,
+    ): UserApiResponse
 }

@@ -6,5 +6,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "authKeys")
 data class AuthKey(
     @PrimaryKey(autoGenerate = false)
-    val token: String
+    val token: String,
 )

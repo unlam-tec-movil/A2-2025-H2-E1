@@ -19,13 +19,10 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
 import ar.edu.unlam.mobile.scaffolding.utils.validateForm
 import kotlinx.coroutines.launch
 
-
-
 data class ValidationResult(
     val isValid: Boolean,
     val message: String,
 )
-
 
 @Composable
 fun FormScreen(

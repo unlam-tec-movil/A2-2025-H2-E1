@@ -5,4 +5,4 @@ data class Tuit(
     val author: String,
     val avatar_url: String,
     val message: String,
-    )
+)
