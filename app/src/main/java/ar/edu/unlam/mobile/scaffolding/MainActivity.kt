@@ -25,13 +25,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import ar.edu.unlam.mobile.scaffolding.data.datasources.network.TuiterApi
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
+import ar.edu.unlam.mobile.scaffolding.ui.screens.FORM_ROUTE
 import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HOME_SCREEN_ROUTE
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
@@ -106,17 +109,23 @@ fun MainScreen() {
     ) { paddingValue ->
         // NavHost es el componente que funciona como contenedor de los otros componentes que
         // podrán ser destinos de navegación.
-        NavHost(navController = controller, startDestination = HOME_SCREEN_ROUTE) {
+        NavHost(
+            navController = controller,
+            startDestination = FORM_ROUTE
+        )
+        {
             // composable es el componente que se usa para definir un destino de navegación.
             // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
             composable("home") {
                 // Home es el componente en sí que es el destino de navegación.
                 HomeScreen(modifier = Modifier.padding(paddingValue))
             }
+
             composable("form") {
                 FormScreen(
                     modifier = Modifier.padding(paddingValue),
                     snackbarHostState = snackBarHostState,
+                    navController = controller
                 )
             }
             composable(
