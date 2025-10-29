@@ -32,7 +32,7 @@ fun ItemTuit(tuit: Tuit) {
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
                 ) {
                     AsyncImage(
-                        model = tuit.avatar_url,
+                        model = tuit.avatarUrl,
                         contentDescription = "profile image",
                         contentScale = ContentScale.FillBounds,
                     )
