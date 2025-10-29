@@ -45,7 +45,6 @@ fun FormScreen(
         registerState?.let { response ->
             val token = response.token
             if (!token.isNullOrEmpty()) {
-
                 RetrofitInstance.setUserToken(token)
                 //navController.navigate(HOME_SCREEN_ROUTE)
 

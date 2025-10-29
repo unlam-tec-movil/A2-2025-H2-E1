@@ -1,4 +1,4 @@
-package ar.edu.unlam.mobile.scaffolding.data.datasources.network.request
+package ar.edu.unlam.mobile.scaffolding.data.datasources.local.model
 
 data class RegisterRequest(
     val name: String,

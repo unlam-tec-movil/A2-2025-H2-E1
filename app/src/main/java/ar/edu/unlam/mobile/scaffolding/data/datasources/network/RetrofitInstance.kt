@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
 
     private const val BASE_URL = "https://tuiter.fragua.com.ar"
-    private const val APPLICATION_TOKEN = ""
+    private const val APPLICATION_TOKEN = "7fda6abe0efb84bedd35708606b61fac2fae66ac4c7b4474d0bfa78171878c6e"
     private var USER_TOKEN: String? = null
 
     fun setUserToken(token: String) {

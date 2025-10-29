@@ -2,10 +2,10 @@ package ar.edu.unlam.mobile.scaffolding.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.request.LoginRequest
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.request.RegisterRequest
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.response.LoginResponse
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.response.RegisterResponse
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginResponse
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterResponse
 import ar.edu.unlam.mobile.scaffolding.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,10 +1,10 @@
 package ar.edu.unlam.mobile.scaffolding.data.repositories
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.TuiterApi
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.request.LoginRequest
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.request.RegisterRequest
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.response.LoginResponse
-import ar.edu.unlam.mobile.scaffolding.data.datasources.network.response.RegisterResponse
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginResponse
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterResponse
 import retrofit2.Response
 import javax.inject.Inject
 
