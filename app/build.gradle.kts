@@ -10,6 +10,9 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.compose.compiler)
+
+    // diferencia entre ksp y kapt
+    // ambos procesan las anotaciones y generan el codigo necesario, como los @DAO, pero KSP= puro kotlin, KAPT = intermedia con JAVA antes de procesar
 }
 
 tasks.withType<KotlinCompile>().configureEach {
@@ -79,6 +82,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
 
     // Dagger + Hilt
     implementation(libs.google.dagger.hilt.android)
@@ -87,4 +94,10 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     androidTestImplementation(libs.google.dagger.hilt.android.testing)
     testImplementation(libs.google.dagger.hilt.android.testing)
+// retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.coil.kt.coil.compose)
+    // Icons extended
+//    implementation(libs.material.icons.extended)
 }

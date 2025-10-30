@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import ar.edu.unlam.mobile.scaffolding.ui.screens.FORM_ROUTE
+import ar.edu.unlam.mobile.scaffolding.utils.Constants.FORM_ROUTE
 
 @Composable
 fun BottomBar(controller: NavHostController) {
@@ -36,7 +36,7 @@ fun BottomBar(controller: NavHostController) {
             icon = {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "User",
+                    contentDescription = "UserApiResponse",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             },
@@ -47,7 +47,7 @@ fun BottomBar(controller: NavHostController) {
             icon = {
                 Icon(
                     imageVector = Icons.Default.CheckCircle,
-                    contentDescription = "User",
+                    contentDescription = "UserApiResponse",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             },
