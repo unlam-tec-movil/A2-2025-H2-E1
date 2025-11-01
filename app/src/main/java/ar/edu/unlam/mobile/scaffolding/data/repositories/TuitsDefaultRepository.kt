@@ -25,9 +25,7 @@ class TuitsDefaultRepository
             TODO("Not yet implemented")
         }
 
-        override fun getAllFavoriteTuits(): List<Tuit> {
-            TODO("Not yet implemented")
-        }
+        override fun getAllFavoriteTuits(): Flow<List<AuthKey>> = tuiterDao.getAllTuits()
 
         override fun deleteAllFavoriteTuits() {
             TODO("Not yet implemented")
@@ -45,8 +43,6 @@ class TuitsDefaultRepository
         suspend fun deleteTuit(key: AuthKey) {
             tuiterDao.deleteSavedTuit(key)
         }
-
-        suspend fun getAllSavedTuits(): Flow<List<AuthKey>> = tuiterDao.getAllTuits()
 
         suspend fun deleteAllSavedTuits() {
             tuiterDao.deleteAllTuitsSaved()

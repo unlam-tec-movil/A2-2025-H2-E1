@@ -3,7 +3,6 @@ package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
-import ar.edu.unlam.mobile.scaffolding.data.repositories.TuitsDefaultRepository
 import ar.edu.unlam.mobile.scaffolding.data.repositories.TuitsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

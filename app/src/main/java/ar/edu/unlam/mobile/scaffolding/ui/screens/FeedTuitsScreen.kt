@@ -1,6 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,7 +20,6 @@ import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
 @Composable
 fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
     val tuits by tuitsViewModel.tuitState.collectAsState()
-    Log.d("Cantidad de tuits", "${tuits.size}")
 
     Scaffold(topBar = {
         TopAppBar(title = {

@@ -9,7 +9,7 @@ import retrofit2.http.POST
 
 interface TuiterApi {
     @GET("/api/v1/me/feed")
-    fun getTuits(): List<Tuit>
+    suspend fun getTuits(): List<Tuit>
 
     @POST(value = "/api/v1/login")
     suspend fun logIn(
