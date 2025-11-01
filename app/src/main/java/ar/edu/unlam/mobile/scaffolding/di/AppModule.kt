@@ -29,7 +29,9 @@ object AppModule {
                 context = contex,
                 klass = FavoriteTuitsDatabase::class.java,
                 name = "favoriteTuits_DB",
-            ).build()
+            ).fallbackToDestructiveMigration()
+            .build()
+
 
     @Provides
     @Singleton
