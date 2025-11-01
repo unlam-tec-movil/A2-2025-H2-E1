@@ -29,7 +29,8 @@ object AppModule {
                 context = contex,
                 klass = FavoriteTuitsDatabase::class.java,
                 name = "favoriteTuits_DB",
-            ).build()
+            ).fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     @Singleton
@@ -39,7 +40,10 @@ object AppModule {
     @Singleton
     fun provideApi(): TuiterApi {
         val userToken =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5ha2ViZW5paGltZTY0QGdtYWlsLmNvbSIsImV4cCI6MTc2NDUzODU2NSwiaXNzIjoidW5sYW0tdHVpdGVyIiwibmFtZSI6Ik5ha2ViZW5paGltZTY0QGdtYWlsLmNvbSIsInN1YiI6MjgwfQ.iy5kptPzwKk0Fg5VuOHbZgkmbhErfDyw3XOtnCn-56o"
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5ha2ViZW5p" +
+                "aGltZTY0QGdtYWlsLmNvbSIsImV4cCI6MTc2NDUzODU2NSwiaXNzIjoid" +
+                "W5sYW0tdHVpdGVyIiwibmFtZSI6Ik5ha2ViZW5paGltZTY0QGdtYWlsLmNvbS" +
+                "IsInN1YiI6MjgwfQ.iy5kptPzwKk0Fg5VuOHbZgkmbhErfDyw3XOtnCn-56o"
         val okHttpClient =
             OkHttpClient
                 .Builder()
