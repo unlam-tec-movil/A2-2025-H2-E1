@@ -21,7 +21,6 @@ import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
 @Composable
 fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
     val tuits by tuitsViewModel.tuitState.collectAsState()
-    Log.d("Cantidad de tuits", "${tuits.size}")
 
     Scaffold(topBar = {
         TopAppBar(title = {
