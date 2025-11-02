@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,8 +51,10 @@ fun MainScreen() {
     Scaffold(
         bottomBar = { BottomBar(controller = controller) },
         floatingActionButton = {
-            IconButton(onClick = { controller.navigate("home") }) {
-                Icon(Icons.Filled.Home, contentDescription = "Home")
+            IconButton(onClick = { controller.navigate("postTuiter") })
+            // controller.navigate("home")
+            {
+                Icon(Icons.Default.Create, contentDescription = "Home")
             }
         },
         snackbarHost = {
