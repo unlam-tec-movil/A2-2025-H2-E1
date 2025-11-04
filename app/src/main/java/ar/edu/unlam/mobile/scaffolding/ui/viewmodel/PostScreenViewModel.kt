@@ -68,21 +68,6 @@ class PostScreenViewModel
             }
         }
 
-        fun obtenerBorradores(): Flow<List<TuitsBorrador>> {
-            var borradores: Flow<List<TuitsBorrador>> =
-                emptyList<Flow<List<TuitsBorrador>>>()
-                    as Flow<List<TuitsBorrador>>
-            viewModelScope.launch {
-                try {
-                    borradores = postRepository.devolverBorradores()
-                    println("Viendo borradores")
-                } catch (e: Exception) {
-                    println("Error al obtener borradores: ${e.message}")
-                }
-            }
-            return borradores
-        }
-
         fun onTextChanged(newText: String): String {
             _postState.value = newText
             return _postState.value

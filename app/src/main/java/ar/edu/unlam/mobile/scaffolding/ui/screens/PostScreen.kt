@@ -23,7 +23,6 @@ import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.PostScreenViewModel
 
 const val POST_ROUTE = "postTuiter"
 
-// @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostScreen(
@@ -32,8 +31,6 @@ fun PostScreen(
 ) {
     val message by viewModel.postState.collectAsState()
     val borradores by viewModel.borradorState.collectAsStateWithLifecycle()
-
-    // val borradores by viewModel.obtenerBorradores().collectAsStateWithLifecycle(initialValue = emptyList())
 
     Column(
         modifier =
