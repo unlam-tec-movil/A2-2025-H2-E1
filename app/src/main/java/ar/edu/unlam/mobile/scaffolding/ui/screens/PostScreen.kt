@@ -1,5 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +33,7 @@ fun PostScreen(
 ) {
     val message by viewModel.postState.collectAsState()
     val borradores by viewModel.borradorState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     Column(
         modifier =
@@ -52,7 +55,20 @@ fun PostScreen(
                 modifier = Modifier.padding(5.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
-                Button(onClick = { viewModel.textoAGuardar(message) }) {
+                Button(onClick = {
+                    var boolean = false
+                    if (message.isNotEmpty()) {
+                        viewModel.textoAGuardar(message)
+                        boolean = true
+                    }
+                    if (boolean) {
+                        Toast.makeText(context, "Borrador guardado", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast
+                            .makeText(context, "No se pudo guardar el borrador", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }) {
                     Text("Guardar Borrador")
                 }
             }
@@ -64,7 +80,20 @@ fun PostScreen(
                         .padding(5.dp),
                 contentAlignment = Alignment.CenterEnd,
             ) {
-                Button(onClick = { viewModel.textoATuitear(message) }) {
+                Button(onClick = {
+                    var boolean = false
+                    if (message.isNotEmpty()) {
+                        viewModel.textoATuitear(message)
+                        boolean = true
+                    }
+                    if (boolean) {
+                        Toast.makeText(context, "Tuit creado", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast
+                            .makeText(context, "No se pudo tuitear", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }) {
                     Text("Publicar")
                 }
             }
