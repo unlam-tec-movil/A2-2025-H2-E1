@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
+import ar.edu.unlam.mobile.scaffolding.data.repositories.UserDefaultRepository
 import ar.edu.unlam.mobile.scaffolding.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val repository: UserRepository
+    private val repository: UserDefaultRepository
 ) : ViewModel() {
 
     private val _registerState = MutableStateFlow<UserApiResponse?>(null)
@@ -24,7 +25,7 @@ class UserViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            val response = repository.register(RegisterRequest(name, password, email))
+            val response = repository.register(RegisterRequest(name, email, password))
 
             if (response.isSuccessful) { // acá, verificamos que la respuesta de la api sea exitosa.
                 _registerState.value = response.body()
