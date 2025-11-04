@@ -98,6 +98,7 @@ fun PostScreen(
                 }
             }
         }
+        Text("Borradores")
         LazyColumn(
             modifier =
                 Modifier
