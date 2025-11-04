@@ -5,7 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "borrador")
 class TuitsBorrador(
-    @PrimaryKey(autoGenerate = false)
-    val token: String,
+    // @PrimaryKey(autoGenerate = false)
+    // val token: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val borrador: String,
 )
