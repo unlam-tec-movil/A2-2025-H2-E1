@@ -19,5 +19,5 @@ interface TuiterApi {
     ): UserApiResponse
 
     @POST("/api/v1/users")
-    suspend fun register(@Body registerRequest: RegisterRequest): Response<RegisterResponse>
+    suspend fun register(@Body registerRequest: RegisterRequest): Response<UserApiResponse>
 }
