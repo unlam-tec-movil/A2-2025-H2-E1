@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 data class ValidationResult(
     val isValid: Boolean,
-    val message: String,
+    val message: String
 )
 
 @Composable
@@ -127,11 +127,6 @@ fun FormScreen(
 }
 
 const val FORM_ROUTE = "form"
-
-data class ValidationResult(
-    val isValid: Boolean,
-    val message: String,
-)
 
 fun validateForm(
     name: String,
