@@ -16,8 +16,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ar.edu.unlam.mobile.scaffolding.ui.components.ItemTuit
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
 
-// const val FEED_SCREEN_ROUTE = "feedScreen"
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
