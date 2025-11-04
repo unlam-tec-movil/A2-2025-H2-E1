@@ -28,7 +28,12 @@ class UserViewModel @Inject constructor(
             val response = repository.register(RegisterRequest(name, email, password))
 
             if (response.isSuccessful) { // acá, verificamos que la respuesta de la api sea exitosa.
-                _registerState.value = response.body()
+                val userResponse = response.body()
+                _registerState.value = userResponse
+
+                userResponse?.token?.let { token ->
+                    repository.saveUserToken(token)
+                }
             } else {
                 _registerState.value = null
                 println("Error en login: ${response.code()} ${response.message()}")

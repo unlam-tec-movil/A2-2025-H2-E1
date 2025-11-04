@@ -53,9 +53,7 @@ fun FormScreen(
             val token = response.token
             if (!token.isNullOrEmpty()) {
 
-                RetrofitInstance.setUserToken(token)
-                //navController.navigate(HOME_SCREEN_ROUTE)
-
+                navController.navigate(HOME_SCREEN_ROUTE)
                 Toast.makeText(context, response.token, Toast.LENGTH_SHORT).show()
 
             }
