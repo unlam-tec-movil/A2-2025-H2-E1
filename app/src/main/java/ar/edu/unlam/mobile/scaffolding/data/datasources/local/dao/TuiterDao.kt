@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitsBorrador
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,8 +18,14 @@ interface TuiterDao {
     fun getAllTuits(): Flow<List<AuthKey>>
 
     @Delete
-    fun deleteSavedTuit(key: AuthKey)
+    suspend fun deleteSavedTuit(key: AuthKey)
 
     @Query(value = "DELETE FROM authKeys")
     suspend fun deleteAllTuitsSaved()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveBorrador(borrador: TuitsBorrador)
+
+    @Query(value = "SELECT * FROM borrador")
+    fun getBorrador(): Flow<List<TuitsBorrador>>
 }
