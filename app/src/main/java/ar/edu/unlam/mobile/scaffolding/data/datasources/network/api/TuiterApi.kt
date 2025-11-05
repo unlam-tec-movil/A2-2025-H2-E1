@@ -28,10 +28,9 @@ interface TuiterApi {
     suspend fun removeTuitLike(
         @Path(value = "tuit_id") tuitId: Int,
     ): Tuit
-    
+
     @POST("/api/v1/me/tuits")
     suspend fun postTuit(
         @Body tuit: TuitBody,
     )
-    
 }
