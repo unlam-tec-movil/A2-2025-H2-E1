@@ -32,12 +32,12 @@ class LogInViewModel
         val savedTuits: StateFlow<List<AuthKey>> = _savedTuits
 
         init {
-            viewModelScope.launch {
-
-                tuitsRepo.getAllSavedTuits().collect { listaDeKeys ->
-                    _savedTuits.value = listaDeKeys
-                }
-            }
+//            viewModelScope.launch {
+//
+//                tuitsRepo.getAllSavedTuits().collect { listaDeKeys ->
+//                    _savedTuits.value = listaDeKeys
+//                }
+//            }
         }
 
         fun logInVM(

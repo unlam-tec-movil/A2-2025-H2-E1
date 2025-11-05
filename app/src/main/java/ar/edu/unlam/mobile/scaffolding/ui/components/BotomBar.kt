@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,14 +19,14 @@ import ar.edu.unlam.mobile.scaffolding.utils.Constants.FORM_ROUTE
 @Composable
 fun BottomBar(controller: NavHostController) {
     val navBackStackEntry by controller.currentBackStackEntryAsState()
-    NavigationBar {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         NavigationBarItem(
-            selected = navBackStackEntry?.destination?.hierarchy?.any { it.route == "home" } == true,
-            onClick = { controller.navigate("home") },
+            selected = navBackStackEntry?.destination?.hierarchy?.any { it.route == "feedTuitScreen" } == true,
+            onClick = { controller.navigate("feedTuitScreen") },
             icon = {
                 Icon(
                     imageVector = Icons.Default.Home,
-                    contentDescription = "Home",
+                    contentDescription = "feedTuitScreen",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             },

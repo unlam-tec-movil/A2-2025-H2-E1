@@ -8,4 +8,6 @@ data class Tuit(
     @SerializedName("avatar_url")
     val avatarUrl: String,
     val message: String,
+    val liked: Boolean,
+    val likes: Long,
 )
