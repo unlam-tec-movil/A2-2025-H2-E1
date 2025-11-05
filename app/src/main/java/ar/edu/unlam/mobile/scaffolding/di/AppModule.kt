@@ -36,9 +36,11 @@ object AppModule {
     @Singleton
     fun tuitDaoProvider(db: FavoriteTuitsDatabase): TuiterDao = db.tuitDao()
 
+
     @Provides
     @Singleton
     fun provideApi(): TuiterApi {
+
         val userToken =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5ha2ViZW5p" +
                 "aGltZTY0QGdtYWlsLmNvbSIsImV4cCI6MTc2NDUzODU2NSwiaXNzIjoid" +
@@ -53,7 +55,7 @@ object AppModule {
                         originalRequest
                             .newBuilder()
                             .header(name = "Authorization", value = userToken)
-                            .header(name = "Application-Token", value = APPLICATION_TOKEN)
+                            .addHeader(name = "Application-Token", value = APPLICATION_TOKEN)
                             .build()
                     chain.proceed(newRequest)
                 }.build()

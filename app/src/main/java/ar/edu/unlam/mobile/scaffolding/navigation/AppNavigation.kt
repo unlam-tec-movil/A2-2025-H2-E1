@@ -22,7 +22,7 @@ fun AppNavigation(
     paddingValues: PaddingValues,
     snackbarHostState: SnackbarHostState,
 ) {
-    NavHost(navController = navController, startDestination = "logInScreen") {
+    NavHost(navController = navController, startDestination = "form") {
 //    NavHost(navController = navController, startDestination = "feedTuitScreen") {
 //        NavHost(navController = controller, startDestination = HOME_SCREEN_ROUTE) {
         // composable es el componente que se usa para definir un destino de navegación.
@@ -48,6 +48,7 @@ fun AppNavigation(
             FormScreen(
                 modifier = Modifier.padding(paddingValues),
                 snackbarHostState = snackbarHostState,
+                navController = navController
             )
         }
         composable(

@@ -53,7 +53,7 @@ fun FormScreen(
             val token = response.token
             if (!token.isNullOrEmpty()) {
 
-                navController.navigate(HOME_SCREEN_ROUTE)
+
                 Toast.makeText(context, response.token, Toast.LENGTH_SHORT).show()
 
             }
@@ -124,8 +124,6 @@ fun FormScreen(
 
 }
 
-const val FORM_ROUTE = "form"
-
 fun validateForm(
     name: String,
     email: String,
@@ -154,7 +152,7 @@ fun validateForm(
     }
     return ValidationResult(
         isValid = true,
-        message = "Formulario válido 😎",
+        message = "Formulario válido ",
     )
 }
 

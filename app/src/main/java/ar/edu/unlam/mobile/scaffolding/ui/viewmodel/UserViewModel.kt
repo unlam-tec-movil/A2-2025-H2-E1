@@ -25,7 +25,7 @@ class UserViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            val response = repository.register(RegisterRequest(name, email, password))
+            val response = repository.register(RegisterRequest(name, password, email))
 
             if (response.isSuccessful) { // acá, verificamos que la respuesta de la api sea exitosa.
                 val userResponse = response.body()
@@ -35,8 +35,13 @@ class UserViewModel @Inject constructor(
                     repository.saveUserToken(token)
                 }
             } else {
-                _registerState.value = null
-                println("Error en login: ${response.code()} ${response.message()}")
+                val code = response.code()
+                val message = response.message()
+                val errorBody = response.errorBody()?.string() // <-- contenido JSON del error
+                println("⚠️ Error en registro:")
+                println("Código: $code")
+                println("Mensaje: $message")
+                println("Cuerpo del error: $errorBody")
             }
 
             //Se podria manejar con catch en caso de ocurrr algun exception.
