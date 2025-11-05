@@ -2,10 +2,17 @@ package ar.edu.unlam.mobile.scaffolding.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val Gray70 = Color(0xFF657786)
+val DarkBlue10 = Color(0xFF15202B)
+val Black05 = Color(0xFF080808)
+val LightBlue70 = Color(0xFF0D8BD9)
+val White99 = Color(0xFFFFFFFF)
+val Pink78 = Color(0xFFF7187F)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val TwitterBlue = Color(0xFF1DA1F2)
+val TwitterDarkBlue = Color(0xFF0D8BD9)
+val TwitterBlack = Color(0xFF14171A)
+val TwitterDarkGray = Color(0xFF657786)
+val TwitterLightGray = Color(0xFFAAB8C2)
+val TwitterExtraLightGray = Color(0xFFE1E8ED)
+val TwitterWhite = Color(0xFFFFFFFF)
