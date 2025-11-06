@@ -54,9 +54,10 @@ fun FormScreen(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     viewModel: UserViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
 
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val registerState by viewModel.registerState.collectAsState()
@@ -67,6 +68,7 @@ fun FormScreen(
         registerState?.let { response ->
             val token = response.token
             if (!token.isNullOrEmpty()) {
+                Toast.makeText(context, response.token, Toast.LENGTH_SHORT).show()
                 navController.navigate("feedTuitScreen")
             }
         }
@@ -121,30 +123,10 @@ fun FormScreen(
                 text = repeatPasswordState,
                 onTextChange = { repeatPasswordState = it })
 
-//            TextField(
-//                label = { Text("Nombre") },
-//                state = nameState,
-//                supportingText = { Text("Ingrese su nombre completo") },
-//            )
-//            TextField(
-//                label = { Text("Email") },
-//                state = emailState,
-//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-//            )
-//            TextField(
-//                label = { Text("Contraseña") },
-//                state = passwordState,
-//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-//            )
-//            TextField(
-//                label = { Text("Repetir Contraseña") },
-//                state = repeatPasswordState,
-//            )
-
             Spacer(Modifier.height(8.dp))
 
             Button(
-                content = { Text("Limpiar Name") },
+                content = { Text("Clear name") },
                 onClick = {
                     nameState = ""
                 },
@@ -153,7 +135,7 @@ fun FormScreen(
             Spacer(Modifier.height(8.dp))
 
             Button(
-                content = { Text("Enviar") },
+                content = { Text("Register") },
                 onClick = {
                     val res = validateForm(
                         nameState,
