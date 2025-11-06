@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ScaffoldingV2</string>
+    <string name="avatar_default_description">Avatar del usuario</string>
 </resources>

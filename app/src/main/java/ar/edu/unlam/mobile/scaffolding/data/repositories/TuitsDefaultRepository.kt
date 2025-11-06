@@ -15,7 +15,24 @@ class TuitsDefaultRepository
         private val tuiterApi: TuiterApi,
         private val tuiterDao: TuiterDao,
     ) : TuitsRepository {
-        override suspend fun getTuits(): List<Tuit> = tuiterApi.getTuits()
+        override suspend fun getTuits(): ApiOperation<List<Tuit>> =
+            safeApiRequest {
+                tuiterApi.getTuits()
+            }
+
+        override suspend fun updateTuitLikes(key: Tuit): ApiOperation<Tuit> =
+            safeApiRequest {
+                tuiterApi.updateTuitLikes(
+                    tuitId = key.id,
+                )
+            }
+
+        override suspend fun removeTuitLike(key: Tuit): ApiOperation<Tuit> =
+            safeApiRequest {
+                tuiterApi.removeTuitLike(
+                    tuitId = key.id,
+                )
+            }
 
         override fun saveFavoriteTuit(key: Tuit) {
             TODO("Not yet implemented")
@@ -47,4 +64,33 @@ class TuitsDefaultRepository
         suspend fun deleteAllSavedTuits() {
             tuiterDao.deleteAllTuitsSaved()
         }
+
+        // cada llamada a una api externa pasa por un try/catch. En la clase ApiOperation se definen
+        // dos posibles estados a esa llamada --> success o failure
+        private inline fun <T> safeApiRequest(apiCall: () -> T): ApiOperation<T> =
+            try {
+                ApiOperation.Success(data = apiCall())
+            } catch (e: Exception) {
+                ApiOperation.Failure(exception = e)
+            }
     }
+
+sealed interface ApiOperation<T> {
+    data class Success<T>(
+        val data: T,
+    ) : ApiOperation<T>
+
+    data class Failure<T>(
+        val exception: Exception,
+    ) : ApiOperation<T>
+
+    fun onSuccess(block: (T) -> Unit): ApiOperation<T> {
+        if (this is Success) block(data)
+        return this
+    }
+
+    fun onFailure(block: (Exception) -> Unit): ApiOperation<T> {
+        if (this is Failure) block(exception)
+        return this
+    }
+}

@@ -18,14 +18,14 @@ interface TuiterDao {
     fun getAllTuits(): Flow<List<AuthKey>>
 
     @Delete
-    fun deleteSavedTuit(key: AuthKey)
+    suspend fun deleteSavedTuit(key: AuthKey)
 
     @Query(value = "DELETE FROM authKeys")
     suspend fun deleteAllTuitsSaved()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveBorrador(borradorAGuardar: TuitsBorrador)
+    suspend fun saveBorrador(borrador: TuitsBorrador)
 
-    @Query(value = "SELECT * FROM borrador ORDER BY token DESC")
+    @Query(value = "SELECT * FROM borrador")
     fun getBorrador(): Flow<List<TuitsBorrador>>
 }

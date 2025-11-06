@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
@@ -98,10 +99,15 @@ fun LogInScreen(
             state = passwordState,
             supportingText = { Text(text = "password") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            lineLimits = TextFieldLineLimits.Default,
         )
         Button(
             onClick = {
-                val res = validateForm(passwordState.text.toString(), emailState.text.toString())
+                val res =
+                    validateForm(
+                        passwordState.text.toString(),
+                        emailState.text.toString(),
+                    )
                 scope.launch {
                     if (!res.isValid) {
                         snackbarHostState.showSnackbar(

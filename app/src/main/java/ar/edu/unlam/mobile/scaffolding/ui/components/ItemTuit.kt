@@ -38,6 +38,7 @@ fun ItemTuit(tuit: Tuit) {
                     )
                     Text(text = tuit.author)
                 }
+                Text("${tuit!!.message}")
             }
         }
     }

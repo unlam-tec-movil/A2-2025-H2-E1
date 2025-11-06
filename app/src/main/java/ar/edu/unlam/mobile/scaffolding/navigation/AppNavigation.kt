@@ -14,6 +14,7 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.FeedTuitsScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LogInScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.PostScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.UserScreen
 
 @Composable
@@ -50,6 +51,9 @@ fun AppNavigation(
                 snackbarHostState = snackbarHostState,
                 navController = navController
             )
+        }
+        composable("postTuiter") {
+            PostScreen()
         }
         composable(
             route = "user/{id}",
