@@ -67,9 +67,7 @@ fun FormScreen(
         registerState?.let { response ->
             val token = response.token
             if (!token.isNullOrEmpty()) {
-
                 navController.navigate("feedTuitScreen")
-
             }
         }
 

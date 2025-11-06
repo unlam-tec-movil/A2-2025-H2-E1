@@ -37,7 +37,7 @@ class UserViewModel @Inject constructor(
             } else {
                 val code = response.code()
                 val message = response.message()
-                val errorBody = response.errorBody()?.string() // <-- contenido JSON del error
+                val errorBody = response.errorBody()?.string()
                 println("⚠️ Error en registro:")
                 println("Código: $code")
                 println("Mensaje: $message")

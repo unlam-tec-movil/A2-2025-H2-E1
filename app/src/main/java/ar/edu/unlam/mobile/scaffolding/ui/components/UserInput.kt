@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,10 +14,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun UserInput(title: String,
@@ -105,6 +103,7 @@ fun UserInput(title: String,
                         textAlign = TextAlign.Center
                     )
                 },
+                visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.inversePrimary,    // Fondo cuando está enfocado
                     unfocusedContainerColor = MaterialTheme.colorScheme.inversePrimary,  // Fondo cuando NO está enfocado
@@ -133,6 +132,7 @@ fun UserInput(title: String,
                         textAlign = TextAlign.Center
                     )
                 },
+                visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.inversePrimary,    // Fondo cuando está enfocado
                     unfocusedContainerColor = MaterialTheme.colorScheme.inversePrimary,  // Fondo cuando NO está enfocado
