@@ -20,9 +20,11 @@ class PostRepository
         }
 
         suspend fun guardarBorrador(message: String) {
-            val tuitBody = TuitsBorrador(borrador = message)
+            val tuitBody = TuitsBorrador(textoBorrador = message)
             return tuitDao.saveBorrador(tuitBody)
         }
 
         fun devolverBorradores(): Flow<List<TuitsBorrador>> = tuitDao.getBorrador()
+
+        suspend fun deleteBorradorPR(borrador: TuitsBorrador) = tuitDao.deleteBorrador(borrador)
     }

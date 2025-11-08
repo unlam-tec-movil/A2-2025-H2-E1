@@ -9,5 +9,5 @@ class TuitsBorrador(
     // val token: String,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val borrador: String,
+    val textoBorrador: String,
 )
