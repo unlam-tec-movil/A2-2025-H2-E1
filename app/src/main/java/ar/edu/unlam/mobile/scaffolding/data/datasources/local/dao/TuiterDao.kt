@@ -28,4 +28,10 @@ interface TuiterDao {
 
     @Query(value = "SELECT * FROM borrador")
     fun getBorrador(): Flow<List<TuitsBorrador>>
+
+    @Query(value = "SELECT * FROM borrador WHERE id = :id")
+    fun getBorradorId(id: Int): TuitsBorrador
+
+    @Delete
+    fun deleteBorrador(borrador: TuitsBorrador)
 }

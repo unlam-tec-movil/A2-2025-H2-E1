@@ -35,7 +35,7 @@ fun AppNavigation(
 
         composable("feedTuitScreen") {
             // Home es el componente en sí que es el destino de navegación.
-            FeedTuitsScreen()
+            FeedTuitsScreen(navController = navController)
         }
         composable("logInScreen") {
             // Home es el componente en sí que es el destino de navegación.
@@ -52,7 +52,9 @@ fun AppNavigation(
             )
         }
         composable("postTuiter") {
-            PostScreen()
+            PostScreen(
+                navController = navController,
+            )
         }
         composable(
             route = "user/{id}",
