@@ -26,5 +26,7 @@ class PostRepository
 
         fun devolverBorradores(): Flow<List<TuitsBorrador>> = tuitDao.getBorrador()
 
+        fun devolverBorradorString(texto: String): TuitsBorrador = tuitDao.getBorradorString(texto)
+
         suspend fun deleteBorradorPR(borrador: TuitsBorrador) = tuitDao.deleteBorrador(borrador)
     }

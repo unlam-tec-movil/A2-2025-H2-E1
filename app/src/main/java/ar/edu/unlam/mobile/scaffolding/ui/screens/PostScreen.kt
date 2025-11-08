@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitsBorrador
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.PostScreenViewModel
+import kotlinx.coroutines.launch
 
 const val POST_ROUTE = "postTuiter"
 
@@ -38,6 +40,7 @@ fun PostScreen(
     val message by viewModel.postState.collectAsState()
     val borradores by viewModel.borradorState.collectAsState()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     Column(
         modifier =
             Modifier
@@ -61,6 +64,7 @@ fun PostScreen(
                 Button(onClick = {
                     if (message.isNotEmpty()) {
                         viewModel.textoAGuardar(message)
+                        viewModel.limpiarCampoDeTexto()
                         Toast
                             .makeText(
                                 context,
@@ -89,20 +93,22 @@ fun PostScreen(
             ) {
                 Button(onClick = {
                     if (message.isNotEmpty()) {
-                        viewModel.textoATuitear(message)
-                        Toast
-                            .makeText(
-                                context,
-                                "Tuit creado",
-                                Toast.LENGTH_LONG,
-                            ).show()
-                        // esto refresca la pantalla anterior
-                        navController.previousBackStackEntry
-                            ?.savedStateHandle
-                            ?.set("refresco", true)
-                        // vuelve al feed
-                        navController.popBackStack()
-                        // navController.navigate("feedTuitScreen")
+                        scope.launch {
+                            val job = viewModel.textoATuitear(message)
+                            job.join()
+                            Toast
+                                .makeText(
+                                    context,
+                                    "Tuit creado",
+                                    Toast.LENGTH_LONG,
+                                ).show()
+                            // esto refresca la pantalla anterior
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("refresco", true)
+                            // vuelve al feed
+                            navController.popBackStack()
+                        }
                     } else {
                         Toast
                             .makeText(
@@ -124,7 +130,9 @@ fun PostScreen(
         ) {
             items(borradores) { borrador ->
                 Column(modifier = Modifier.padding(16.dp)) {
-                    CardParaBorrador(borrador, viewModel)
+                    CardParaBorrador(borrador, onItemClick = { textoDelBorrador ->
+                        viewModel.onTextChanged(textoDelBorrador)
+                    })
                 }
             }
         }
@@ -134,32 +142,19 @@ fun PostScreen(
 @Composable
 fun CardParaBorrador(
     contenido: TuitsBorrador,
-    viewModel: PostScreenViewModel = hiltViewModel(),
+    onItemClick: (String) -> Unit,
 ) {
-    val contexto = LocalContext.current
     Card(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .clickable(onClick = {
-                    val mensajeDelBorrador =
-                        obtenerBorrador(
-                            contenido,
-                        )
-                    Toast
-                        .makeText(
-                            contexto,
-                            "$mensajeDelBorrador",
-                            Toast.LENGTH_LONG,
-                        ).show()
-                    viewModel.onTextChanged(mensajeDelBorrador)
+                    onItemClick(contenido.textoBorrador)
                 }),
     ) {
         Text(contenido.textoBorrador)
     }
 }
-
-fun obtenerBorrador(borrador: TuitsBorrador): String = borrador.textoBorrador
 
 /*@Preview
 @Composable
