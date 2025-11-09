@@ -8,11 +8,12 @@ import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiRespo
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Named
 
 class TuitsDefaultRepository
     @Inject
     constructor(
-        private val tuiterApi: TuiterApi,
+        @Named("AuthApi") private val tuiterApi: TuiterApi,
         private val tuiterDao: TuiterDao,
     ) : TuitsRepository {
         override suspend fun getTuits(): ApiOperation<List<Tuit>> =

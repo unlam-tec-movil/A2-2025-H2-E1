@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icon)
+    implementation(libs.androidx.benchmark.traceprocessor)
+    implementation(libs.androidx.leanback)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -98,6 +100,12 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.coil.kt.coil.compose)
+    implementation(libs.okhttp.logging.interceptor)
     // Icons extended
 //    implementation(libs.material.icons.extended)
+
+
+    //Datastore
+    implementation(libs.androidx.datastore.preferences)
+
 }

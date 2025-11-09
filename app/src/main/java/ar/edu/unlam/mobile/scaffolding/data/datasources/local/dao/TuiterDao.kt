@@ -28,4 +28,9 @@ interface TuiterDao {
 
     @Query(value = "SELECT * FROM borrador")
     fun getBorrador(): Flow<List<TuitsBorrador>>
+
+    // lectura síncrona para el interceptor
+    @Query("SELECT token FROM authKeys ORDER BY rowid DESC LIMIT 1")
+    fun getLatestTokenSync(): String?
+
 }

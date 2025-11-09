@@ -8,13 +8,17 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
+import jakarta.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 abstract class Providers {
     @Binds
+    @Singleton
     abstract fun bindUserRepository(repo: UserDefaultRepository): UserRepository
 
     @Binds
+    @Singleton
     abstract fun bindTuitsRepository(repo: TuitsDefaultRepository): TuitsRepository
 }
