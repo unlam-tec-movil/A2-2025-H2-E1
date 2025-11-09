@@ -51,13 +51,13 @@ class TuitsViewModel
                 tuitsRepo
                     .removeTuitLike(key = tuit)
                     .onSuccess {
-                        Log.i("remove_likes_onSuccess", "${it.liked}")
+                        Log.i("remove_like_onSuccess", "${it.liked}")
                     }.onFailure { it ->
-                        Log.i("remove_likes_onFailure", "$it")
+                        Log.i("remove_like_onFailure", "$it")
                     }
             }
             updateTuit(tuit)
-            Log.i("remove_likes_onSuccess", "${tuit.liked}")
+            Log.i("after_like_remove_state", "${tuit.liked}")
         }
 
         fun addLikes(tuit: Tuit) {
@@ -71,7 +71,7 @@ class TuitsViewModel
                     }
             }
             updateTuit(tuit)
-            Log.i("likes_onSuccess", "${tuit.liked}")
+            Log.i("after_like_add_state", "${tuit.liked}")
         }
 
         fun updateTuit(tuit: Tuit) {
