@@ -50,9 +50,7 @@ fun MainScreen() {
     Scaffold(
         bottomBar = { BottomBar(controller = controller) },
         floatingActionButton = {
-            IconButton(onClick = { controller.navigate("postTuiter") })
-            // controller.navigate("home")
-            {
+            IconButton(onClick = { controller.navigate("postTuiter") }) {
                 Icon(Icons.Default.Create, contentDescription = "Home")
             }
         },

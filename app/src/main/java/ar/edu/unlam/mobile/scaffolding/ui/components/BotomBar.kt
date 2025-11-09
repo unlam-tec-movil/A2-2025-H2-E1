@@ -32,11 +32,11 @@ fun BottomBar(controller: NavHostController) {
         )
         NavigationBarItem(
             selected = navBackStackEntry?.destination?.hierarchy?.any { it.route == "user/{id}" } == true,
-            onClick = { controller.navigate("user/usuario") },
+            onClick = { controller.navigate("editUserScreen") },
             icon = {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "UserApiResponse",
+                    contentDescription = "UserEdit",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             },
