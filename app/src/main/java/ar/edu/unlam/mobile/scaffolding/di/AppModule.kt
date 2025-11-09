@@ -40,10 +40,7 @@ object AppModule {
     @Singleton
     fun provideApi(): TuiterApi {
         val userToken =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5ha2ViZW5p" +
-                "aGltZTY0QGdtYWlsLmNvbSIsImV4cCI6MTc2NDUzODU2NSwiaXNzIjoid" +
-                "W5sYW0tdHVpdGVyIiwibmFtZSI6Ik5ha2ViZW5paGltZTY0QGdtYWlsLmNvbS" +
-                "IsInN1YiI6MjgwfQ.iy5kptPzwKk0Fg5VuOHbZgkmbhErfDyw3XOtnCn-56o"
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImduMkBnbWFpbC5jb20iLCJleHAiOjE3NjUyMjgwODksImlzcyI6InVubGFtLXR1aXRlciIsIm5hbWUiOiJnbjJAZ21haWwuY29tIiwic3ViIjozMDd9.Il1Eb6qJnHvE7IBV5XmJblmvR48x129AXDwy7F8rd4Y"
         val okHttpClient =
             OkHttpClient
                 .Builder()
