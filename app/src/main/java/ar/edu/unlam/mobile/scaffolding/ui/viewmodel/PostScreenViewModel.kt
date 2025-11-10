@@ -63,7 +63,7 @@ class PostScreenViewModel
                     _uiState.value = FeedState.Error("Error HTTP ${e.code()}")
                 }
             } catch (e: java.io.IOException) {
-                _uiState.value = FeedState.Error("Sin conexión. Intentá nuevamente.")
+                _uiState.value = FeedState.Error("Sin conexión, Intentá nuevamente.")
             } catch (e: Exception) {
                 _uiState.value = FeedState.Error("Ocurrió un error inesperado.")
             }
