@@ -103,4 +103,4 @@ class PostScreenViewModel
         data class Success(val tuits: List<Tuit>) : FeedState
         data class Error(val message: String) : FeedState
     }
-    }
+}
