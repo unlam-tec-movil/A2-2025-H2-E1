@@ -4,29 +4,26 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.PostScreenViewModel
 
 const val POST_ROUTE = "postTuiter"
@@ -36,11 +33,13 @@ const val POST_ROUTE = "postTuiter"
 fun PostScreen(
     viewModel: PostScreenViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    navController: NavController,
 ) {
-    val postText by viewModel.postText.collectAsState()
-    val borradores by viewModel.borradorState.collectAsStateWithLifecycle()
+    val message by viewModel.postState.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
+    val borradores by viewModel.borradorState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     // Carga del feed al entrar
     LaunchedEffect(Unit) {
@@ -55,7 +54,7 @@ fun PostScreen(
     ) {
         Text("New Post")
         OutlinedTextField(
-            value = postText,
+            value = message,
             onValueChange = { nuevoTexto ->
                 viewModel.onTextChanged(nuevoTexto)
             },
@@ -68,17 +67,22 @@ fun PostScreen(
                 contentAlignment = Alignment.CenterStart,
             ) {
                 Button(onClick = {
-                    var boolean = false
-                    if (postText.isNotEmpty()) {
-                        viewModel.textoAGuardar()
-                        boolean = true
-                    }
-                    if (boolean) {
-                        Toast.makeText(context, "Borrador guardado", Toast.LENGTH_LONG).show()
+                    if (message.isNotEmpty()) {
+                        viewModel.textoAGuardar(message)
+                        viewModel.limpiarCampoDeTexto()
+                        Toast
+                            .makeText(
+                                context,
+                                "Borrador guardado",
+                                Toast.LENGTH_LONG,
+                            ).show()
                     } else {
                         Toast
-                            .makeText(context, "No se pudo guardar el borrador", Toast.LENGTH_LONG)
-                            .show()
+                            .makeText(
+                                context,
+                                "Borrador vacio",
+                                Toast.LENGTH_LONG,
+                            ).show()
                     }
                 }) {
                     Text("Guardar Borrador")
@@ -93,25 +97,37 @@ fun PostScreen(
                 contentAlignment = Alignment.CenterEnd,
             ) {
                 Button(onClick = {
-                    var boolean = false
-                    if (postText.isNotEmpty()) {
-                        viewModel.textoATuitear()
-                        boolean = true
-                    }
-                    if (boolean) {
-                        Toast.makeText(context, "Tuit creado", Toast.LENGTH_LONG).show()
+                    if (message.isNotEmpty()) {
+                        scope.launch {
+                            val job = viewModel.textoATuitear(message)
+                            job.join()
+                            Toast
+                                .makeText(
+                                    context,
+                                    "Tuit creado",
+                                    Toast.LENGTH_LONG,
+                                ).show()
+                            // esto refresca la pantalla anterior
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("refresco", true)
+                            // vuelve al feed
+                            navController.popBackStack()
+                        }
                     } else {
                         Toast
-                            .makeText(context, "No se pudo tuitear", Toast.LENGTH_LONG)
-                            .show()
+                            .makeText(
+                                context,
+                                "Tuit vacio",
+                                Toast.LENGTH_LONG,
+                            ).show()
                     }
                 }) {
                     Text("Publicar")
                 }
             }
         }
-
-        /*Text("Borradores")
+        Text("Borradores")
         LazyColumn(
             modifier =
                 Modifier
@@ -119,10 +135,12 @@ fun PostScreen(
         ) {
             items(borradores) { borrador ->
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "${borrador.borrador}")
+                    CardParaBorrador(borrador, onItemClick = { textoDelBorrador ->
+                        viewModel.onTextChanged(textoDelBorrador)
+                    })
                 }
             }
-        }*/
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -167,3 +185,26 @@ fun PostScreen(
         }
     }
 }
+
+@Composable
+fun CardParaBorrador(
+    contenido: TuitsBorrador,
+    onItemClick: (String) -> Unit,
+) {
+    Card(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable(onClick = {
+                    onItemClick(contenido.textoBorrador)
+                }),
+    ) {
+        Text(contenido.textoBorrador)
+    }
+}
+
+/*@Preview
+@Composable
+fun CardParaBorradorPreview() {
+    CardParaBorrador()
+}*/

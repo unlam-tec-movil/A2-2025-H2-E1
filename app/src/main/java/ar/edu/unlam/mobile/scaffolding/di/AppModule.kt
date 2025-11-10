@@ -8,11 +8,13 @@ import ar.edu.unlam.mobile.scaffolding.data.datasources.local.datastore.UserData
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import ar.edu.unlam.mobile.scaffolding.utils.Constants.APPLICATION_TOKEN
 import ar.edu.unlam.mobile.scaffolding.utils.Constants.BASE_URL
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient

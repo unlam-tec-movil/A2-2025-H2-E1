@@ -18,12 +18,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.R
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomAvatar
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomErrorView
@@ -36,11 +38,26 @@ import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
+fun FeedTuitsScreen(
+    tuitsViewModel: TuitsViewModel = hiltViewModel(),
+    navController: NavController,
+) {
     val uiState by tuitsViewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = Unit) {
-        tuitsViewModel.getAllTuits()
+    // escucha el refresco del PostScreen
+    val navBackStackEntry = navController.currentBackStackEntry
+    val refresco =
+        navBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<Boolean>("refresco")
+            ?.observeAsState(initial = false)
+    LaunchedEffect(key1 = Unit, key2 = refresco?.value) {
+        if (refresco?.value == true) {
+            tuitsViewModel.getAllTuits()
+            navBackStackEntry.savedStateHandle.set("should_refresh", false)
+        } else {
+            tuitsViewModel.getAllTuits()
+        }
     }
     when (val state = uiState) {
         is FeedUIState.Error -> CustomErrorView(state.message.toString())
@@ -104,5 +121,9 @@ fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
 
 @Composable
 fun CustomDivider() {
-    HorizontalDivider(Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.secondary, thickness = 0.25f.dp)
+    HorizontalDivider(
+        Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.secondary,
+        thickness = 0.25f.dp,
+    )
 }

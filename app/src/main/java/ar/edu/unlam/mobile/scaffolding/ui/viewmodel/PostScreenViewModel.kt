@@ -6,6 +6,8 @@ import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitsBorr
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.repositories.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,15 +21,11 @@ class PostScreenViewModel
     constructor(
         private val postRepository: PostRepository,
     ) : ViewModel() {
-        private val _uiState = MutableStateFlow<FeedState>(FeedState.Idle)
-        val uiState: StateFlow<FeedState> = _uiState
+        private val _postState = MutableStateFlow("")
+        val postState: StateFlow<String> = _postState
 
-        private val _postText = MutableStateFlow("")
-        val postText: StateFlow<String> = _postText
-
-        fun onTextChanged(newText: String){
-            _postText.value = newText
-        }
+    private val _uiState = MutableStateFlow<FeedState>(FeedState.Idle)
+    val uiState: StateFlow<FeedState> = _uiState
 
         val borradorState: StateFlow<List<TuitsBorrador>> =
             postRepository
@@ -38,54 +36,45 @@ class PostScreenViewModel
                     initialValue = emptyList(), // Valor inicial mientras se carga el primero
                 )
 
-        /*init {
-            viewModelScope.launch {
-                try {
-                    _postState.value = postRepository.postTuit(message = _postState.value).toString()
-                    _borradorState = postRepository.devolverBorradores()
-                } catch (e: Exception) {
-                    // Importante: Capturar cualquier excepción para que el ViewModel
-                    // no cause el crasheo fatal si la red falla.
-                    println("Error al inicializar el PostScreenViewModel: ${e.message}")
-                }
+    fun loadFeed() = viewModelScope.launch {
+        _uiState.value = FeedState.Loading
+        try {
+            val tuits = postRepository.getFeed()
+            _uiState.value = FeedState.Success(tuits)
+        } catch (e: retrofit2.HttpException) {
+            if(e.code() == 401){
+                _uiState.value = FeedState.Error("Sesión inválida/expirada (401). Iniciá sesión de nuevo.")
+            } else {
+                _uiState.value = FeedState.Error("Error HTTP ${e.code()}")
             }
-        }*/
-
-        fun loadFeed() = viewModelScope.launch {
-            _uiState.value = FeedState.Loading
-            try {
-                val tuits = postRepository.getFeed()
-                _uiState.value = FeedState.Success(tuits)
-            } catch (e: retrofit2.HttpException) {
-                if(e.code() == 401){
-                    _uiState.value = FeedState.Error("Sesión inválida/expirada (401). Iniciá sesión de nuevo.")
-                } else {
-                    _uiState.value = FeedState.Error("Error HTTP ${e.code()}")
-                }
-            } catch (e: java.io.IOException) {
-                _uiState.value = FeedState.Error("Sin conexión, Intentá nuevamente.")
-            } catch (e: Exception) {
-                _uiState.value = FeedState.Error("Ocurrió un error inesperado.")
-            }
+        } catch (e: java.io.IOException) {
+            _uiState.value = FeedState.Error("Sin conexión, Intentá nuevamente.")
+        } catch (e: Exception) {
+            _uiState.value = FeedState.Error("Ocurrió un error inesperado.")
         }
+    }
 
-        fun textoATuitear() {
-            viewModelScope.launch {
-                val msg = _postText.value.trim()
-                if (msg.isEmpty()) return@launch
-                try {
-                    postRepository.postTuit(msg)
-                    println("Publicación de 'textoATuitear' exitosa.")
-                    loadFeed()
-                } catch (e: retrofit2.HttpException) {
-                    println("Error en textoATuitear: ${e.message}")
+        fun textoATuitear(message: String): Job {
+            val job =
+                viewModelScope.launch {
+                    try {
+                        postRepository.postTuit(message)
+                        println("Publicación de 'textoATuitear' exitosa.")
+                        var borradorAEliminar = borradorState.value.find { it.textoBorrador == message }
+                        if (borradorAEliminar != null) {
+                            // postRepository.deleteBorradorPR(borradorAEliminar)
+                            postRepository.deleteBorradorPR(borradorAEliminar)
+                        }
+                    } catch (e: Exception) {
+                        println("Error en textoATuitear: ${e.message}")
+                    }
                 }
-            }
+            return job
         }
 
         fun textoAGuardar() {
             viewModelScope.launch {
-                val msg = _postText.value.trim()
+                val msg = _postState.value.trim()
                 if (msg.isEmpty()) return@launch
                 try {
                     postRepository.guardarBorrador(msg)
@@ -96,6 +85,13 @@ class PostScreenViewModel
             }
         }
 
+        fun onTextChanged(newText: String): String {
+            _postState.value = newText
+            return _postState.value
+        }
+    fun limpiarCampoDeTexto() {
+        _postState.value = ""
+    }
 
     sealed interface FeedState {
         data object Idle : FeedState
@@ -103,4 +99,5 @@ class PostScreenViewModel
         data class Success(val tuits: List<Tuit>) : FeedState
         data class Error(val message: String) : FeedState
     }
-}
+
+    }

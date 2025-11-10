@@ -2,7 +2,7 @@ package ar.edu.unlam.mobile.scaffolding.data.repositories
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.datastore.UserDataStore
-import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import kotlinx.coroutines.flow.Flow
@@ -41,4 +41,8 @@ class UserDefaultRepository
             userDataStore.deleteUserToken()
             tuiterDao.deleteAllTuitsSaved()
         }
+
+        override suspend fun getUserProfileData(): UserProfileDataApiResponse = tuiterApi.getUserProfileData()
+
+        override suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest) = tuiterApi.updateUserProfileData(newProfileData)
     }

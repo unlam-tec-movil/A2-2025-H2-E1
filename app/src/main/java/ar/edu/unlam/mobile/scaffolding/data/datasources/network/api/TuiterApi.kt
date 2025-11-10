@@ -4,10 +4,13 @@ import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.TuitBody
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface TuiterApi {
@@ -32,5 +35,13 @@ interface TuiterApi {
     @POST("/api/v1/me/tuits")
     suspend fun postTuit(
         @Body tuit: TuitBody,
+    )
+
+    @GET("/api/v1/me/profile")
+    suspend fun getUserProfileData(): UserProfileDataApiResponse
+
+    @PUT(value = "/api/v1/me/profile")
+    suspend fun updateUserProfileData(
+        @Body profileDataUpdated: UserProfileDataApiRequest,
     )
 }

@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import ar.edu.unlam.mobile.scaffolding.ui.screens.EditUserScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.FeedTuitsScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
@@ -24,10 +25,6 @@ fun AppNavigation(
     snackbarHostState: SnackbarHostState,
 ) {
     NavHost(navController = navController, startDestination = "logInScreen") {
-//    NavHost(navController = navController, startDestination = "feedTuitScreen") {
-//        NavHost(navController = controller, startDestination = HOME_SCREEN_ROUTE) {
-        // composable es el componente que se usa para definir un destino de navegación.
-        // Por parámetro recibe la ruta que se utilizará para navegar a dicho destino.
         composable("home") {
             // Home es el componente en sí que es el destino de navegación.
             HomeScreen(modifier = Modifier.padding(paddingValues = paddingValues))
@@ -35,7 +32,7 @@ fun AppNavigation(
 
         composable("feedTuitScreen") {
             // Home es el componente en sí que es el destino de navegación.
-            FeedTuitsScreen()
+            FeedTuitsScreen(navController = navController)
         }
         composable("logInScreen") {
             // Home es el componente en sí que es el destino de navegación.
@@ -51,8 +48,16 @@ fun AppNavigation(
                 snackbarHostState = snackbarHostState,
             )
         }
+        composable("editUserScreen") {
+            EditUserScreen(
+                paddingValues = paddingValues,
+                navController = navController,
+            )
+        }
         composable("postTuiter") {
-            PostScreen()
+            PostScreen(
+                navController = navController,
+            )
         }
         composable(
             route = "user/{id}",
