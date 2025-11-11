@@ -15,6 +15,8 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.FormScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.HomeScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.LogInScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.PostScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.ReplyScreen
+import ar.edu.unlam.mobile.scaffolding.ui.screens.TuitScreen
 import ar.edu.unlam.mobile.scaffolding.ui.screens.UserScreen
 
 @Composable
@@ -35,7 +37,7 @@ fun AppNavigation(
 
         composable("feedTuitScreen") {
             // Home es el componente en sí que es el destino de navegación.
-            FeedTuitsScreen()
+            FeedTuitsScreen(navController = navController)
         }
         composable("logInScreen") {
             // Home es el componente en sí que es el destino de navegación.
@@ -54,6 +56,23 @@ fun AppNavigation(
         composable("postTuiter") {
             PostScreen()
         }
+
+        composable(
+            route = "replyScreen/{tuitId}",
+            arguments = listOf(navArgument("tuitId") { type = NavType.StringType }),
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("tuitId") ?: "44"
+            ReplyScreen(tuitId = id.toInt(), navController = navController)
+        }
+
+        composable(
+            route = "tuitScreen/{tuitId}",
+            arguments = listOf(navArgument("tuitId") { type = NavType.StringType }),
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("tuitId") ?: "44"
+            TuitScreen(tuitId = id.toInt(), navController = navController)
+        }
+
         composable(
             route = "user/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType }),

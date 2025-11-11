@@ -2,8 +2,6 @@ package ar.edu.unlam.mobile.scaffolding.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,20 +22,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.R
-import ar.edu.unlam.mobile.scaffolding.ui.components.CustomAvatar
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomErrorView
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomLoadingState
-import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.BottomRow
-import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.MiddleRow
-import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.TopRow
+import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.TuitCard
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.FeedUIState
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
+fun FeedTuitsScreen(
+    tuitsViewModel: TuitsViewModel = hiltViewModel(),
+    navController: NavController,
+) {
     val uiState by tuitsViewModel.uiState.collectAsStateWithLifecycle()
+    val feedTuitsState by tuitsViewModel.feedTuitsState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
         tuitsViewModel.getAllTuits()
@@ -69,32 +69,12 @@ fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
                 )
             }) { paddingValues ->
                 LazyColumn(Modifier.padding(paddingValues = paddingValues)) {
-                    itemsIndexed(items = state.data) { index, tuit ->
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 15.dp)
-                                .padding(top = 5.dp),
-                        ) {
-                            CustomAvatar(tuit = tuit)
-                            Column(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 10.dp)
-                                    .padding(top = 3.dp),
-                            ) {
-                                TopRow(tuit)
-                                MiddleRow(tuit)
-                                BottomRow(tuit, onClick = {
-                                    if (tuit.liked) {
-                                        tuitsViewModel.removeLikes(tuit)
-                                    } else {
-                                        tuitsViewModel.addLikes(tuit)
-                                    }
-                                })
-                            }
-                        }
-                        CustomDivider()
+                    itemsIndexed(items = feedTuitsState.data) { index, tuit ->
+                        TuitCard(tuit = tuit, navigateToTuitScreen = {
+                            navController.navigate("tuitScreen/${tuit.id}")
+                        }, onFavoriteChanged = {
+                            tuitsViewModel.onFavoriteChange(tuit)
+                        })
                     }
                 }
             }
@@ -104,5 +84,9 @@ fun FeedTuitsScreen(tuitsViewModel: TuitsViewModel = hiltViewModel()) {
 
 @Composable
 fun CustomDivider() {
-    HorizontalDivider(Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.secondary, thickness = 0.25f.dp)
+    HorizontalDivider(
+        Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.secondary,
+        thickness = 0.25f.dp,
+    )
 }

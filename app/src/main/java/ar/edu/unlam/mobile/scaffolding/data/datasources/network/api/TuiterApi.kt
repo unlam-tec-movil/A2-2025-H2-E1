@@ -1,6 +1,7 @@
 package ar.edu.unlam.mobile.scaffolding.data.datasources.network.api
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Reply
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.TuitBody
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
@@ -33,4 +34,20 @@ interface TuiterApi {
     suspend fun postTuit(
         @Body tuit: TuitBody,
     )
+
+    @GET(value = "/api/v1/me/tuits/{tuit_id}/replies")
+    suspend fun getTuitReplies(
+        @Path(value = "tuit_id") tuitId: Int,
+    ): List<Tuit>
+
+    @POST(value = "/api/v1/me/tuits/{tuit_id}/replies")
+    suspend fun addTuitReply(
+        @Path(value = "tuit_id") tuitId: Int,
+        @Body reply: Reply,
+    ): Tuit
+
+    @GET(value = "/api/v1/me/tuits/{tuit_id}")
+    suspend fun getTuit(
+        @Path(value = "tuit_id") tuitId: Int,
+    ): Tuit
 }
