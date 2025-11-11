@@ -59,7 +59,7 @@ fun MainScreen() {
             if(currentRoute != "form" && currentRoute != "logInScreen"){
                 BottomBar(controller = controller)
             }
-                    },
+        },
         floatingActionButton = {
             if (currentRoute == "feedTuitScreen") {
                 androidx.compose.material3.FloatingActionButton(

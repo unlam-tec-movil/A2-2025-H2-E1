@@ -55,7 +55,6 @@ fun FormScreen(
 
     val registerState by viewModel.registerState.collectAsState()
 
-    // 👇 Se ejecuta cuando llega una respuesta del registro
     LaunchedEffect(registerState) {
 
         registerState?.let { response ->
