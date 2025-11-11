@@ -43,7 +43,8 @@ class PostScreenViewModel
                     _uiState.value = FeedState.Success(tuits)
                 } catch (e: retrofit2.HttpException) {
                     if (e.code() == 401) {
-                        _uiState.value = FeedState.Error("Sesión inválida/expirada (401). Iniciá sesión de nuevo.")
+                        _uiState.value =
+                            FeedState.Error("Sesión inválida/expirada (401). Iniciá sesión de nuevo.")
                     } else {
                         _uiState.value = FeedState.Error("Error HTTP ${e.code()}")
                     }

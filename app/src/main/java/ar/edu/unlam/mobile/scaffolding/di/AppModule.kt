@@ -55,10 +55,7 @@ object AppModule {
             .Builder()
             .addInterceptor { chain ->
                 val original = chain.request()
-                val builder =
-                    original
-                        .newBuilder()
-                        .header("Application-Token", APPLICATION_TOKEN)
+                val builder = original.newBuilder().header("Application-Token", APPLICATION_TOKEN)
                 chain.proceed(builder.build())
             }.addInterceptor(loggingInterceptor)
             .build()
@@ -75,10 +72,7 @@ object AppModule {
             .Builder()
             .addInterceptor { chain ->
                 val original = chain.request()
-                val builder =
-                    original
-                        .newBuilder()
-                        .header("Application-Token", APPLICATION_TOKEN)
+                val builder = original.newBuilder().header("Application-Token", APPLICATION_TOKEN)
 
                 // Leemos el token
                 val token = runBlocking { userDataStore.getUserToken().firstOrNull() }

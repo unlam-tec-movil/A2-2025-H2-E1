@@ -17,7 +17,7 @@ class UserDefaultRepository
     constructor(
         private val tuiterDao: TuiterDao,
         private val userDataStore: UserDataStore,
-        @Named("PublicApi")private val publicApi: TuiterApi,
+        @Named("PublicApi") private val publicApi: TuiterApi,
         @Named("AuthApi") private val authApi: TuiterApi,
     ) : UserRepository {
         override suspend fun saveUserToken(token: String): Flow<String> {

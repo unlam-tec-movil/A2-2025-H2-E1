@@ -4,7 +4,7 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.ValidationResult
 
 fun validateForm(
     email: String,
-    password: String
+    password: String,
 ): ValidationResult {
     if (!email.contains("@")) {
         return ValidationResult(

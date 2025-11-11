@@ -117,9 +117,10 @@ fun PostScreen(
                                     Toast.LENGTH_LONG,
                                 ).show()
                             // esto refresca la pantalla anterior
-                            navController.previousBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("refresco", true)
+                            navController.previousBackStackEntry?.savedStateHandle?.set(
+                                "refresco",
+                                true,
+                            )
                             // vuelve al feed
                             navController.popBackStack()
                         }
@@ -138,9 +139,7 @@ fun PostScreen(
         }
         Text("Borradores")
         LazyColumn(
-            modifier =
-                Modifier
-                    .padding(16.dp),
+            modifier = Modifier.padding(16.dp),
         ) {
             items(borradores) { borrador ->
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -158,6 +157,7 @@ fun PostScreen(
             is PostScreenViewModel.FeedState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             }
+
             is PostScreenViewModel.FeedState.Error -> {
                 Text(
                     text = "Error: ${state.message}",
@@ -165,6 +165,7 @@ fun PostScreen(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
+
             is PostScreenViewModel.FeedState.Success -> {
                 Text("Tus tuits", style = MaterialTheme.typography.titleMedium)
                 LazyColumn(
@@ -178,7 +179,9 @@ fun PostScreen(
                     }
                 }
             }
-            PostScreenViewModel.FeedState.Idle -> { /* nada todavía */ }
+
+            PostScreenViewModel.FeedState.Idle -> { // nada todavía
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
