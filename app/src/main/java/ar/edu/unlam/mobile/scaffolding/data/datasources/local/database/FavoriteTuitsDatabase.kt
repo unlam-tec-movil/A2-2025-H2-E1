@@ -8,7 +8,7 @@ import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitsBorr
 
 @Database(
     entities = [AuthKey::class, TuitsBorrador::class],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 abstract class FavoriteTuitsDatabase : RoomDatabase() {

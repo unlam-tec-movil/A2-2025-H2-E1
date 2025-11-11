@@ -30,14 +30,20 @@ class UserDefaultRepository
             TODO("Not yet implemented")
         }
 
-        suspend fun register(request: RegisterRequest): Response<UserApiResponse> {
-        return tuiterApi.register(request)
-        }
-
         override suspend fun loginUser(
             email: String,
             password: String,
         ) {
             TODO("Not yet implemented")
         }
+
+    suspend fun register(request: RegisterRequest): Response<UserApiResponse> {
+        return tuiterApi.register(request)
+    }
+
+    override suspend fun getUserProfileData(): UserProfileDataApiResponse = tuiterApi.getUserProfileData()
+
+    override suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest) = tuiterApi.updateUserProfileData(newProfileData)
+
+
     }
