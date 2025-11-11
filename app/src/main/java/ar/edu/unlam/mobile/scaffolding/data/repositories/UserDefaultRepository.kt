@@ -4,6 +4,8 @@ import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import retrofit2.Response
 import javax.inject.Inject

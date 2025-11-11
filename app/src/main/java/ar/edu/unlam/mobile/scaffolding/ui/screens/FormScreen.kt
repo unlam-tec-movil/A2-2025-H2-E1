@@ -88,15 +88,15 @@ fun FormScreen(
 
 
         Column(
-            modifier = Modifier.fillMaxSize().padding(64.dp),
+            modifier = Modifier.fillMaxSize().padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
 
             Text(
-                text = "TUIT",
+                text = "Tuiter",
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 50.sp),
-                color = Color.Black,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )

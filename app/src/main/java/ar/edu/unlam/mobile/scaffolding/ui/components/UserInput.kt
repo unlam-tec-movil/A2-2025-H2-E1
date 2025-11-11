@@ -35,7 +35,7 @@ fun UserInput(title: String,
               onTextChange: (String) -> Unit
 ) {
     Card(
-        modifier = modifier.width(250.dp).height(55.dp).fillMaxSize(),
+        modifier = modifier.width(300.dp).height(55.dp).fillMaxSize(),
         elevation = CardDefaults.cardElevation(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
@@ -58,8 +58,8 @@ fun UserInput(title: String,
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
                     focusedPlaceholderColor = Color.LightGray,
@@ -86,8 +86,8 @@ fun UserInput(title: String,
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
                     focusedPlaceholderColor = Color.LightGray,
@@ -124,8 +124,8 @@ fun UserInput(title: String,
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedTextColor = Color.White,
                         unfocusedTextColor = Color.White,
                         focusedPlaceholderColor = Color.LightGray,
@@ -163,8 +163,8 @@ fun UserInput(title: String,
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.inversePrimary,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedTextColor = Color.White,
                         unfocusedTextColor = Color.White,
                         focusedPlaceholderColor = Color.LightGray,
