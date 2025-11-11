@@ -16,6 +16,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -39,8 +40,20 @@ fun FeedTuitsScreen(
     val uiState by tuitsViewModel.uiState.collectAsStateWithLifecycle()
     val feedTuitsState by tuitsViewModel.feedTuitsState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = Unit) {
-        tuitsViewModel.getAllTuits()
+    // escucha el refresco del PostScreen
+    val navBackStackEntry = navController.currentBackStackEntry
+    val refresco =
+        navBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<Boolean>("refresco")
+            ?.observeAsState(initial = false)
+    LaunchedEffect(key1 = Unit, key2 = refresco?.value) {
+        if (refresco?.value == true) {
+            tuitsViewModel.getAllTuits()
+            navBackStackEntry.savedStateHandle.set("refresco", false)
+        } else {
+            tuitsViewModel.getAllTuits()
+        }
     }
     when (val state = uiState) {
         is FeedUIState.Error -> CustomErrorView(state.message.toString())
