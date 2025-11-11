@@ -14,7 +14,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -41,7 +40,6 @@ object AppModule {
     @Singleton
     fun tuitDaoProvider(db: FavoriteTuitsDatabase): TuiterDao = db.tuitDao()
 
-    // 1. Creamos un Interceptor de Logging genérico
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor =
@@ -49,10 +47,10 @@ object AppModule {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
-    // 2. Creamos un OkHttpClient PÚBLICO (para Login/Register)
+    //  OkHttpClient PÚBLICO (para Login/Register)
     @Provides
     @Singleton
-    @Named("PublicOkHttpClient") // <-- Anotación para diferenciarlo
+    @Named("PublicOkHttpClient")
     fun providePublicOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient
             .Builder()
@@ -66,10 +64,10 @@ object AppModule {
             }.addInterceptor(loggingInterceptor)
             .build()
 
-    // 3. Creamos un OkHttpClient PRIVADO (para peticiones autenticadas)
+    // OkHttpClient PRIVADO (para peticiones autenticadas)
     @Provides
     @Singleton
-    @Named("AuthOkHttpClient") // <-- Anotación para diferenciarlo
+    @Named("AuthOkHttpClient")
     fun provideAuthOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         userDataStore: UserDataStore,
@@ -83,7 +81,7 @@ object AppModule {
                         .newBuilder()
                         .header("Application-Token", APPLICATION_TOKEN)
 
-                // Leemos el token de forma segura
+                // Leemos el token
                 val token = runBlocking { userDataStore.getUserToken().firstOrNull() }
 
                 if (!token.isNullOrBlank()) {

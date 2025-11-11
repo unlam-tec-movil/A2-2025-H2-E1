@@ -18,19 +18,53 @@ private val Context.userDataStore: DataStore<Preferences> by preferencesDataStor
 )
 
 class UserDataStore(
-    private val context: Context
+    private val context: Context,
 ) {
-    private val usersKey = stringPreferencesKey("users_json")
+    // private val usersKey = stringPreferencesKey("users_json")
     private val rememberedUserKey = stringPreferencesKey("remembered_user")
 
     private val usersTokens = stringPreferencesKey("users_tokens")
 
-    private suspend fun getUsers(): JSONArray {
+    suspend fun saveUserToken(token: String) {
+        context.userDataStore.edit { prefs ->
+            prefs[usersTokens] = token
+        }
+    }
+
+    suspend fun deleteUserToken() {
+        context.userDataStore.edit { prefs ->
+            prefs.remove(usersTokens)
+        }
+    }
+
+    fun getUserToken(): Flow<String?> =
+        context.userDataStore.data.map { prefs ->
+            prefs[usersTokens]
+        }
+
+    suspend fun setRememberedUser(email: String) {
+        context.userDataStore.edit { preferences ->
+            preferences[rememberedUserKey] = email
+        }
+    }
+
+    val rememberedUser: Flow<String?> =
+        context.userDataStore.data.map { preferences ->
+            preferences[rememberedUserKey]
+        }
+
+    suspend fun clearRememberedUser() {
+        context.userDataStore.edit { preferences ->
+            preferences.remove(rememberedUserKey)
+        }
+    }
+
+    /*private suspend fun getUsers(): JSONArray {
         val usersJson = context.userDataStore.data.first()[usersKey]
         return if (usersJson != null) JSONArray(usersJson) else JSONArray()
     }
 
-    suspend fun saveUser(
+    suspend fun saUser(
         email: String,
         password: String,
     ) {
@@ -80,39 +114,5 @@ class UserDataStore(
             }
         }
         return false
-    }
-
-    suspend fun saveUserToken(token: String) {
-        context.userDataStore.edit { prefs ->
-            prefs[usersTokens] = token
-        }
-    }
-
-    suspend fun deleteUserToken() {
-        context.userDataStore.edit { prefs ->
-            prefs.remove(usersTokens)
-        }
-    }
-
-    fun getUserToken(): Flow<String?> =
-        context.userDataStore.data.map { prefs ->
-            prefs[usersTokens]
-        }
-
-    suspend fun setRememberedUser(email: String) {
-        context.userDataStore.edit { preferences ->
-            preferences[rememberedUserKey] = email
-        }
-    }
-
-    val rememberedUser: Flow<String?> =
-        context.userDataStore.data.map { preferences ->
-            preferences[rememberedUserKey]
-        }
-
-    suspend fun clearRememberedUser() {
-        context.userDataStore.edit { preferences ->
-            preferences.remove(rememberedUserKey)
-        }
-    }
+    }*/
 }

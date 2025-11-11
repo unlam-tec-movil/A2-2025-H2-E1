@@ -45,6 +45,7 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.LogInViewModel
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.LoginState
 import ar.edu.unlam.mobile.scaffolding.utils.validateForm
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,6 +72,7 @@ fun LogInScreen(
     val rememberedUser by logInViewModel.userDataStore.rememberedUser.collectAsState(initial = null)
 
     LaunchedEffect(rememberedUser) {
+        delay(100)
         if (!rememberedUser.isNullOrBlank()) {
             navController.navigate("feedTuitScreen") {
                 popUpTo("loginScreen") { inclusive = true }

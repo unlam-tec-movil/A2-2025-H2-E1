@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
@@ -234,8 +235,9 @@ fun EditUserScreen(
             }
             Button(
                 onClick = {
+                    viewModel.logout()
+                    // viewModel.resetUpdateProfileDataState()
                     navController.navigate("logInScreen") {
-                        viewModel.resetUpdateProfileDataState()
                         popUpTo(route = "logInScreen") { inclusive = true }
                     }
                 },

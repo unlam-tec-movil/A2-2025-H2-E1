@@ -24,8 +24,8 @@ class PostScreenViewModel
         private val _postState = MutableStateFlow("")
         val postState: StateFlow<String> = _postState
 
-    private val _uiState = MutableStateFlow<FeedState>(FeedState.Idle)
-    val uiState: StateFlow<FeedState> = _uiState
+        private val _uiState = MutableStateFlow<FeedState>(FeedState.Idle)
+        val uiState: StateFlow<FeedState> = _uiState
 
         val borradorState: StateFlow<List<TuitsBorrador>> =
             postRepository
@@ -36,23 +36,24 @@ class PostScreenViewModel
                     initialValue = emptyList(), // Valor inicial mientras se carga el primero
                 )
 
-    fun loadFeed() = viewModelScope.launch {
-        _uiState.value = FeedState.Loading
-        try {
-            val tuits = postRepository.getFeed()
-            _uiState.value = FeedState.Success(tuits)
-        } catch (e: retrofit2.HttpException) {
-            if(e.code() == 401){
-                _uiState.value = FeedState.Error("Sesión inválida/expirada (401). Iniciá sesión de nuevo.")
-            } else {
-                _uiState.value = FeedState.Error("Error HTTP ${e.code()}")
+        fun loadFeed() =
+            viewModelScope.launch {
+                _uiState.value = FeedState.Loading
+                try {
+                    val tuits = postRepository.getFeed()
+                    _uiState.value = FeedState.Success(tuits)
+                } catch (e: retrofit2.HttpException) {
+                    if (e.code() == 401) {
+                        _uiState.value = FeedState.Error("Sesión inválida/expirada (401). Iniciá sesión de nuevo.")
+                    } else {
+                        _uiState.value = FeedState.Error("Error HTTP ${e.code()}")
+                    }
+                } catch (e: java.io.IOException) {
+                    _uiState.value = FeedState.Error("Sin conexión. Intentá nuevamente.")
+                } catch (e: Exception) {
+                    _uiState.value = FeedState.Error("Ocurrió un error inesperado.")
+                }
             }
-        } catch (e: java.io.IOException) {
-            _uiState.value = FeedState.Error("Sin conexión, Intentá nuevamente.")
-        } catch (e: Exception) {
-            _uiState.value = FeedState.Error("Ocurrió un error inesperado.")
-        }
-    }
 
         fun textoATuitear(message: String): Job {
             val job =
@@ -72,12 +73,11 @@ class PostScreenViewModel
             return job
         }
 
-        fun textoAGuardar() {
+        fun textoAGuardar(message: String) {
             viewModelScope.launch {
-                val msg = _postState.value.trim()
-                if (msg.isEmpty()) return@launch
+                if (message.isEmpty()) return@launch
                 try {
-                    postRepository.guardarBorrador(msg)
+                    postRepository.guardarBorrador(message)
                     println("Se guardó el borrador.")
                 } catch (e: Exception) {
                     println("Error al guardar: ${e.message}")
@@ -89,15 +89,22 @@ class PostScreenViewModel
             _postState.value = newText
             return _postState.value
         }
-    fun limpiarCampoDeTexto() {
-        _postState.value = ""
-    }
 
-    sealed interface FeedState {
-        data object Idle : FeedState
-        data object Loading : FeedState
-        data class Success(val tuits: List<Tuit>) : FeedState
-        data class Error(val message: String) : FeedState
-    }
+        fun limpiarCampoDeTexto() {
+            _postState.value = ""
+        }
 
+        sealed interface FeedState {
+            data object Idle : FeedState
+
+            data object Loading : FeedState
+
+            data class Success(
+                val tuits: List<Tuit>,
+            ) : FeedState
+
+            data class Error(
+                val message: String,
+            ) : FeedState
+        }
     }

@@ -2,6 +2,7 @@ package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.datastore.UserDataStore
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.repositories.UserRepository
@@ -31,6 +32,7 @@ class EditUserViewModel
     @Inject
     constructor(
         private val userRepository: UserRepository,
+        private val userDataStore: UserDataStore,
     ) : ViewModel() {
         private val _userProfileDataState = MutableStateFlow<UserProfileDataApiResponse?>(null)
         val userProfileDataState: StateFlow<UserProfileDataApiResponse?> =
@@ -55,6 +57,13 @@ class EditUserViewModel
                 } catch (e: Exception) {
                     _userProfileDataUpdateState.value = UpdateProfileDataState.Error("error")
                 }
+            }
+        }
+
+        fun logout() {
+            viewModelScope.launch {
+                userRepository.deleteUserToken()
+                userDataStore.clearRememberedUser()
             }
         }
 

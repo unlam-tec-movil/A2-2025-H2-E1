@@ -52,11 +52,6 @@ class LogInViewModel
                     val loginResponse = userRepo.loginUser(email = email, password = password)
                     userRepo.saveUserToken(loginResponse.token).first()
 
-                    delay(300)
-
-                    // guarda usuario localmente
-                    userDataStore.saveUser(email, password)
-
                     if (remember) {
                         userDataStore.setRememberedUser(email)
                     } else {
@@ -67,13 +62,6 @@ class LogInViewModel
                     _loginState.value = LoginState.Error("${e.message} : Check your credentials")
                     Log.e("LOGIN_VM_ERROR", "Error en LoginVM: ${e.message}")
                 }
-            }
-        }
-
-        fun logout() {
-            viewModelScope.launch {
-                userRepo.deleteUserToken()
-                userDataStore.clearRememberedUser()
             }
         }
 

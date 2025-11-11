@@ -3,7 +3,10 @@ package ar.edu.unlam.mobile.scaffolding.data.repositories
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.datastore.UserDataStore
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -16,6 +19,7 @@ class UserDefaultRepository
         private val tuiterDao: TuiterDao,
         private val userDataStore: UserDataStore,
         @Named("PublicApi")private val publicApi: TuiterApi,
+        @Named("AuthApi") private val authApi: TuiterApi,
     ) : UserRepository {
         override suspend fun saveUserToken(token: String): Flow<String> {
             userDataStore.saveUserToken(token)
@@ -42,7 +46,7 @@ class UserDefaultRepository
             tuiterDao.deleteAllTuitsSaved()
         }
 
-        override suspend fun getUserProfileData(): UserProfileDataApiResponse = tuiterApi.getUserProfileData()
+        override suspend fun getUserProfileData(): UserProfileDataApiResponse = authApi.getUserProfileData()
 
-        override suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest) = tuiterApi.updateUserProfileData(newProfileData)
+        override suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest) = authApi.updateUserProfileData(newProfileData)
     }
