@@ -31,40 +31,40 @@ sealed interface LoginState {
 
 @HiltViewModel
 class LogInViewModel
-    @Inject
-    constructor(
-        val userRepo: UserRepository,
-        val userDataStore: UserDataStore,
-    ) : ViewModel() {
-        private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
-        val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
+@Inject
+constructor(
+    val userRepo: UserRepository,
+    val userDataStore: UserDataStore,
+) : ViewModel() {
+    private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
+    val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
-        fun logInVM(
-            email: String,
-            password: String,
-            remember: Boolean = false,
-        ) {
-            viewModelScope.launch {
-                _loginState.value = LoginState.Loading
-                try {
-                    // backend login
-                    val loginResponse = userRepo.loginUser(email = email, password = password)
-                    userRepo.saveUserToken(loginResponse.token).first()
+    fun logInVM(
+        email: String,
+        password: String,
+        remember: Boolean = false,
+    ) {
+        viewModelScope.launch {
+            _loginState.value = LoginState.Loading
+            try {
+                // backend login
+                val loginResponse = userRepo.loginUser(email = email, password = password)
+                userRepo.saveUserToken(loginResponse.token).first()
 
-                    if (remember) {
-                        userDataStore.setRememberedUser(email)
-                    } else {
-                        userDataStore.clearRememberedUser()
-                    }
-                    _loginState.value = LoginState.Success("Success")
-                } catch (e: Exception) {
-                    _loginState.value = LoginState.Error("${e.message} : Check your credentials")
-                    Log.e("LOGIN_VM_ERROR", "Error en LoginVM: ${e.message}")
+                if (remember) {
+                    userDataStore.setRememberedUser(email)
+                } else {
+                    userDataStore.clearRememberedUser()
                 }
+                _loginState.value = LoginState.Success("Success")
+            } catch (e: Exception) {
+                _loginState.value = LoginState.Error("${e.message} : Check your credentials")
+                Log.e("LOGIN_VM_ERROR", "Error en LoginVM: ${e.message}")
             }
         }
-
-        fun resetState() {
-            _loginState.value = LoginState.Idle
-        }
     }
+
+    fun resetState() {
+        _loginState.value = LoginState.Idle
+    }
+}

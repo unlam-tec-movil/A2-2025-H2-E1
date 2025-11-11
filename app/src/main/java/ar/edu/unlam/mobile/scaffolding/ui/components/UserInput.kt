@@ -29,13 +29,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun UserInput(title: String,
-              modifier: Modifier = Modifier,
-              text: String,
-              onTextChange: (String) -> Unit
+fun UserInput(
+    title: String,
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChange: (String) -> Unit
 ) {
     Card(
-        modifier = modifier.width(300.dp).height(55.dp).fillMaxSize(),
+        modifier = modifier
+            .width(300.dp)
+            .height(55.dp)
+            .fillMaxSize(),
         elevation = CardDefaults.cardElevation(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
@@ -118,7 +122,8 @@ fun UserInput(title: String,
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
-                        val image = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+                        val image =
+                            if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(imageVector = image, contentDescription = null)
                         }
@@ -157,7 +162,8 @@ fun UserInput(title: String,
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
-                        val image = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+                        val image =
+                            if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(imageVector = image, contentDescription = null)
                         }

@@ -56,7 +56,7 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            if(currentRoute != "form" && currentRoute != "logInScreen"){
+            if (currentRoute != "form" && currentRoute != "logInScreen") {
                 BottomBar(controller = controller)
             }
         },

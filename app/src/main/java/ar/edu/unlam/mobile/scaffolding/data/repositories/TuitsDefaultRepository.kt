@@ -11,70 +11,70 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class TuitsDefaultRepository
-    @Inject
-    constructor(
-        @Named("AuthApi") private val tuiterApi: TuiterApi,
-        private val tuiterDao: TuiterDao,
-    ) : TuitsRepository {
-        override suspend fun getTuits(): ApiOperation<List<Tuit>> =
-            safeApiRequest {
-                tuiterApi.getTuits()
-            }
-
-        override suspend fun updateTuitLikes(key: Tuit): ApiOperation<Tuit> =
-            safeApiRequest {
-                tuiterApi.updateTuitLikes(
-                    tuitId = key.id,
-                )
-            }
-
-        override suspend fun removeTuitLike(key: Tuit): ApiOperation<Tuit> =
-            safeApiRequest {
-                tuiterApi.removeTuitLike(
-                    tuitId = key.id,
-                )
-            }
-
-        override fun saveFavoriteTuit(key: Tuit) {
-            TODO("Not yet implemented")
+@Inject
+constructor(
+    @Named("AuthApi") private val tuiterApi: TuiterApi,
+    private val tuiterDao: TuiterDao,
+) : TuitsRepository {
+    override suspend fun getTuits(): ApiOperation<List<Tuit>> =
+        safeApiRequest {
+            tuiterApi.getTuits()
         }
 
-        override fun deleteTuit(id: String) {
-            TODO("Not yet implemented")
+    override suspend fun updateTuitLikes(key: Tuit): ApiOperation<Tuit> =
+        safeApiRequest {
+            tuiterApi.updateTuitLikes(
+                tuitId = key.id,
+            )
         }
 
-        override fun getAllFavoriteTuits(): Flow<List<AuthKey>> = tuiterDao.getAllTuits()
-
-        override fun deleteAllFavoriteTuits() {
-            TODO("Not yet implemented")
+    override suspend fun removeTuitLike(key: Tuit): ApiOperation<Tuit> =
+        safeApiRequest {
+            tuiterApi.removeTuitLike(
+                tuitId = key.id,
+            )
         }
 
-        suspend fun logIn(
-            email: String,
-            password: String,
-        ): UserApiResponse = tuiterApi.logIn(LoginRequest(email = email, password = password))
-
-        suspend fun saveFavoriteTuit(key: AuthKey) {
-            tuiterDao.saveKey(key)
-        }
-
-        suspend fun deleteTuit(key: AuthKey) {
-            tuiterDao.deleteSavedTuit(key)
-        }
-
-        suspend fun deleteAllSavedTuits() {
-            tuiterDao.deleteAllTuitsSaved()
-        }
-
-        // cada llamada a una api externa pasa por un try/catch. En la clase ApiOperation se definen
-        // dos posibles estados a esa llamada --> success o failure
-        private inline fun <T> safeApiRequest(apiCall: () -> T): ApiOperation<T> =
-            try {
-                ApiOperation.Success(data = apiCall())
-            } catch (e: Exception) {
-                ApiOperation.Failure(exception = e)
-            }
+    override fun saveFavoriteTuit(key: Tuit) {
+        TODO("Not yet implemented")
     }
+
+    override fun deleteTuit(id: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllFavoriteTuits(): Flow<List<AuthKey>> = tuiterDao.getAllTuits()
+
+    override fun deleteAllFavoriteTuits() {
+        TODO("Not yet implemented")
+    }
+
+    suspend fun logIn(
+        email: String,
+        password: String,
+    ): UserApiResponse = tuiterApi.logIn(LoginRequest(email = email, password = password))
+
+    suspend fun saveFavoriteTuit(key: AuthKey) {
+        tuiterDao.saveKey(key)
+    }
+
+    suspend fun deleteTuit(key: AuthKey) {
+        tuiterDao.deleteSavedTuit(key)
+    }
+
+    suspend fun deleteAllSavedTuits() {
+        tuiterDao.deleteAllTuitsSaved()
+    }
+
+    // cada llamada a una api externa pasa por un try/catch. En la clase ApiOperation se definen
+    // dos posibles estados a esa llamada --> success o failure
+    private inline fun <T> safeApiRequest(apiCall: () -> T): ApiOperation<T> =
+        try {
+            ApiOperation.Success(data = apiCall())
+        } catch (e: Exception) {
+            ApiOperation.Failure(exception = e)
+        }
+}
 
 sealed interface ApiOperation<T> {
     data class Success<T>(

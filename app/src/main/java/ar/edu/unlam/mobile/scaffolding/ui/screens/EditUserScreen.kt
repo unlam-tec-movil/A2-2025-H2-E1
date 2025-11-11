@@ -105,15 +105,15 @@ fun EditUserScreen(
         modifier = Modifier.padding(paddingValues),
         topBar = {
             (
-                TopAppBar(
-                    title = { Text(text = "Edit Profile") },
-                    colors =
-                        TopAppBarDefaults.topAppBarColors(
-                            containerColor = Color.Black,
-                            titleContentColor = Color.White,
-                        ),
-                )
-            )
+                    TopAppBar(
+                        title = { Text(text = "Edit Profile") },
+                        colors =
+                            TopAppBarDefaults.topAppBarColors(
+                                containerColor = Color.Black,
+                                titleContentColor = Color.White,
+                            ),
+                    )
+                    )
         },
     ) { paddingValues1 ->
         Column(

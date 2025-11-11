@@ -24,8 +24,8 @@ fun GradientBackground(
         Color.White
     ),
     durationMillis: Int = 8000
-){
-    val infiniteTransition= rememberInfiniteTransition()
+) {
+    val infiniteTransition = rememberInfiniteTransition()
 
     val offset = infiniteTransition.animateFloat(
         initialValue = -200f,
@@ -45,8 +45,8 @@ fun GradientBackground(
             .background(
                 brush = Brush.linearGradient(
                     colors = colors,
-                    start = Offset(offset.value,0f),
-                    end = Offset(0f,offset.value + 1600f)
+                    start = Offset(offset.value, 0f),
+                    end = Offset(0f, offset.value + 1600f)
                 )
             )
     )

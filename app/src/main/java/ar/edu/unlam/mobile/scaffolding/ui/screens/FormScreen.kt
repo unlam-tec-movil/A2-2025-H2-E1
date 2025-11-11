@@ -84,10 +84,12 @@ fun FormScreen(
                 repeatPasswordState.isNotBlank()
 
         Column(
-            modifier = Modifier.fillMaxSize().padding(top = 64.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
+        ) {
 
             Text(
                 text = "Tuiter",
@@ -149,7 +151,7 @@ fun FormScreen(
                         passwordState,
                         repeatPasswordState
                     )
-                    if (res.isValid){
+                    if (res.isValid) {
 
                         viewModel.register(
                             name = nameState,
@@ -193,7 +195,7 @@ fun validateForm(
         )
     }
 
-    if (password != repeatPassword){
+    if (password != repeatPassword) {
         return ValidationResult(
             isValid = false,
             message = "Las contraseñas deben coincidir",

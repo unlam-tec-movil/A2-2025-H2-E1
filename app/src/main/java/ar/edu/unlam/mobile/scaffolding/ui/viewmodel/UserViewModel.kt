@@ -2,14 +2,11 @@ package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.repositories.UserDefaultRepository
-import ar.edu.unlam.mobile.scaffolding.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,7 +44,11 @@ class UserViewModel @Inject constructor(
                 println("Cuerpo del error: $errorBody")
 
                 if (code == 500) {
-                    Toast.makeText(context, "Error al crear usuario: Email duplicado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Error al crear usuario: Email duplicado",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
