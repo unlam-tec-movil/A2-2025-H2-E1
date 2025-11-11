@@ -7,14 +7,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.unlam.mobile.scaffolding.navigation.AppNavigation
 import ar.edu.unlam.mobile.scaffolding.ui.components.BottomBar
@@ -47,11 +48,21 @@ fun MainScreen() {
     // a través del back stack
     val controller = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
+
+    // Solo muestra el boton de postear tuit en la pantalla de feed.
+    // creamos un estado que nos dice cual es la ruta actual en tiempo real
+    val navBackStackEntry by controller.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         bottomBar = { BottomBar(controller = controller) },
         floatingActionButton = {
-            IconButton(onClick = { controller.navigate("postTuiter") }) {
-                Icon(Icons.Default.Create, contentDescription = "Home")
+            if (currentRoute == "feedTuitScreen") {
+                androidx.compose.material3.FloatingActionButton(
+                    onClick = { controller.navigate("postTuiter") },
+                ) {
+                    Icon(Icons.Default.Create, contentDescription = "Home")
+                }
             }
         },
         snackbarHost = {

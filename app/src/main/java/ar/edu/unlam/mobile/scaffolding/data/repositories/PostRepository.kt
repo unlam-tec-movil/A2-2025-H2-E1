@@ -2,17 +2,21 @@ package ar.edu.unlam.mobile.scaffolding.data.repositories
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitsBorrador
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.TuitBody
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Named
 
 class PostRepository
     @Inject
     constructor(
-        private val tuiterApi: TuiterApi,
+        @Named("AuthApi") private val tuiterApi: TuiterApi,
         private val tuitDao: TuiterDao,
     ) {
+        suspend fun getFeed(): List<Tuit> = tuiterApi.getTuits()
+
         suspend fun postTuit(message: String) {
             // Crear el objeto que la API espera
             val tuitBody = TuitBody(message = message)

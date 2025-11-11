@@ -37,4 +37,8 @@ interface TuiterDao {
 
     @Delete
     suspend fun deleteBorrador(borrador: TuitsBorrador)
+
+    // lectura síncrona para el interceptor
+    @Query("SELECT token FROM authKeys ORDER BY rowid DESC LIMIT 1")
+    fun getLatestTokenSync(): String?
 }

@@ -234,8 +234,9 @@ fun EditUserScreen(
             }
             Button(
                 onClick = {
+                    viewModel.logout()
+                    // viewModel.resetUpdateProfileDataState()
                     navController.navigate("logInScreen") {
-                        viewModel.resetUpdateProfileDataState()
                         popUpTo(route = "logInScreen") { inclusive = true }
                     }
                 },

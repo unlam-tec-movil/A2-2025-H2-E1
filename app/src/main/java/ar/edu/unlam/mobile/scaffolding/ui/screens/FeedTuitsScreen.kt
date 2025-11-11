@@ -54,7 +54,7 @@ fun FeedTuitsScreen(
     LaunchedEffect(key1 = Unit, key2 = refresco?.value) {
         if (refresco?.value == true) {
             tuitsViewModel.getAllTuits()
-            navBackStackEntry.savedStateHandle.set("should_refresh", false)
+            navBackStackEntry.savedStateHandle.set("refresco", false)
         } else {
             tuitsViewModel.getAllTuits()
         }
