@@ -7,7 +7,6 @@ import ar.edu.unlam.mobile.scaffolding.data.repositories.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Singleton
 
