@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -50,6 +49,8 @@ fun MainScreen() {
     val controller = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
 
+    // Solo muestra el boton de postear tuit en la pantalla de feed.
+    // creamos un estado que nos dice cual es la ruta actual en tiempo real
     val navBackStackEntry by controller.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -60,8 +61,10 @@ fun MainScreen() {
             }
                     },
         floatingActionButton = {
-            if (currentRoute != "form" && currentRoute != "logInScreen"){
-                IconButton(onClick = { controller.navigate("postTuiter") }) {
+            if (currentRoute == "feedTuitScreen") {
+                androidx.compose.material3.FloatingActionButton(
+                    onClick = { controller.navigate("postTuiter") },
+                ) {
                     Icon(Icons.Default.Create, contentDescription = "Home")
                 }
             }

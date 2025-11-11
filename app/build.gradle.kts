@@ -101,6 +101,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.coil.kt.coil.compose)
+    implementation(libs.okhttp.logging.interceptor)
     // Icons extended
 //    implementation(libs.material.icons.extended)
+
+    // Datastore
+    implementation(libs.androidx.datastore.preferences)
 }
