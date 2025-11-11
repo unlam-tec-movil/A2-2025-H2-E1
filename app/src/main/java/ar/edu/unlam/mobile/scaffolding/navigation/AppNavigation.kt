@@ -24,7 +24,10 @@ fun AppNavigation(
     paddingValues: PaddingValues,
     snackbarHostState: SnackbarHostState,
 ) {
-    NavHost(navController = navController, startDestination = "form") {
+    NavHost(
+        navController = navController,
+        startDestination = "form"
+    ) {
         composable("home") {
             // Home es el componente en sí que es el destino de navegación.
             HomeScreen(modifier = Modifier.padding(paddingValues = paddingValues))

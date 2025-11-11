@@ -9,15 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.clearText
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,9 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,7 +35,6 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.GradientBackground
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
 import ar.edu.unlam.mobile.scaffolding.ui.components.UserInput
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.UserViewModel
-import ar.edu.unlam.mobile.scaffolding.utils.validateForm
 import kotlinx.coroutines.launch
 
 data class ValidationResult(
@@ -76,7 +69,7 @@ fun FormScreen(
     }
 
     Box(
-        Modifier.fillMaxSize(),
+        modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         GradientBackground()
@@ -86,9 +79,13 @@ fun FormScreen(
         var passwordState by remember { mutableStateOf("") }
         var repeatPasswordState by remember { mutableStateOf("") }
 
+        val enabled = nameState.isNotBlank() &&
+                emailState.isNotBlank() &&
+                passwordState.isNotBlank() &&
+                repeatPasswordState.isNotBlank()
 
         Column(
-            modifier = Modifier.fillMaxSize().padding(32.dp),
+            modifier = Modifier.fillMaxSize().padding(top = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
@@ -130,12 +127,22 @@ fun FormScreen(
                 onClick = {
                     nameState = ""
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
             )
 
             Spacer(Modifier.height(8.dp))
 
             Button(
                 content = { Text("Register") },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                    disabledContentColor = MaterialTheme.colorScheme.primary
+                ),
                 onClick = {
                     val res = validateForm(
                         nameState,
@@ -158,7 +165,8 @@ fun FormScreen(
                             SnackbarVisualsWithError(res.message, !res.isValid),
                         )
                     }
-                }
+                },
+                enabled = enabled
             )
         }
 
