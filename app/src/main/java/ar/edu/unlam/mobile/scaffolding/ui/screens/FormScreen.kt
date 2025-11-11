@@ -148,7 +148,8 @@ fun FormScreen(
                         viewModel.register(
                             name = nameState,
                             password = passwordState,
-                            email = emailState
+                            email = emailState,
+                            context = context
                         )
 
                     }

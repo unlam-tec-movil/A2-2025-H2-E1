@@ -1,5 +1,8 @@
 package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
@@ -21,7 +24,7 @@ class UserViewModel @Inject constructor(
     private val _registerState = MutableStateFlow<UserApiResponse?>(null)
     val registerState = _registerState.asStateFlow()
 
-    fun register(name: String, password: String, email: String) {
+    fun register(name: String, password: String, email: String, context: Context) {
 
         viewModelScope.launch {
 
@@ -42,6 +45,10 @@ class UserViewModel @Inject constructor(
                 println("Código: $code")
                 println("Mensaje: $message")
                 println("Cuerpo del error: $errorBody")
+
+                if (code == 500) {
+                    Toast.makeText(context, "Error al crear usuario: Email duplicado", Toast.LENGTH_SHORT).show()
+                }
             }
 
             //Se podria manejar con catch en caso de ocurrr algun exception.
