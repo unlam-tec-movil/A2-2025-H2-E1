@@ -15,45 +15,47 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class UserDefaultRepository
-    @Inject
-    constructor(
-        private val tuiterDao: TuiterDao,
-        private val userDataStore: UserDataStore,
-        @Named("PublicApi") private val publicApi: TuiterApi,
-        @Named("AuthApi") private val authApi: TuiterApi,
-    ) : UserRepository {
-        override suspend fun saveUserToken(token: String): Flow<String> {
-            userDataStore.saveUserToken(token)
-            return userDataStore.getUserToken().filterNotNull()
-        }
+@Inject
+constructor(
+    private val tuiterDao: TuiterDao,
+    private val userDataStore: UserDataStore,
+    @Named("PublicApi") private val publicApi: TuiterApi,
+    @Named("AuthApi") private val authApi: TuiterApi,
+) : UserRepository {
+    override suspend fun saveUserToken(token: String): Flow<String> {
+        userDataStore.saveUserToken(token)
+        return userDataStore.getUserToken().filterNotNull()
+    }
 
-        override suspend fun createUser(
-            name: String,
-            email: String,
-            password: String,
-        ) {
-            TODO("Not yet implemented")
-        }
+    override suspend fun createUser(
+        name: String,
+        email: String,
+        password: String,
+    ) {
+        TODO("Not yet implemented")
+    }
 
-        override suspend fun loginUser(
-            email: String,
-            password: String,
-        ): UserApiResponse = publicApi.logIn(LoginRequest(email = email, password = password))
+    override suspend fun loginUser(
+        email: String,
+        password: String,
+    ): UserApiResponse = publicApi.logIn(LoginRequest(email = email, password = password))
 
-        override fun getUserToken(): Flow<String?> = userDataStore.getUserToken()
+    override fun getUserToken(): Flow<String?> = userDataStore.getUserToken()
 
-        override suspend fun deleteUserToken() {
-            userDataStore.deleteUserToken()
-            tuiterDao.deleteAllTuitsSaved()
-        }
+    override suspend fun deleteUserToken() {
+        userDataStore.deleteUserToken()
+        tuiterDao.deleteAllTuitsSaved()
+    }
 
     suspend fun register(request: RegisterRequest): Response<UserApiResponse> {
         return publicApi.register(request)
     }
 
-    override suspend fun getUserProfileData(): UserProfileDataApiResponse = authApi.getUserProfileData()
+    override suspend fun getUserProfileData(): UserProfileDataApiResponse =
+        authApi.getUserProfileData()
 
-    override suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest) = authApi.updateUserProfileData(newProfileData)
+    override suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest) =
+        authApi.updateUserProfileData(newProfileData)
 
 
-    }
+}
