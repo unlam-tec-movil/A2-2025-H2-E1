@@ -3,6 +3,7 @@ package ar.edu.unlam.mobile.scaffolding.data.repositories
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Reply
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
@@ -35,6 +36,32 @@ class TuitsDefaultRepository
                 )
             }
 
+        override suspend fun addTuitReply(
+            key: Tuit,
+            message: String,
+        ): ApiOperation<Tuit> =
+            safeApiRequest {
+                tuiterApi.addTuitReply(
+                    tuitId = key.id,
+                    reply = Reply(message = message),
+                )
+            }
+
+        override suspend fun getAllTuitReplies(key: Int): ApiOperation<List<Tuit>> =
+            safeApiRequest {
+                tuiterApi.getTuitReplies(tuitId = key)
+            }
+
+        override suspend fun getTuitByID(key: Int): ApiOperation<Tuit> =
+            safeApiRequest {
+                tuiterApi.getTuit(tuitId = key)
+            }
+
+        suspend fun logIn(
+            email: String,
+            password: String,
+        ): UserApiResponse = tuiterApi.logIn(LoginRequest(email = email, password = password))
+
         override fun saveFavoriteTuit(key: Tuit) {
             TODO("Not yet implemented")
         }
@@ -48,11 +75,6 @@ class TuitsDefaultRepository
         override fun deleteAllFavoriteTuits() {
             TODO("Not yet implemented")
         }
-
-        suspend fun logIn(
-            email: String,
-            password: String,
-        ): UserApiResponse = tuiterApi.logIn(LoginRequest(email = email, password = password))
 
         suspend fun saveFavoriteTuit(key: AuthKey) {
             tuiterDao.saveKey(key)

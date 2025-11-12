@@ -30,7 +30,8 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.DefaultText
 @Composable
 fun BottomRow(
     tuit: Tuit,
-    onClick: (Tuit) -> Unit,
+    onClickLiked: () -> Unit,
+    onClickReply: () -> Unit,
 ) {
     Row(
         Modifier
@@ -43,18 +44,19 @@ fun BottomRow(
     ) {
         CustomIcon(
             icon = Icons.Default.ChatBubbleOutline,
-            tint = Color.Gray,
+            tint = MaterialTheme.colorScheme.secondary,
             modifier =
                 Modifier
                     .size(17.dp)
                     .clickable {
+                        onClickReply()
                     },
         )
         CustomIcon(icon = Icons.Default.Repeat, modifier = Modifier.size(17.dp))
         Row(Modifier.width(70.dp), horizontalArrangement = Arrangement.Start) {
             IconButton(
                 onClick = {
-                    onClick(tuit)
+                    onClickLiked()
                 },
                 content = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
