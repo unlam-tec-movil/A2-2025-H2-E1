@@ -28,7 +28,7 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "form",
+        startDestination = "logInScreen",
     ) {
         composable("home") {
             // Home es el componente en sí que es el destino de navegación.

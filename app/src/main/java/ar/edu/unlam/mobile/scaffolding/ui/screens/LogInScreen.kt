@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -187,6 +188,7 @@ fun LogInScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
         ) {
             Text(text = "LOG IN")
         }
@@ -200,7 +202,10 @@ fun LogInScreen(
         ) {
             Text(text = "¿Don´t have an account?")
             // Spacer(modifier = Modifier.width(4.dp))
-            TextButton(onClick = { navController.navigate("registerScreen") }) {
+            TextButton(
+                onClick = { navController.navigate("form") },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+            ) {
                 Text("Sign Up")
             }
         }

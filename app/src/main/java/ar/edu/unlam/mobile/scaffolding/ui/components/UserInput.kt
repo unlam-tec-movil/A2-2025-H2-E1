@@ -67,8 +67,6 @@ fun UserInput(
                         TextFieldDefaults.colors(
                             focusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
                             cursorColor = Color.White,
@@ -97,8 +95,6 @@ fun UserInput(
                         TextFieldDefaults.colors(
                             focusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
                             cursorColor = Color.White,
@@ -125,7 +121,12 @@ fun UserInput(
                             textAlign = TextAlign.Center,
                         )
                     },
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    visualTransformation =
+                        if (passwordVisible) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
                     trailingIcon = {
                         val image =
                             if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
@@ -137,8 +138,6 @@ fun UserInput(
                         TextFieldDefaults.colors(
                             focusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
                             cursorColor = Color.White,
@@ -166,7 +165,12 @@ fun UserInput(
                             textAlign = TextAlign.Center,
                         )
                     },
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    visualTransformation =
+                        if (passwordVisible) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
                     trailingIcon = {
                         val image =
                             if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
@@ -178,8 +182,6 @@ fun UserInput(
                         TextFieldDefaults.colors(
                             focusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
                             cursorColor = Color.White,
