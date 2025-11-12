@@ -19,9 +19,11 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomErrorView(e: String) {
-    Box(Modifier
-        .size(560.dp)
-        .padding(20.dp), Alignment.Center) {
+    Box(
+        Modifier
+            .size(560.dp)
+            .padding(20.dp), Alignment.Center
+    ) {
         Column {
             Icon(
                 modifier = Modifier.size(55.dp),
