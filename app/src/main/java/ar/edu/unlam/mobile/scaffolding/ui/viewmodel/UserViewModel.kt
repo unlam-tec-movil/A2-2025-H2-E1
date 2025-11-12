@@ -14,46 +14,50 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
-    private val repository: UserDefaultRepository
-) : ViewModel() {
+class UserViewModel
+    @Inject
+    constructor(
+        private val repository: UserDefaultRepository,
+    ) : ViewModel() {
+        private val _registerState = MutableStateFlow<UserApiResponse?>(null)
+        val registerState = _registerState.asStateFlow()
 
-    private val _registerState = MutableStateFlow<UserApiResponse?>(null)
-    val registerState = _registerState.asStateFlow()
+        fun register(
+            name: String,
+            password: String,
+            email: String,
+            context: Context,
+        ) {
+            viewModelScope.launch {
+                val response = repository.register(RegisterRequest(name, password, email))
 
-    fun register(name: String, password: String, email: String, context: Context) {
+                if (response.isSuccessful) { // acá, verificamos que la respuesta de la api sea exitosa.
+                    val userResponse = response.body()
+                    _registerState.value = userResponse
 
-        viewModelScope.launch {
+                    userResponse?.token?.let { token ->
+                        repository.saveUserToken(token)
+                    }
+                } else {
+                    val code = response.code()
+                    val message = response.message()
+                    val errorBody = response.errorBody()?.string()
+                    println("⚠️ Error en registro:")
+                    println("Código: $code")
+                    println("Mensaje: $message")
+                    println("Cuerpo del error: $errorBody")
 
-            val response = repository.register(RegisterRequest(name, password, email))
-
-            if (response.isSuccessful) { // acá, verificamos que la respuesta de la api sea exitosa.
-                val userResponse = response.body()
-                _registerState.value = userResponse
-
-                userResponse?.token?.let { token ->
-                    repository.saveUserToken(token)
+                    if (code == 500) {
+                        Toast
+                            .makeText(
+                                context,
+                                "Error al crear usuario: Email duplicado",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                    }
                 }
-            } else {
-                val code = response.code()
-                val message = response.message()
-                val errorBody = response.errorBody()?.string()
-                println("⚠️ Error en registro:")
-                println("Código: $code")
-                println("Mensaje: $message")
-                println("Cuerpo del error: $errorBody")
 
-                if (code == 500) {
-                    Toast.makeText(
-                        context,
-                        "Error al crear usuario: Email duplicado",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                // Se podria manejar con catch en caso de ocurrr algun exception.
             }
-
-            //Se podria manejar con catch en caso de ocurrr algun exception.
         }
     }
-
-}

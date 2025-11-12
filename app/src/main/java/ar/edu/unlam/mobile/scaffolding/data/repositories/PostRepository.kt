@@ -10,27 +10,27 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class PostRepository
-@Inject
-constructor(
-    @Named("AuthApi") private val tuiterApi: TuiterApi,
-    private val tuitDao: TuiterDao,
-) {
-    suspend fun getFeed(): List<Tuit> = tuiterApi.getTuits()
+    @Inject
+    constructor(
+        @Named("AuthApi") private val tuiterApi: TuiterApi,
+        private val tuitDao: TuiterDao,
+    ) {
+        suspend fun getFeed(): List<Tuit> = tuiterApi.getTuits()
 
-    suspend fun postTuit(message: String) {
-        // Crear el objeto que la API espera
-        val tuitBody = TuitBody(message = message)
-        return tuiterApi.postTuit(tuitBody)
+        suspend fun postTuit(message: String) {
+            // Crear el objeto que la API espera
+            val tuitBody = TuitBody(message = message)
+            return tuiterApi.postTuit(tuitBody)
+        }
+
+        suspend fun guardarBorrador(message: String) {
+            val tuitBody = TuitsBorrador(textoBorrador = message)
+            return tuitDao.saveBorrador(tuitBody)
+        }
+
+        fun devolverBorradores(): Flow<List<TuitsBorrador>> = tuitDao.getBorrador()
+
+        fun devolverBorradorString(texto: String): TuitsBorrador = tuitDao.getBorradorString(texto)
+
+        suspend fun deleteBorradorPR(borrador: TuitsBorrador) = tuitDao.deleteBorrador(borrador)
     }
-
-    suspend fun guardarBorrador(message: String) {
-        val tuitBody = TuitsBorrador(textoBorrador = message)
-        return tuitDao.saveBorrador(tuitBody)
-    }
-
-    fun devolverBorradores(): Flow<List<TuitsBorrador>> = tuitDao.getBorrador()
-
-    fun devolverBorradorString(texto: String): TuitsBorrador = tuitDao.getBorradorString(texto)
-
-    suspend fun deleteBorradorPR(borrador: TuitsBorrador) = tuitDao.deleteBorrador(borrador)
-}

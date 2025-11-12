@@ -22,7 +22,8 @@ fun CustomErrorView(e: String) {
     Box(
         Modifier
             .size(560.dp)
-            .padding(20.dp), Alignment.Center
+            .padding(20.dp),
+        Alignment.Center,
     ) {
         Column {
             Icon(

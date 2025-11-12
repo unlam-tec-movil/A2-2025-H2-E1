@@ -18,36 +18,42 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun GradientBackground(
-    colors: List<Color> = listOf(
-        MaterialTheme.colorScheme.background,
-        MaterialTheme.colorScheme.tertiary,
-        Color.White
-    ),
-    durationMillis: Int = 8000
+    colors: List<Color> =
+        listOf(
+            MaterialTheme.colorScheme.background,
+            MaterialTheme.colorScheme.tertiary,
+            Color.White,
+        ),
+    durationMillis: Int = 8000,
 ) {
     val infiniteTransition = rememberInfiniteTransition()
 
-    val offset = infiniteTransition.animateFloat(
-        initialValue = -200f,
-        targetValue = 500f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = durationMillis,
-                easing = LinearEasing
-            ),
-            repeatMode = RepeatMode.Reverse
+    val offset =
+        infiniteTransition.animateFloat(
+            initialValue = -200f,
+            targetValue = 500f,
+            animationSpec =
+                infiniteRepeatable(
+                    animation =
+                        tween(
+                            durationMillis = durationMillis,
+                            easing = LinearEasing,
+                        ),
+                    repeatMode = RepeatMode.Reverse,
+                ),
         )
-    )
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = colors,
-                    start = Offset(offset.value, 0f),
-                    end = Offset(0f, offset.value + 1600f)
-                )
-            )
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.linearGradient(
+                            colors = colors,
+                            start = Offset(offset.value, 0f),
+                            end = Offset(0f, offset.value + 1600f),
+                        ),
+                ),
     )
 }

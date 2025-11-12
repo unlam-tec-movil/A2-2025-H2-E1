@@ -28,7 +28,7 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "form"
+        startDestination = "form",
     ) {
         composable("home") {
             // Home es el componente en sí que es el destino de navegación.
@@ -51,7 +51,7 @@ fun AppNavigation(
             FormScreen(
                 modifier = Modifier.padding(paddingValues),
                 snackbarHostState = snackbarHostState,
-                navController = navController
+                navController = navController,
             )
         }
         composable("editUserScreen") {

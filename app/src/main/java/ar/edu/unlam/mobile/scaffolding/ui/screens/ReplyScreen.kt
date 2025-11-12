@@ -100,7 +100,10 @@ fun ReplyScreen(
             ) { paddingValues ->
                 Row(
                     verticalAlignment = Alignment.Top,
-                    modifier = Modifier.padding(paddingValues = paddingValues).padding(20.dp),
+                    modifier =
+                        Modifier
+                            .padding(paddingValues = paddingValues)
+                            .padding(20.dp),
                 ) {
                     Box(
                         modifier =

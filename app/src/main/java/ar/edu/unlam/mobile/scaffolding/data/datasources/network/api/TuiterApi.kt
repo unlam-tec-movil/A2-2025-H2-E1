@@ -1,8 +1,8 @@
 package ar.edu.unlam.mobile.scaffolding.data.datasources.network.api
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
-import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Reply
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Reply
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.TuitBody
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
@@ -57,7 +57,9 @@ interface TuiterApi {
     ): Tuit
 
     @POST("/api/v1/users")
-    suspend fun register(@Body registerRequest: RegisterRequest): Response<UserApiResponse>
+    suspend fun register(
+        @Body registerRequest: RegisterRequest,
+    ): Response<UserApiResponse>
 
     @GET("/api/v1/me/profile")
     suspend fun getUserProfileData(): UserProfileDataApiResponse

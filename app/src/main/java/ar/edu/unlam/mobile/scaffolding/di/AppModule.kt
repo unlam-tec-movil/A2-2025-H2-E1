@@ -39,7 +39,6 @@ object AppModule {
     @Singleton
     fun tuitDaoProvider(db: FavoriteTuitsDatabase): TuiterDao = db.tuitDao()
 
-
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor =

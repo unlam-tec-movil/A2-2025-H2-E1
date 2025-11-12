@@ -68,7 +68,6 @@ fun MainScreen() {
                     Icon(Icons.Default.Create, contentDescription = "Home")
                 }
             }
-
         },
         snackbarHost = {
             CustomSnackBar(snackBarHostState)

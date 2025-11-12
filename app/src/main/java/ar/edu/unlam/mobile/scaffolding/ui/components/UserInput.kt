@@ -33,76 +33,81 @@ fun UserInput(
     title: String,
     modifier: Modifier = Modifier,
     text: String,
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
 ) {
     Card(
-        modifier = modifier
-            .width(300.dp)
-            .height(55.dp)
-            .fillMaxSize(),
+        modifier =
+            modifier
+                .width(300.dp)
+                .height(55.dp)
+                .fillMaxSize(),
         elevation = CardDefaults.cardElevation(10.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
-        ),
-        border = BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
+        colors =
+            CardDefaults.cardColors(
+                containerColor = Color.Transparent,
+            ),
+        border = BorderStroke(3.dp, MaterialTheme.colorScheme.primary),
     ) {
-
         when (title) {
-            "name" -> TextField(
-                value = text,
-                textStyle = MaterialTheme.typography.bodyLarge,
-                onValueChange = {
-                    onTextChange(it)
-                },
-                placeholder = {
-                    Text(
-                        text = "Name",
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedPlaceholderColor = Color.LightGray,
-                    unfocusedPlaceholderColor = Color.LightGray,
-                    cursorColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
+            "name" ->
+                TextField(
+                    value = text,
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    onValueChange = {
+                        onTextChange(it)
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Name",
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center,
+                        )
+                    },
+                    colors =
+                        TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.background,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedPlaceholderColor = Color.LightGray,
+                            unfocusedPlaceholderColor = Color.LightGray,
+                            cursorColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                        ),
+                    modifier = Modifier.fillMaxWidth(),
+                )
 
-            "email" -> TextField(
-                value = text,
-                textStyle = MaterialTheme.typography.bodyLarge,
-                onValueChange = {
-                    onTextChange(it)
-                },
-                placeholder = {
-                    Text(
-                        text = "Email",
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedPlaceholderColor = Color.LightGray,
-                    unfocusedPlaceholderColor = Color.LightGray,
-                    cursorColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
+            "email" ->
+                TextField(
+                    value = text,
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    onValueChange = {
+                        onTextChange(it)
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Email",
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center,
+                        )
+                    },
+                    colors =
+                        TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.background,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedPlaceholderColor = Color.LightGray,
+                            unfocusedPlaceholderColor = Color.LightGray,
+                            cursorColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                        ),
+                    modifier = Modifier.fillMaxWidth(),
+                )
 
             "password" -> {
                 var passwordVisible by remember { mutableStateOf(false) }
@@ -117,7 +122,7 @@ fun UserInput(
                         Text(
                             text = "Password",
                             style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -128,19 +133,20 @@ fun UserInput(
                             Icon(imageVector = image, contentDescription = null)
                         }
                     },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.background,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
-                        focusedPlaceholderColor = Color.LightGray,
-                        unfocusedPlaceholderColor = Color.LightGray,
-                        cursorColor = Color.White,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
-                    ),
-                    modifier = Modifier.fillMaxWidth()
+                    colors =
+                        TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.background,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedPlaceholderColor = Color.LightGray,
+                            unfocusedPlaceholderColor = Color.LightGray,
+                            cursorColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                        ),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
@@ -157,7 +163,7 @@ fun UserInput(
                         Text(
                             text = "RepeatPassword",
                             style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -168,23 +174,22 @@ fun UserInput(
                             Icon(imageVector = image, contentDescription = null)
                         }
                     },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.background,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
-                        focusedPlaceholderColor = Color.LightGray,
-                        unfocusedPlaceholderColor = Color.LightGray,
-                        cursorColor = Color.White,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
-                    ),
-                    modifier = Modifier.fillMaxWidth()
+                    colors =
+                        TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.background,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedPlaceholderColor = Color.LightGray,
+                            unfocusedPlaceholderColor = Color.LightGray,
+                            cursorColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                        ),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
-
         }
-
     }
 }

@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 
 data class ValidationResult(
     val isValid: Boolean,
-    val message: String
+    val message: String,
 )
 
 @Composable
@@ -49,14 +49,12 @@ fun FormScreen(
     viewModel: UserViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val registerState by viewModel.registerState.collectAsState()
 
     LaunchedEffect(registerState) {
-
         registerState?.let { response ->
             val token = response.token
             if (!token.isNullOrEmpty()) {
@@ -64,12 +62,11 @@ fun FormScreen(
                 navController.navigate("feedTuitScreen")
             }
         }
-
     }
 
     Box(
         modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         GradientBackground()
 
@@ -78,25 +75,26 @@ fun FormScreen(
         var passwordState by remember { mutableStateOf("") }
         var repeatPasswordState by remember { mutableStateOf("") }
 
-        val enabled = nameState.isNotBlank() &&
+        val enabled =
+            nameState.isNotBlank() &&
                 emailState.isNotBlank() &&
                 passwordState.isNotBlank() &&
                 repeatPasswordState.isNotBlank()
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 64.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-
             Text(
                 text = "Tuiter",
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 50.sp),
                 color = Color.White,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(Modifier.height(16.dp))
@@ -104,22 +102,26 @@ fun FormScreen(
             UserInput(
                 title = "name",
                 text = nameState,
-                onTextChange = { nameState = it })
+                onTextChange = { nameState = it },
+            )
 
             UserInput(
                 title = "email",
                 text = emailState,
-                onTextChange = { emailState = it })
+                onTextChange = { emailState = it },
+            )
 
             UserInput(
                 title = "password",
                 text = passwordState,
-                onTextChange = { passwordState = it })
+                onTextChange = { passwordState = it },
+            )
 
             UserInput(
                 title = "repeatPassword",
                 text = repeatPasswordState,
-                onTextChange = { repeatPasswordState = it })
+                onTextChange = { repeatPasswordState = it },
+            )
 
             Spacer(Modifier.height(8.dp))
 
@@ -128,38 +130,39 @@ fun FormScreen(
                 onClick = {
                     nameState = ""
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.primary,
+                    ),
             )
 
             Spacer(Modifier.height(8.dp))
 
             Button(
                 content = { Text("Register") },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
-                    disabledContentColor = MaterialTheme.colorScheme.primary
-                ),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                        disabledContentColor = MaterialTheme.colorScheme.primary,
+                    ),
                 onClick = {
-                    val res = validateForm(
-                        nameState,
-                        emailState,
-                        passwordState,
-                        repeatPasswordState
-                    )
+                    val res =
+                        validateForm(
+                            nameState,
+                            emailState,
+                            passwordState,
+                            repeatPasswordState,
+                        )
                     if (res.isValid) {
-
                         viewModel.register(
                             name = nameState,
                             password = passwordState,
                             email = emailState,
-                            context = context
+                            context = context,
                         )
-
                     }
                     scope.launch {
                         snackbarHostState.showSnackbar(
@@ -167,11 +170,9 @@ fun FormScreen(
                         )
                     }
                 },
-                enabled = enabled
+                enabled = enabled,
             )
         }
-
-
     }
 }
 
@@ -179,7 +180,7 @@ fun validateForm(
     name: String,
     email: String,
     password: String,
-    repeatPassword: String
+    repeatPassword: String,
 ): ValidationResult {
     if (name.isEmpty()) {
         return ValidationResult(
@@ -206,5 +207,3 @@ fun validateForm(
         message = "Formulario válido ",
     )
 }
-
-

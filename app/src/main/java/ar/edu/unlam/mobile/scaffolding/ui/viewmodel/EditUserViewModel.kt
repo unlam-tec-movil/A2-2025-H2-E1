@@ -29,45 +29,45 @@ sealed interface UpdateProfileDataState {
 
 @HiltViewModel
 class EditUserViewModel
-@Inject
-constructor(
-    private val userRepository: UserRepository,
-    private val userDataStore: UserDataStore,
-) : ViewModel() {
-    private val _userProfileDataState = MutableStateFlow<UserProfileDataApiResponse?>(null)
-    val userProfileDataState: StateFlow<UserProfileDataApiResponse?> =
-        _userProfileDataState.asStateFlow()
-    private val _userProfileDataUpdateState =
-        MutableStateFlow<UpdateProfileDataState>(value = UpdateProfileDataState.Idle)
-    val userProfileDataUpdateState: StateFlow<UpdateProfileDataState> = _userProfileDataUpdateState
+    @Inject
+    constructor(
+        private val userRepository: UserRepository,
+        private val userDataStore: UserDataStore,
+    ) : ViewModel() {
+        private val _userProfileDataState = MutableStateFlow<UserProfileDataApiResponse?>(null)
+        val userProfileDataState: StateFlow<UserProfileDataApiResponse?> =
+            _userProfileDataState.asStateFlow()
+        private val _userProfileDataUpdateState =
+            MutableStateFlow<UpdateProfileDataState>(value = UpdateProfileDataState.Idle)
+        val userProfileDataUpdateState: StateFlow<UpdateProfileDataState> = _userProfileDataUpdateState
 
-    init {
+        init {
 
-        viewModelScope.launch {
-            _userProfileDataState.value = userRepository.getUserProfileData()
-        }
-    }
-
-    fun updateProfileData(profileDataUpdated: UserProfileDataApiRequest) {
-        viewModelScope.launch {
-            _userProfileDataUpdateState.value = UpdateProfileDataState.Loading
-            try {
-                userRepository.setUserProfileData(profileDataUpdated)
-                _userProfileDataUpdateState.value = UpdateProfileDataState.Success("done")
-            } catch (e: Exception) {
-                _userProfileDataUpdateState.value = UpdateProfileDataState.Error("error")
+            viewModelScope.launch {
+                _userProfileDataState.value = userRepository.getUserProfileData()
             }
         }
-    }
 
-    fun logout() {
-        viewModelScope.launch {
-            userRepository.deleteUserToken()
-            userDataStore.clearRememberedUser()
+        fun updateProfileData(profileDataUpdated: UserProfileDataApiRequest) {
+            viewModelScope.launch {
+                _userProfileDataUpdateState.value = UpdateProfileDataState.Loading
+                try {
+                    userRepository.setUserProfileData(profileDataUpdated)
+                    _userProfileDataUpdateState.value = UpdateProfileDataState.Success("done")
+                } catch (e: Exception) {
+                    _userProfileDataUpdateState.value = UpdateProfileDataState.Error("error")
+                }
+            }
+        }
+
+        fun logout() {
+            viewModelScope.launch {
+                userRepository.deleteUserToken()
+                userDataStore.clearRememberedUser()
+            }
+        }
+
+        fun resetUpdateProfileDataState() {
+            _userProfileDataUpdateState.value = UpdateProfileDataState.Idle
         }
     }
-
-    fun resetUpdateProfileDataState() {
-        _userProfileDataUpdateState.value = UpdateProfileDataState.Idle
-    }
-}
