@@ -10,4 +10,5 @@ data class Tuit(
     val message: String,
     val liked: Boolean,
     val likes: Long,
+    val date: String,
 )

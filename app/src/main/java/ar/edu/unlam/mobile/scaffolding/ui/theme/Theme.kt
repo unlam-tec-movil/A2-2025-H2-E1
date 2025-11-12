@@ -21,6 +21,7 @@ private val DarkColorScheme =
         secondary = Gray70,
         onSecondary = Pink78,
         tertiary = LightBlue70,
+        onTertiary = White99,
         background = DarkBlue10,
     )
 
@@ -30,6 +31,7 @@ private val LightColorScheme =
         secondary = Gray70,
         onSecondary = Pink78,
         tertiary = LightBlue70,
+        onTertiary = White99,
         background = White99,
         /* Other default colors to override
         background = Color(0xFFFFFBFE),

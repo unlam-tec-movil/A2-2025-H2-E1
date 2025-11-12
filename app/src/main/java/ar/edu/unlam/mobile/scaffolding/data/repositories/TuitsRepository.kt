@@ -11,6 +11,15 @@ interface TuitsRepository {
 
     suspend fun removeTuitLike(key: Tuit): ApiOperation<Tuit>
 
+    suspend fun addTuitReply(
+        key: Tuit,
+        message: String,
+    ): ApiOperation<Tuit>
+
+    suspend fun getAllTuitReplies(key: Int): ApiOperation<List<Tuit>>
+
+    suspend fun getTuitByID(key: Int): ApiOperation<Tuit>
+
     fun saveFavoriteTuit(key: Tuit)
 
     fun deleteTuit(id: String)
