@@ -183,18 +183,6 @@ fun PostScreen(
             PostScreenViewModel.FeedState.Idle -> { // nada todavía
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Lista de borradores
-        Text("Borradores", style = MaterialTheme.typography.titleMedium)
-        LazyColumn(
-            modifier = Modifier.padding(top = 8.dp),
-        ) {
-            items(borradores) { borrador ->
-                Text(text = borrador.textoBorrador)
-            }
-        }
     }
 }
 
