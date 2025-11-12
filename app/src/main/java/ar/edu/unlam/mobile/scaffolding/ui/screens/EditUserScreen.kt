@@ -103,14 +103,23 @@ fun EditUserScreen(
         }
     }
     Scaffold(
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier.padding(25.dp),
         topBar = {
             (
                 TopAppBar(
-                    title = { Text(text = "Edit Profile") },
+                    modifier =
+                        Modifier
+                            .padding(5.dp)
+                            .height(75.dp),
+                    title = {
+                        Text(
+                            text = "Edit Profile",
+                        )
+                    },
                     colors =
                         TopAppBarDefaults.topAppBarColors(
-                            containerColor = Color.Black,
+                            // containerColor = Color.Black,
+                            containerColor = MaterialTheme.colorScheme.tertiary,
                             titleContentColor = Color.White,
                         ),
                 )
@@ -230,6 +239,8 @@ fun EditUserScreen(
                 enabled = !myRequestIsLoading,
                 shape = MaterialTheme.shapes.medium,
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 16.dp),
+                colors =
+                    ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             ) {
                 Text(text = "Update Profile")
             }

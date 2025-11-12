@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import ar.edu.unlam.mobile.scaffolding.ui.components.GradientBackground
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
 import ar.edu.unlam.mobile.scaffolding.ui.components.UserInput
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.UserViewModel
@@ -68,7 +67,7 @@ fun FormScreen(
         modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        GradientBackground()
+        // GradientBackground()
 
         var nameState by remember { mutableStateOf("") }
         var emailState by remember { mutableStateOf("") }
@@ -92,7 +91,7 @@ fun FormScreen(
             Text(
                 text = "Tuiter",
                 style = MaterialTheme.typography.headlineLarge.copy(fontSize = 50.sp),
-                color = Color.White,
+                // color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -126,13 +125,14 @@ fun FormScreen(
             Spacer(Modifier.height(8.dp))
 
             Button(
+                modifier = Modifier.fillMaxWidth(),
                 content = { Text("Clear name") },
                 onClick = {
                     nameState = ""
                 },
                 colors =
                     ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.background,
+                        containerColor = MaterialTheme.colorScheme.secondary,
                         contentColor = MaterialTheme.colorScheme.primary,
                     ),
             )
@@ -140,13 +140,12 @@ fun FormScreen(
             Spacer(Modifier.height(8.dp))
 
             Button(
+                modifier = Modifier.fillMaxWidth(),
                 content = { Text("Register") },
                 colors =
                     ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
-                        disabledContentColor = MaterialTheme.colorScheme.primary,
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = Color.White,
                     ),
                 onClick = {
                     val res =
