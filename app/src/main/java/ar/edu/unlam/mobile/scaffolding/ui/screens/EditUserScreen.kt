@@ -75,6 +75,7 @@ fun EditUserScreen(
                 message = "this is a preview of how your tuit will looks like",
                 liked = true,
                 likes = 250,
+                date = "",
             ),
         )
     }
@@ -161,7 +162,7 @@ fun EditUserScreen(
                             tuit = mockTuit,
                         )
                         MiddleRow(tuit = mockTuit)
-                        BottomRow(tuit = mockTuit, onClick = {})
+                        BottomRow(tuit = mockTuit, onClickLiked = {}, onClickReply = {})
                     }
                 }
             }
