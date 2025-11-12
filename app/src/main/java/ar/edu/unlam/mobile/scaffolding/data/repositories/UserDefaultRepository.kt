@@ -3,12 +3,14 @@ package ar.edu.unlam.mobile.scaffolding.data.repositories
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.datastore.UserDataStore
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -44,6 +46,8 @@ class UserDefaultRepository
             userDataStore.deleteUserToken()
             tuiterDao.deleteAllTuitsSaved()
         }
+
+        suspend fun register(request: RegisterRequest): Response<UserApiResponse> = publicApi.register(request)
 
         override suspend fun getUserProfileData(): UserProfileDataApiResponse = authApi.getUserProfileData()
 

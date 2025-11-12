@@ -55,7 +55,11 @@ fun MainScreen() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        bottomBar = { BottomBar(controller = controller) },
+        bottomBar = {
+            if (currentRoute != "form" && currentRoute != "logInScreen") {
+                BottomBar(controller = controller)
+            }
+        },
         floatingActionButton = {
             if (currentRoute == "feedTuitScreen") {
                 androidx.compose.material3.FloatingActionButton(
