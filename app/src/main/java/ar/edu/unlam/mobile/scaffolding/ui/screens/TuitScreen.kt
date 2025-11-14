@@ -15,7 +15,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,21 +30,26 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.DefaultText
 import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.TuitCard
 import ar.edu.unlam.mobile.scaffolding.ui.components.tuitDetail.TuitDetail
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.FeedUIState
-import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
+import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.FeedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TuitScreen(
     tuitId: Int,
-    tuitsViewModel: TuitsViewModel = hiltViewModel(),
+    feedViewModel: FeedViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val uiState by tuitsViewModel.uiState.collectAsStateWithLifecycle()
-    val feedTuitsState by tuitsViewModel.feedTuitsState.collectAsStateWithLifecycle()
+    val uiState by feedViewModel.uiState.collectAsStateWithLifecycle()
+    val feedTuitsState by feedViewModel.feedTuitsState.collectAsStateWithLifecycle()
+    val usersSavedState by feedViewModel.savedUsersState.collectAsState()
+    val usersSavedMap =
+        remember(usersSavedState) {
+            usersSavedState.map { it.authorId }.toSet()
+        }
     LaunchedEffect(key1 = tuitId) {
-        tuitsViewModel.getTuitById(tuitId)
-        tuitsViewModel.getTuitReplies(tuitId)
-        tuitsViewModel.getAllTuits()
+        feedViewModel.getTuitById(tuitId)
+        feedViewModel.getTuitReplies(tuitId)
+        feedViewModel.getAllTuits()
     }
 
     when (val state = uiState) {
@@ -73,21 +80,24 @@ fun TuitScreen(
                 },
             ) { paddingValues ->
                 Column(modifier = Modifier.padding(paddingValues = paddingValues)) {
-                    TuitDetail(tuit = feedTuitsState.tuit, onFavoriteChanged = {
-                        tuitsViewModel.onFavoriteChange(feedTuitsState.tuit)
+                    TuitDetail(tuit = feedTuitsState.tuit, onLikeChanged = {
+                        feedViewModel.onLikedChange(feedTuitsState.tuit)
                     }, onclickReply = {
                         navController.navigate("replyScreen/${feedTuitsState.tuit.id}")
                     })
                     LazyColumn {
                         itemsIndexed(items = feedTuitsState.replies) { index, tuit ->
+                            var isSaved = usersSavedMap.contains(tuit.authorId)
                             TuitCard(
                                 tuit = tuit,
                                 navigateToTuitScreen = {
                                     navController.navigate("tuitScreen/${tuit.id}")
                                 },
-                                onFavoriteChanged = {
-                                    tuitsViewModel.onFavoriteChange(tuit)
+                                onLikeChanged = {
+                                    feedViewModel.onLikedChange(tuit)
                                 },
+                                onBookmarkClick = {},
+                                userIsSaved = isSaved,
                             )
                             CustomDivider()
                         }

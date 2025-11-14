@@ -1,5 +1,7 @@
 package ar.edu.unlam.mobile.scaffolding.data.repositories
 
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
@@ -26,4 +28,14 @@ interface UserRepository {
     suspend fun getUserProfileData(): UserProfileDataApiResponse
 
     suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest)
+
+    suspend fun getUserProfileDataById(tuit: Tuit): UserProfileDataApiResponse
+
+    fun getAllSavedUsers(): Flow<List<UserSavedEntity>>
+
+    suspend fun saveFavoriteUser(favoriteUserIdEntity: UserSavedEntity)
+
+    suspend fun getSavedUserById(userId: Int): UserSavedEntity?
+
+    suspend fun deleteFavoriteUserSaved(userSavedEntity: UserSavedEntity)
 }

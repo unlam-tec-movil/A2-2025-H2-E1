@@ -3,11 +3,16 @@ package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.repositories.TuitsRepository
+import ar.edu.unlam.mobile.scaffolding.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,19 +30,28 @@ sealed interface FeedUIState {
 data class FeedTuitsState(
     val data: List<Tuit> = emptyList(),
     val replies: List<Tuit> = emptyList(),
-    val tuit: Tuit = Tuit(0, "", "", "", false, 0, ""),
-    val reply: Tuit = Tuit(0, "", "", "", false, 0, ""),
+    val tuit: Tuit = Tuit(0, "", "", "", false, 0, "", authorId = -1),
+    val reply: Tuit = Tuit(0, "", "", "", false, 0, "", authorId = -1),
     val replyMessage: String = "",
 )
 
 @HiltViewModel
-class TuitsViewModel
+class FeedViewModel
     @Inject
     constructor(
         private val tuitsRepo: TuitsRepository,
+        private val userRepository: UserRepository,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Loading)
         val uiState = _uiState.asStateFlow()
+        val savedUsersState: StateFlow<List<UserSavedEntity>> =
+            userRepository.getAllSavedUsers().stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList(),
+            )
+//        private val _listUserSavedState = MutableStateFlow<List<UserSavedEntity>>(emptyList())
+//        val listUserSavedState = _listUserSavedState
 
         private val _feedTuitsState = MutableStateFlow(FeedTuitsState())
         val feedTuitsState = _feedTuitsState.asStateFlow()
@@ -103,7 +117,7 @@ class TuitsViewModel
             tuit: Tuit,
             message: String,
         ) {
-            var reply = Tuit(0, "", "", "", false, 0, "")
+            var reply = Tuit(0, "", "", "", false, 0, "", authorId = -1)
             viewModelScope.launch {
                 tuitsRepo
                     .addTuitReply(key = tuit, message = message)
@@ -131,7 +145,7 @@ class TuitsViewModel
             }
         }
 
-        fun onFavoriteChange(tuit: Tuit) {
+        fun onLikedChange(tuit: Tuit) {
             if (tuit.liked) {
                 removeLikes(tuit)
             } else {
@@ -180,6 +194,37 @@ class TuitsViewModel
             }
             _feedTuitsState.update { state ->
                 state.copy(data = feedTuits.toList())
+            }
+        }
+
+        fun favoriteUsersManagment(
+            isSaved: Boolean,
+            tuit: Tuit,
+        ) {
+            viewModelScope.launch {
+                val currentUserProfileEmail: String = userRepository.getUserProfileData().email
+                val userProfileApiResponse = userRepository.getUserProfileDataById(tuit = tuit)
+                if (!isSaved) {
+                    userRepository.saveFavoriteUser(
+                        favoriteUserIdEntity =
+                            UserSavedEntity(
+                                authorId = tuit.authorId,
+                                avatarUrl = userProfileApiResponse.avatarUrl,
+                                author = userProfileApiResponse.name,
+                                userFanEmail = currentUserProfileEmail,
+                            ),
+                    )
+                } else {
+                    userRepository.deleteFavoriteUserSaved(
+                        userSavedEntity =
+                            UserSavedEntity(
+                                authorId = tuit.authorId,
+                                avatarUrl = userProfileApiResponse.avatarUrl,
+                                author = userProfileApiResponse.name,
+                                userFanEmail = currentUserProfileEmail,
+                            ),
+                    )
+                }
             }
         }
     }

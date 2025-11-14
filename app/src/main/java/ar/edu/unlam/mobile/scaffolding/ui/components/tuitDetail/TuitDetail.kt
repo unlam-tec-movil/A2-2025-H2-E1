@@ -19,7 +19,7 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.CustomDivider
 @Composable
 fun TuitDetail(
     tuit: Tuit,
-    onFavoriteChanged: (Tuit) -> Unit,
+    onLikeChanged: (Tuit) -> Unit,
     onclickReply: () -> Unit,
 ) {
     Row(
@@ -57,11 +57,14 @@ fun TuitDetail(
         BottomRow(
             tuit = tuit,
             onClickLiked = {
-                onFavoriteChanged(tuit)
+                onLikeChanged(tuit)
             },
             onClickReply = {
                 onclickReply()
             },
+            isSaved = false,
+            onLikeClick = {},
+            onBookmarkClick = {},
         )
     }
     CustomDivider()

@@ -13,11 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import coil.compose.AsyncImage
 
 @Composable
-fun ItemTuit(tuit: Tuit) {
+fun ItemUser(userProfileDataApiResponse: UserProfileDataApiResponse) {
     Card(
         modifier =
             Modifier
@@ -32,14 +32,17 @@ fun ItemTuit(tuit: Tuit) {
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
                 ) {
                     AsyncImage(
-                        model = tuit.avatarUrl,
+                        model = userProfileDataApiResponse.avatarUrl,
                         contentDescription = "profile image",
                         contentScale = ContentScale.FillBounds,
                     )
-                    Text(text = tuit.author)
                 }
-                Text("${tuit!!.message}")
+                Text(text = userProfileDataApiResponse.name)
+                Text(text = userProfileDataApiResponse.email)
             }
         }
     }
 }
+// "name": "userPrueba",
+// "avatar_url": "https://ui-avatars.com/api/?name=userPrueba",
+// "email": "juanmanuelotero83@gmail.com"
