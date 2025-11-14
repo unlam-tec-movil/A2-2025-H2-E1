@@ -165,7 +165,10 @@ class TuitsViewModel
                         Log.i("add_likes_OnFailure", "$it")
                     }
             }
-            updateTuit(tuit)
+//            updateTuit(tuit)
+            _feedTuitsState.update { state ->
+                state.copy(data = state.data)
+            }
             Log.i("after_like_add_state", "${tuit.liked}")
         }
 
