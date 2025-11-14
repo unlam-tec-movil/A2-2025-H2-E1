@@ -76,6 +76,7 @@ fun EditUserScreen(
                 liked = true,
                 likes = 250,
                 date = "",
+                authorId = -1,
             ),
         )
     }
@@ -171,7 +172,14 @@ fun EditUserScreen(
                             tuit = mockTuit,
                         )
                         MiddleRow(tuit = mockTuit)
-                        BottomRow(tuit = mockTuit, onClickLiked = {}, onClickReply = {})
+                        BottomRow(
+                            tuit = mockTuit,
+                            onLikeClick = {},
+                            onBookmarkClick = { },
+                            isSaved = true,
+                            onClickLiked = {},
+                            onClickReply = {},
+                        )
                     }
                 }
             }

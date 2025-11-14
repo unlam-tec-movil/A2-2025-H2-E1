@@ -85,7 +85,7 @@ class TuitsDefaultRepository
         }
 
         suspend fun deleteAllSavedTuits() {
-            tuiterDao.deleteAllTuitsSaved()
+            tuiterDao.deleteAllTokensSaved()
         }
 
         // cada llamada a una api externa pasa por un try/catch. En la clase ApiOperation se definen

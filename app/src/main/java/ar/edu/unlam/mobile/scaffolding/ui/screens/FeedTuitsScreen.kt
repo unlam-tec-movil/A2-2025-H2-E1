@@ -15,8 +15,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,16 +31,23 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.CustomErrorView
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomLoadingState
 import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.TuitCard
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.FeedUIState
-import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
+import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.FeedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedTuitsScreen(
-    tuitsViewModel: TuitsViewModel = hiltViewModel(),
+    feedViewModel: FeedViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val uiState by tuitsViewModel.uiState.collectAsStateWithLifecycle()
-    val feedTuitsState by tuitsViewModel.feedTuitsState.collectAsStateWithLifecycle()
+    val uiState by feedViewModel.uiState.collectAsStateWithLifecycle()
+    val feedTuitsState by feedViewModel.feedTuitsState.collectAsState()
+    val usersSavedState by feedViewModel.savedUsersState.collectAsState()
+    // al usar remember(key) le indico que recuerde el resulado del codigo en las llaves siguientes
+    // y que solo vuelva a calcular t odo si la key cambia
+    val usersSavedMap =
+        remember(usersSavedState) {
+            usersSavedState.map { it.authorId }.toSet()
+        }
 
     // escucha el refresco del PostScreen
     val navBackStackEntry = navController.currentBackStackEntry
@@ -49,10 +58,10 @@ fun FeedTuitsScreen(
             ?.observeAsState(initial = false)
     LaunchedEffect(key1 = Unit, key2 = refresco?.value) {
         if (refresco?.value == true) {
-            tuitsViewModel.getAllTuits()
+            feedViewModel.getAllTuits()
             navBackStackEntry.savedStateHandle.set("refresco", false)
         } else {
-            tuitsViewModel.getAllTuits()
+            feedViewModel.getAllTuits()
         }
     }
     when (val state = uiState) {
@@ -83,14 +92,27 @@ fun FeedTuitsScreen(
             }) { paddingValues ->
                 LazyColumn(Modifier.padding(paddingValues = paddingValues)) {
                     itemsIndexed(items = feedTuitsState.data) { index, tuit ->
-                        TuitCard(tuit = tuit, navigateToTuitScreen = {
-                            navController.navigate("tuitScreen/${tuit.id}")
-                        }, onFavoriteChanged = {
-                            tuitsViewModel.onFavoriteChange(tuit)
-                        })
+                        var isSaved = usersSavedMap.contains(tuit.authorId)
+                        TuitCard(
+                            tuit = tuit,
+                            userIsSaved = isSaved,
+                            navigateToTuitScreen = {
+                                navController.navigate("tuitScreen/${tuit.id}")
+                            },
+                            onLikeChanged = {
+                                feedViewModel.onLikedChange(tuit)
+                            },
+                            onBookmarkClick = {
+                                feedViewModel.favoriteUsersManagment(
+                                    isSaved,
+                                    tuit,
+                                )
+                            },
+                        )
                     }
                 }
             }
+            CustomDivider()
         }
     }
 }
@@ -103,3 +125,13 @@ fun CustomDivider() {
         thickness = 0.25f.dp,
     )
 }
+// )
+// }) { paddingValues ->
+//    LazyColumn(Modifier.padding(paddingValues = paddingValues)) {
+//        itemsIndexed(items = feedTuitsState.data) { index, tuit ->
+//            TuitCard(tuit = tuit, navigateToTuitScreen = {
+//                navController.navigate("tuitScreen/${tuit.id}")
+//            }, onFavoriteChanged = {
+//                tuitsViewModel.onLikedChange(tuit)
+//            })
+//        }

@@ -17,7 +17,10 @@ import ar.edu.unlam.mobile.scaffolding.ui.screens.CustomDivider
 fun TuitCard(
     tuit: Tuit,
     navigateToTuitScreen: () -> Unit,
-    onFavoriteChanged: (Tuit) -> Unit,
+    onLikeChanged: (Tuit) -> Unit,
+    onBookmarkClick: () -> Unit,
+//    onBookmarkClick: (Boolean, Tuit) -> Unit,
+    userIsSaved: Boolean,
 ) {
     Box(
         modifier =
@@ -43,14 +46,33 @@ fun TuitCard(
                 BottomRow(
                     tuit = tuit,
                     onClickLiked = {
-                        onFavoriteChanged(tuit)
+                        onLikeChanged(tuit)
                     },
                     onClickReply = {
                         navigateToTuitScreen()
                     },
+                    isSaved = userIsSaved,
+                    onLikeClick = {},
+                    onBookmarkClick = { onBookmarkClick() },
                 )
             }
         }
         CustomDivider()
     }
 }
+
+// BottomRow(
+// //                                    tuit,
+// //                                    onLikeClick = {
+// //                                        if (tuit.liked) {
+// //                                            feedViewModel.removeLikes(tuit)
+// //                                        } else {
+// //                                            feedViewModel.addLikes(tuit)
+// //                                        }
+// //                                    },
+// //                                    onBookmarkClick = {
+// //                                        feedViewModel.favoriteUsersManagment(isSaved, tuit)
+// //                                    },
+// //                                    isSaved = usersSavedMap.contains(tuit.authorId),
+// //                                )
+// }
