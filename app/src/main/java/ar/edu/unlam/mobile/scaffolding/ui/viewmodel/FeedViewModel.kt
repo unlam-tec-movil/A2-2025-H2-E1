@@ -3,11 +3,16 @@ package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.repositories.TuitsRepository
+import ar.edu.unlam.mobile.scaffolding.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,13 +30,22 @@ sealed interface FeedUIState {
 }
 
 @HiltViewModel
-class TuitsViewModel
+class FeedViewModel
     @Inject
     constructor(
         private val tuitsRepo: TuitsRepository,
+        private val userRepository: UserRepository,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Loading)
         val uiState = _uiState.asStateFlow()
+        val savedUsersState: StateFlow<List<UserSavedEntity>> =
+            userRepository.getAllSavedUsers().stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList(),
+            )
+//        private val _listUserSavedState = MutableStateFlow<List<UserSavedEntity>>(emptyList())
+//        val listUserSavedState = _listUserSavedState
 
         fun getAllTuits() =
             viewModelScope.launch {
@@ -87,5 +101,36 @@ class TuitsViewModel
             }
             currentState.copy(data = feedTuits.toList())
             _uiState.value = FeedUIState.Success(data = feedTuits.toList())
+        }
+
+        fun favoriteUsersManagment(
+            isSaved: Boolean,
+            tuit: Tuit,
+        ) {
+            viewModelScope.launch {
+                val currentUserProfileEmail: String = userRepository.getUserProfileData().email
+                val userProfileApiResponse = userRepository.getUserProfileDataById(tuit = tuit)
+                if (!isSaved) {
+                    userRepository.saveFavoriteUser(
+                        favoriteUserIdEntity =
+                            UserSavedEntity(
+                                authorId = tuit.authorId,
+                                avatarUrl = userProfileApiResponse.avatarUrl,
+                                author = userProfileApiResponse.name,
+                                userFanEmail = currentUserProfileEmail,
+                            ),
+                    )
+                } else {
+                    userRepository.deleteFavoriteUserSaved(
+                        userSavedEntity =
+                            UserSavedEntity(
+                                authorId = tuit.authorId,
+                                avatarUrl = userProfileApiResponse.avatarUrl,
+                                author = userProfileApiResponse.name,
+                                userFanEmail = currentUserProfileEmail,
+                            ),
+                    )
+                }
+            }
         }
     }

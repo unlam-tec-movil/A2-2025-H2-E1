@@ -40,6 +40,12 @@ interface TuiterApi {
     @GET("/api/v1/me/profile")
     suspend fun getUserProfileData(): UserProfileDataApiResponse
 
+    //    /api/v1/users/:userID
+    @GET("/api/v1/users/{userID}")
+    suspend fun getUserProfileDataById(
+        @Path("userID") authorId: Int,
+    ): UserProfileDataApiResponse
+
     @PUT(value = "/api/v1/me/profile")
     suspend fun updateUserProfileData(
         @Body profileDataUpdated: UserProfileDataApiRequest,

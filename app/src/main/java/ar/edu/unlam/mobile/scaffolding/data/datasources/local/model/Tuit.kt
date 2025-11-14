@@ -10,4 +10,6 @@ data class Tuit(
     val message: String,
     val liked: Boolean,
     val likes: Long,
+    @SerializedName("author_id")
+    val authorId: Int,
 )
