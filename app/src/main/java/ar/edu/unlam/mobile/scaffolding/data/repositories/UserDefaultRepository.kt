@@ -2,13 +2,17 @@ package ar.edu.unlam.mobile.scaffolding.data.repositories
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.datastore.UserDataStore
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.network.api.TuiterApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -42,10 +46,27 @@ class UserDefaultRepository
 
         override suspend fun deleteUserToken() {
             userDataStore.deleteUserToken()
-            tuiterDao.deleteAllTuitsSaved()
+            tuiterDao.deleteAllTokensSaved()
         }
+
+        override suspend fun deleteFavoriteUserSaved(userSavedEntity: UserSavedEntity) {
+            tuiterDao.deleteSavedUserById(userSavedEntity = userSavedEntity)
+        }
+
+        suspend fun register(request: RegisterRequest): Response<UserApiResponse> = publicApi.register(request)
 
         override suspend fun getUserProfileData(): UserProfileDataApiResponse = authApi.getUserProfileData()
 
+        override suspend fun getUserProfileDataById(tuit: Tuit): UserProfileDataApiResponse =
+            publicApi.getUserProfileDataById(tuit.authorId)
+
         override suspend fun setUserProfileData(newProfileData: UserProfileDataApiRequest) = authApi.updateUserProfileData(newProfileData)
+
+        override fun getAllSavedUsers(): Flow<List<UserSavedEntity>> = tuiterDao.getAllSavedUsers()
+
+        override suspend fun saveFavoriteUser(favoriteUserIdEntity: UserSavedEntity) {
+            tuiterDao.saveFavoriteUser(favoriteUserIdEntity)
+        }
+
+        override suspend fun getSavedUserById(userId: Int): UserSavedEntity? = tuiterDao.getSavedUserById(userId)
     }

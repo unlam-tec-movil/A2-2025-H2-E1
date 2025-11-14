@@ -23,7 +23,7 @@ fun TopRow(tuit: Tuit) {
         Row(horizontalArrangement = Arrangement.Start) {
             CustomTitle(title = tuit.author)
             Spacer(Modifier.width(4.dp))
-            CustomSubtitle(title = "@${tuit.author}", color = MaterialTheme.colorScheme.secondary)
+            CustomSubtitle(title = "@${tuit.authorId}", color = MaterialTheme.colorScheme.secondary)
         }
     }
 }

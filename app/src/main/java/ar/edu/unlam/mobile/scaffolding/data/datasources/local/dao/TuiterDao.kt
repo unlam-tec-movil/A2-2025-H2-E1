@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitsBorrador
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -21,7 +22,7 @@ interface TuiterDao {
     suspend fun deleteSavedTuit(key: AuthKey)
 
     @Query(value = "DELETE FROM authKeys")
-    suspend fun deleteAllTuitsSaved()
+    suspend fun deleteAllTokensSaved()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveBorrador(borrador: TuitsBorrador)
@@ -41,4 +42,17 @@ interface TuiterDao {
     // lectura síncrona para el interceptor
     @Query("SELECT token FROM authKeys ORDER BY rowid DESC LIMIT 1")
     fun getLatestTokenSync(): String?
+
+    // guardar lista de ususarios favoritos
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveFavoriteUser(favoriteUserIdEntity: UserSavedEntity)
+
+    @Query(value = "SELECT * FROM favorite_users ORDER BY authorId DESC")
+    fun getAllSavedUsers(): Flow<List<UserSavedEntity>>
+
+    @Query(value = "SELECT * FROM favorite_users WHERE authorId = :userId")
+    suspend fun getSavedUserById(userId: Int): UserSavedEntity?
+
+    @Delete
+    suspend fun deleteSavedUserById(userSavedEntity: UserSavedEntity)
 }

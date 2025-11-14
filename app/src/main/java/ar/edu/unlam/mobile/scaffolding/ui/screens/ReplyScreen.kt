@@ -36,14 +36,14 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.CustomLoadingState
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomMultilineTextField
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomSubtitle
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.FeedUIState
-import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.TuitsViewModel
+import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.FeedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReplyScreen(
     tuitId: Int,
     navController: NavController,
-    tuitsViewModel: TuitsViewModel = hiltViewModel(),
+    tuitsViewModel: FeedViewModel = hiltViewModel(),
 ) {
     val uiState by tuitsViewModel.uiState.collectAsStateWithLifecycle()
     val feedTuitsState by tuitsViewModel.feedTuitsState.collectAsStateWithLifecycle()
@@ -100,7 +100,10 @@ fun ReplyScreen(
             ) { paddingValues ->
                 Row(
                     verticalAlignment = Alignment.Top,
-                    modifier = Modifier.padding(paddingValues = paddingValues).padding(20.dp),
+                    modifier =
+                        Modifier
+                            .padding(paddingValues = paddingValues)
+                            .padding(20.dp),
                 ) {
                     Box(
                         modifier =

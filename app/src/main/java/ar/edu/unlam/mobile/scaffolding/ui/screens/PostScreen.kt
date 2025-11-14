@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -75,25 +77,28 @@ fun PostScreen(
                 modifier = Modifier.padding(5.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
-                Button(onClick = {
-                    if (message.isNotEmpty()) {
-                        viewModel.textoAGuardar(message)
-                        viewModel.limpiarCampoDeTexto()
-                        Toast
-                            .makeText(
-                                context,
-                                "Borrador guardado",
-                                Toast.LENGTH_LONG,
-                            ).show()
-                    } else {
-                        Toast
-                            .makeText(
-                                context,
-                                "Borrador vacio",
-                                Toast.LENGTH_LONG,
-                            ).show()
-                    }
-                }) {
+                Button(
+                    onClick = {
+                        if (message.isNotEmpty()) {
+                            viewModel.textoAGuardar(message)
+                            viewModel.limpiarCampoDeTexto()
+                            Toast
+                                .makeText(
+                                    context,
+                                    "Borrador guardado",
+                                    Toast.LENGTH_LONG,
+                                ).show()
+                        } else {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "Borrador vacio",
+                                    Toast.LENGTH_LONG,
+                                ).show()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                ) {
                     Text("Guardar Borrador")
                 }
             }
@@ -105,39 +110,42 @@ fun PostScreen(
                         .padding(5.dp),
                 contentAlignment = Alignment.CenterEnd,
             ) {
-                Button(onClick = {
-                    if (message.isNotEmpty()) {
-                        scope.launch {
-                            val job = viewModel.textoATuitear(message)
-                            job.join()
+                Button(
+                    onClick = {
+                        if (message.isNotEmpty()) {
+                            scope.launch {
+                                val job = viewModel.textoATuitear(message)
+                                job.join()
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "Tuit creado",
+                                        Toast.LENGTH_LONG,
+                                    ).show()
+                                // esto refresca la pantalla anterior
+                                navController.previousBackStackEntry?.savedStateHandle?.set(
+                                    "refresco",
+                                    true,
+                                )
+                                // vuelve al feed
+                                navController.popBackStack()
+                            }
+                        } else {
                             Toast
                                 .makeText(
                                     context,
-                                    "Tuit creado",
+                                    "Tuit vacio",
                                     Toast.LENGTH_LONG,
                                 ).show()
-                            // esto refresca la pantalla anterior
-                            navController.previousBackStackEntry?.savedStateHandle?.set(
-                                "refresco",
-                                true,
-                            )
-                            // vuelve al feed
-                            navController.popBackStack()
                         }
-                    } else {
-                        Toast
-                            .makeText(
-                                context,
-                                "Tuit vacio",
-                                Toast.LENGTH_LONG,
-                            ).show()
-                    }
-                }) {
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                ) {
                     Text("Publicar")
                 }
             }
         }
-        Text("Borradores")
+        Text("Borradores", style = MaterialTheme.typography.titleMedium)
         LazyColumn(
             modifier = Modifier.padding(16.dp),
         ) {
@@ -183,18 +191,6 @@ fun PostScreen(
             PostScreenViewModel.FeedState.Idle -> { // nada todavía
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Lista de borradores
-        Text("Borradores", style = MaterialTheme.typography.titleMedium)
-        LazyColumn(
-            modifier = Modifier.padding(top = 8.dp),
-        ) {
-            items(borradores) { borrador ->
-                Text(text = borrador.textoBorrador)
-            }
-        }
     }
 }
 
@@ -210,6 +206,7 @@ fun CardParaBorrador(
                 .clickable(onClick = {
                     onItemClick(contenido.textoBorrador)
                 }),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {
         Text(contenido.textoBorrador)
     }
