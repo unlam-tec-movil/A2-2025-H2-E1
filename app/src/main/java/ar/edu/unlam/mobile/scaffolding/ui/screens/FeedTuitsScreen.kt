@@ -93,7 +93,7 @@ fun FeedTuitsScreen(
             }) { paddingValues ->
                 LazyColumn(modifier = Modifier.padding(paddingValues = paddingValues)) {
                     items(items = feedTuitsState.data) { tuit ->
-                        var isSaved = usersSavedMap.contains(tuit.authorId)
+                        val isSaved = usersSavedMap.contains(tuit.authorId)
                         TuitCard(
                             tuit = tuit,
                             userIsSaved = isSaved,
@@ -109,6 +109,7 @@ fun FeedTuitsScreen(
                                     tuit,
                                 )
                             },
+                            replies = 0,
                         )
                     }
                 }

@@ -91,6 +91,7 @@ fun TuitScreen(
                         onclickReply = {
                             navController.navigate("replyScreen/${feedTuitsState.tuit.id}")
                         },
+                        replies = 0,
                     )
 
                     if (feedTuitsState.replies != emptyList<Tuit>()) {
@@ -107,6 +108,7 @@ fun TuitScreen(
                                     },
                                     onBookmarkClick = {},
                                     userIsSaved = isSaved,
+                                    replies = 0,
                                 )
                                 CustomDivider()
                             }

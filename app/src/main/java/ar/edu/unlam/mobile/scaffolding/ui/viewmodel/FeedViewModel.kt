@@ -87,18 +87,6 @@ class FeedViewModel
             }
         }
 
-        fun getSizeReplies(tuit: Tuit): Int {
-            var size = 0
-            viewModelScope.launch {
-                tuitsRepo
-                    .getAllTuitReplies(tuit.id)
-                    .onSuccess { replies ->
-                        size = replies.size
-                    }
-            }
-            return size
-        }
-
         fun getTuitReplies(tuitId: Int) {
             viewModelScope.launch {
                 tuitsRepo
