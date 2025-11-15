@@ -176,9 +176,10 @@ fun EditUserScreen(
                             tuit = mockTuit,
 //                            onLikeClick = {},
                             onBookmarkClick = { },
-                            isSaved = true,
+                            isUserSaved = true,
                             onClickLiked = {},
                             onClickReply = {},
+                            isTuitSaved = false,
                         )
                     }
                 }

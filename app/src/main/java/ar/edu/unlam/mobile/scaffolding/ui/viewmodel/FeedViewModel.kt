@@ -3,6 +3,7 @@ package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitIDEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.repositories.TuitsRepository
@@ -49,11 +50,32 @@ class FeedViewModel
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyList(),
             )
+        val savedTuits: StateFlow<List<TuitIDEntity>> =
+            tuitsRepo.getAllFavoriteTuitIDs().stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList(),
+            )
 //        private val _listUserSavedState = MutableStateFlow<List<UserSavedEntity>>(emptyList())
 //        val listUserSavedState = _listUserSavedState
 
         private val _feedTuitsState = MutableStateFlow(FeedTuitsState())
         val feedTuitsState = _feedTuitsState.asStateFlow()
+
+        fun favoriteTuitManagment(
+            isTuitSaved: Boolean,
+            tuit: Tuit,
+        ) {
+            if (isTuitSaved) {
+                viewModelScope.launch {
+                    tuitsRepo.deleteFavoriteSavedTuit(tuit)
+                }
+            } else {
+                viewModelScope.launch {
+                    tuitsRepo.saveFavoriteTuit(tuit)
+                }
+            }
+        }
 
         fun getAllTuits() =
             viewModelScope.launch {
@@ -200,13 +222,13 @@ class FeedViewModel
         }
 
         fun favoriteUsersManagment(
-            isSaved: Boolean,
+            isUserSaved: Boolean,
             tuit: Tuit,
         ) {
             viewModelScope.launch {
                 val currentUserProfileEmail: String = userRepository.getUserProfileData().email
                 val userProfileApiResponse = userRepository.getUserProfileDataById(tuit = tuit)
-                if (!isSaved) {
+                if (!isUserSaved) {
                     userRepository.saveFavoriteUser(
                         favoriteUserIdEntity =
                             UserSavedEntity(

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomErrorView
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomIcon
@@ -48,11 +49,20 @@ fun TuitScreen(
         remember(usersSavedState) {
             usersSavedState.map { it.authorId }.toSet()
         }
+    val tuitsSavedState by feedViewModel.savedTuits.collectAsState()
+    val tuitsSavedMap =
+        remember(key1 = tuitsSavedState) {
+            tuitsSavedState
+                .map {
+                    it.tuitId
+                }.toSet()
+        }
 
     LaunchedEffect(key1 = tuitId) {
         feedViewModel.getTuitById(tuitId)
         delay(100)
         feedViewModel.getTuitReplies(tuitId)
+        feedViewModel.getAllTuits()
     }
 
     when (val state = uiState) {
@@ -112,6 +122,28 @@ fun TuitScreen(
                                 )
                                 CustomDivider()
                             }
+                    TuitDetail(tuit = feedTuitsState.tuit, onLikeChanged = {
+                        feedViewModel.onLikedChange(feedTuitsState.tuit)
+                    }, onclickReply = {
+                        navController.navigate("replyScreen/${feedTuitsState.tuit.id}")
+                    })
+                    LazyColumn {
+                        itemsIndexed(items = feedTuitsState.replies) { index, tuit ->
+                            val isSaved = usersSavedMap.contains(tuit.authorId)
+                            val isTuitSaved = tuitsSavedMap.contains(tuit.id)
+                            TuitCard(
+                                tuit = tuit,
+                                navigateToTuitScreen = {
+                                    navController.navigate("tuitScreen/${tuit.id}")
+                                },
+                                onLikeChanged = {
+                                    feedViewModel.onLikedChange(tuit)
+                                },
+                                onBookmarkClick = {},
+                                userIsSaved = isSaved,
+                                isTuitSaved = isTuitSaved,
+                            )
+                            CustomDivider()
                         }
                     }
                 }

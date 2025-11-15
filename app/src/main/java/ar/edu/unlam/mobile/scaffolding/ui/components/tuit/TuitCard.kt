@@ -10,15 +10,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
+import ar.edu.unlam.mobile.scaffolding.data.repositories.events.TuitAction
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomAvatar
-import ar.edu.unlam.mobile.scaffolding.ui.screens.CustomDivider
+import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 
 @Composable
 fun TuitCard(
     tuit: Tuit,
+    isTuitSaved: Boolean,
     navigateToTuitScreen: () -> Unit,
     onLikeChanged: (Tuit) -> Unit,
-    onBookmarkClick: () -> Unit,
+    onBookmarkClick: (TuitAction) -> Unit,
+//    onBookmarkClick: () -> Unit,
 //    onBookmarkClick: (Boolean, Tuit) -> Unit,
     userIsSaved: Boolean,
     replies: Int,
@@ -52,6 +55,10 @@ fun TuitCard(
                     onClickReply = {
                         navigateToTuitScreen()
                     },
+                    isUserSaved = userIsSaved,
+                    onLikeClick = {},
+                    onBookmarkClick = onBookmarkClick,
+                    isTuitSaved = isTuitSaved,
                     isSaved = userIsSaved,
 //                    onLikeClick = {},
                     onBookmarkClick = { onBookmarkClick() },
