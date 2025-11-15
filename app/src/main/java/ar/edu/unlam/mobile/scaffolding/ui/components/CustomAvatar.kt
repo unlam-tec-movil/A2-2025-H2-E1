@@ -10,7 +10,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ar.edu.unlam.mobile.scaffolding.R
-import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.utils.Constants.DEFAULT_URL_IMAGE
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
@@ -20,7 +19,7 @@ import coil.compose.SubcomposeAsyncImageContent
 @Composable
 fun CustomAvatar(
     imageSize: Int = 45,
-    tuit: Tuit,
+    avatarUrl: String,
 ) {
     SubcomposeAsyncImage(
         modifier =
@@ -28,7 +27,7 @@ fun CustomAvatar(
                 .padding(top = 5.dp)
                 .clip(CircleShape)
                 .size(imageSize.dp),
-        model = tuit.avatarUrl,
+        model = avatarUrl,
         contentDescription = stringResource(R.string.avatar_default_description),
 //        loading = { CustomLoadingState() },
     ) {

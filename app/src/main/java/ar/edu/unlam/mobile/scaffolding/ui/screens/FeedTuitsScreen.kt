@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -64,6 +64,7 @@ fun FeedTuitsScreen(
             feedViewModel.getAllTuits()
         }
     }
+
     when (val state = uiState) {
         is FeedUIState.Error -> CustomErrorView(state.message.toString())
         is FeedUIState.Loading -> CustomLoadingState()
@@ -90,8 +91,8 @@ fun FeedTuitsScreen(
                     },
                 )
             }) { paddingValues ->
-                LazyColumn(Modifier.padding(paddingValues = paddingValues)) {
-                    itemsIndexed(items = feedTuitsState.data) { index, tuit ->
+                LazyColumn(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                    items(items = feedTuitsState.data) { tuit ->
                         var isSaved = usersSavedMap.contains(tuit.authorId)
                         TuitCard(
                             tuit = tuit,
@@ -100,7 +101,7 @@ fun FeedTuitsScreen(
                                 navController.navigate("tuitScreen/${tuit.id}")
                             },
                             onLikeChanged = {
-                                feedViewModel.onLikedChange(tuit)
+                                feedViewModel.onLikedChange(it)
                             },
                             onBookmarkClick = {
                                 feedViewModel.favoriteUsersManagment(

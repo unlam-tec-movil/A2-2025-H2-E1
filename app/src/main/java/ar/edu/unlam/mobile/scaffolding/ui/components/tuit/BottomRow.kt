@@ -40,10 +40,11 @@ import ar.edu.unlam.mobile.scaffolding.ui.components.DefaultText
 fun BottomRow(
     tuit: Tuit,
     isSaved: Boolean,
-    onLikeClick: (Tuit) -> Unit,
+//    onLikeClick: (Tuit) -> Unit,
     onBookmarkClick: (Tuit) -> Unit,
     onClickLiked: () -> Unit,
     onClickReply: () -> Unit,
+    replies: Int = 0,
 ) {
     Row(
         Modifier
@@ -55,21 +56,25 @@ fun BottomRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         var isMenuExpanded by remember { mutableStateOf(false) }
-        CustomIcon(
-            icon = Icons.Default.ChatBubbleOutline,
-            tint = MaterialTheme.colorScheme.secondary,
-            modifier =
-                Modifier
-                    .size(17.dp)
-                    .clickable {
-                        onClickReply()
-                    },
-        )
+        Row(Modifier.width(60.dp), horizontalArrangement = Arrangement.Start) {
+            CustomIcon(
+                icon = Icons.Default.ChatBubbleOutline,
+                tint = MaterialTheme.colorScheme.secondary,
+                modifier =
+                    Modifier
+                        .size(17.dp)
+                        .clickable {
+                            onClickReply()
+                        },
+            )
+            Spacer(Modifier.width(4.dp))
+            DefaultText(title = if (replies == 0) "" else "$replies")
+        }
+
         CustomIcon(icon = Icons.Default.Repeat, modifier = Modifier.size(17.dp))
-        Row(Modifier.width(70.dp), horizontalArrangement = Arrangement.Start) {
+        Row(Modifier.width(90.dp), horizontalArrangement = Arrangement.Start) {
             IconButton(
                 onClick = {
-                    onLikeClick(tuit)
                     onClickLiked()
                 },
                 content = {
@@ -142,5 +147,12 @@ fun ShowLikes(
     color: Color = MaterialTheme.colorScheme.secondary,
 ) {
     Spacer(Modifier.width(4.dp))
-    DefaultText(fontSize = 13, title = "$likes", color = color)
+    val like =
+        when (likes) {
+            0L -> ""
+            in 1L..999L -> "$likes"
+            in 1000L..9999L -> "${likes.toString().substring(0)}k"
+            else -> "${likes / 100_000}k"
+        }
+    DefaultText(fontSize = 13, title = like, color = color)
 }
