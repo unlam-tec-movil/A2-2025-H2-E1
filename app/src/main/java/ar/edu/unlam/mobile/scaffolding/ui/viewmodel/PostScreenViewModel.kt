@@ -55,6 +55,19 @@ class PostScreenViewModel
                 }
             }
 
+        fun deleteDraft(message: String) {
+            viewModelScope.launch {
+                try {
+                    var borradorAEliminar = borradorState.value.find { it.textoBorrador == message }
+                    if (borradorAEliminar != null) {
+                        postRepository.deleteBorradorPR(borradorAEliminar)
+                    }
+                } catch (e: Exception) {
+                    println("Error al borrar texto en borrador: ${e.message}")
+                }
+            }
+        }
+
         fun textoATuitear(message: String): Job {
             val job =
                 viewModelScope.launch {

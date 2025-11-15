@@ -21,6 +21,7 @@ fun TuitDetail(
     tuit: Tuit,
     onLikeChanged: (Tuit) -> Unit,
     onclickReply: () -> Unit,
+    replies: Int,
 ) {
     Row(
         Modifier
@@ -28,7 +29,7 @@ fun TuitDetail(
             .padding(horizontal = 10.dp)
             .padding(top = 5.dp),
     ) {
-        CustomAvatar(tuit = tuit)
+        CustomAvatar(avatarUrl = tuit.avatarUrl)
         Column(
             Modifier
                 .fillMaxWidth()
@@ -63,8 +64,11 @@ fun TuitDetail(
                 onclickReply()
             },
             isSaved = false,
-            onLikeClick = {},
+//            onLikeClick = {
+//
+//            },
             onBookmarkClick = {},
+            replies = replies,
         )
     }
     CustomDivider()

@@ -159,7 +159,7 @@ fun EditUserScreen(
                             .padding(horizontal = 15.dp),
                 ) {
                     CustomAvatar(
-                        tuit = mockTuit,
+                        avatarUrl = mockTuit.avatarUrl,
                     )
                     Column(
                         modifier =
@@ -174,7 +174,7 @@ fun EditUserScreen(
                         MiddleRow(tuit = mockTuit)
                         BottomRow(
                             tuit = mockTuit,
-                            onLikeClick = {},
+//                            onLikeClick = {},
                             onBookmarkClick = { },
                             isSaved = true,
                             onClickLiked = {},

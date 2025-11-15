@@ -30,9 +30,8 @@ sealed interface FeedUIState {
 data class FeedTuitsState(
     val data: List<Tuit> = emptyList(),
     val replies: List<Tuit> = emptyList(),
-    val tuit: Tuit = Tuit(0, "", "", "", false, 0, "", authorId = -1),
-    val reply: Tuit = Tuit(0, "", "", "", false, 0, "", authorId = -1),
-    val replyMessage: String = "",
+    val tuit: Tuit = Tuit(0, "", "", "", false, 0, "", authorId = 0),
+    val reply: Tuit = Tuit(0, "", "", "", false, 0, "", authorId = 0),
 )
 
 @HiltViewModel
@@ -88,12 +87,6 @@ class FeedViewModel
             }
         }
 
-        fun onReplyChanged(message: String) {
-            _feedTuitsState.update {
-                it.copy(replyMessage = message)
-            }
-        }
-
         fun getTuitReplies(tuitId: Int) {
             viewModelScope.launch {
                 tuitsRepo
@@ -101,14 +94,17 @@ class FeedViewModel
                     .onSuccess { replies ->
                         _feedTuitsState.update {
                             // actualiza el estado del valor de replies
+                            Log.i("replies on success", "$replies")
                             it.copy(replies = replies)
                         }
                         _uiState.update {
                             // actualiza el estado de la ui
                             FeedUIState.Success
                         } // (Lo hago unicamente cuando la request a la API es exitosa)
-                    }.onFailure { exception ->
-                        _uiState.update { FeedUIState.Error(message = exception) }
+                    }.onFailure {
+                        _feedTuitsState.update {
+                            it.copy(replies = emptyList())
+                        }
                     }
             }
         }
@@ -117,7 +113,7 @@ class FeedViewModel
             tuit: Tuit,
             message: String,
         ) {
-            var reply = Tuit(0, "", "", "", false, 0, "", authorId = -1)
+            var reply = Tuit(0, "", "", "", false, 0, "", authorId = 0)
             viewModelScope.launch {
                 tuitsRepo
                     .addTuitReply(key = tuit, message = message)
@@ -157,8 +153,11 @@ class FeedViewModel
             viewModelScope.launch {
                 tuitsRepo
                     .removeTuitLike(key = tuit)
-                    .onSuccess {
-                        Log.i("remove_like_onSuccess", "${it.liked}")
+                    .onSuccess { tweet ->
+                        Log.i("remove_like_onSuccess", "${tweet.liked}")
+                        _feedTuitsState.update {
+                            it.copy(tuit = tweet)
+                        }
                         _uiState.update { FeedUIState.Success }
                     }.onFailure { it ->
                         Log.i("remove_like_onFailure", "$it")
@@ -172,8 +171,11 @@ class FeedViewModel
             viewModelScope.launch {
                 tuitsRepo
                     .updateTuitLikes(key = tuit)
-                    .onSuccess {
-                        Log.i("add_likes_OnSuccess", "${it.likes}")
+                    .onSuccess { tweet ->
+                        Log.i("add_likes_OnSuccess", "${tweet.likes}")
+                        _feedTuitsState.update {
+                            it.copy(tuit = tweet)
+                        }
                         _uiState.update { FeedUIState.Success }
                     }.onFailure { it ->
                         Log.i("add_likes_OnFailure", "$it")

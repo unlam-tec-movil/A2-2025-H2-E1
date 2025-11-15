@@ -21,6 +21,7 @@ fun TuitCard(
     onBookmarkClick: () -> Unit,
 //    onBookmarkClick: (Boolean, Tuit) -> Unit,
     userIsSaved: Boolean,
+    replies: Int,
 ) {
     Box(
         modifier =
@@ -34,7 +35,7 @@ fun TuitCard(
                 .padding(horizontal = 15.dp)
                 .padding(top = 5.dp),
         ) {
-            CustomAvatar(tuit = tuit)
+            CustomAvatar(avatarUrl = tuit.avatarUrl)
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -52,8 +53,9 @@ fun TuitCard(
                         navigateToTuitScreen()
                     },
                     isSaved = userIsSaved,
-                    onLikeClick = {},
+//                    onLikeClick = {},
                     onBookmarkClick = { onBookmarkClick() },
+                    replies = replies,
                 )
             }
         }

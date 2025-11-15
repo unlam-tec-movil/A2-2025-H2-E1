@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomMultilineTextField(
@@ -22,11 +23,12 @@ fun CustomMultilineTextField(
         value = value,
         onValueChange = onValueChange,
         maxLines = maxLines,
-        label = {
-            Text(text = hintText, color = MaterialTheme.colorScheme.secondary)
+        placeholder = {
+            Text(text = if (value.isEmpty()) hintText else "", color = MaterialTheme.colorScheme.secondary)
         },
         textStyle =
             TextStyle(
+                fontSize = 17.sp,
                 color = Color.Black,
             ),
         colors =
