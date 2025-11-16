@@ -56,9 +56,6 @@ class FeedViewModel
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyList(),
             )
-//        private val _listUserSavedState = MutableStateFlow<List<UserSavedEntity>>(emptyList())
-//        val listUserSavedState = _listUserSavedState
-
         private val _feedTuitsState = MutableStateFlow(FeedTuitsState())
         val feedTuitsState = _feedTuitsState.asStateFlow()
 
