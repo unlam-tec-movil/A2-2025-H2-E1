@@ -1,6 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.data.repositories
 
-import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitIDEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import kotlinx.coroutines.flow.Flow
 
@@ -20,11 +20,11 @@ interface TuitsRepository {
 
     suspend fun getTuitByID(key: Int): ApiOperation<Tuit>
 
-    fun saveFavoriteTuit(key: Tuit)
+    suspend fun saveFavoriteTuit(tuit: Tuit)
 
-    fun deleteTuit(id: String)
+    suspend fun deleteFavoriteSavedTuit(tuit: Tuit)
 
-    fun getAllFavoriteTuits(): Flow<List<AuthKey>>
+    fun getAllFavoriteTuitIDs(): Flow<List<TuitIDEntity>>
 
-    fun deleteAllFavoriteTuits()
+    suspend fun deleteAllFavoriteTuits()
 }

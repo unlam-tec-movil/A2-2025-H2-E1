@@ -1,5 +1,6 @@
 package ar.edu.unlam.mobile.scaffolding.ui.components.tuit
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,15 +34,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
+import ar.edu.unlam.mobile.scaffolding.data.repositories.events.TuitAction
+import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomIcon
 import ar.edu.unlam.mobile.scaffolding.ui.components.DefaultText
 
 @Composable
 fun BottomRow(
     tuit: Tuit,
-    isSaved: Boolean,
-//    onLikeClick: (Tuit) -> Unit,
-    onBookmarkClick: (Tuit) -> Unit,
+    isUserSaved: Boolean,
+    isTuitSaved: Boolean,
+    onBookmarkClick: (TuitAction) -> Unit,
     onClickLiked: () -> Unit,
     onClickReply: () -> Unit,
     replies: Int = 0,
@@ -105,28 +108,55 @@ fun BottomRow(
         }
         Box {
             CustomIcon(
-                icon = if (isSaved) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                icon =
+                    if (isTuitSaved) {
+                        Icons.Default.Bookmark
+                    } else {
+                        Icons.Default.BookmarkBorder
+                    },
                 modifier =
                     Modifier
                         .size(17.dp)
                         .clickable {
                             isMenuExpanded = true
                         },
+                tint =
+                    if (isUserSaved) {
+                        MaterialTheme.colorScheme.tertiary
+                    } else {
+                        MaterialTheme.colorScheme.secondary
+                    },
             )
             DropdownMenu(
                 expanded = isMenuExpanded,
                 onDismissRequest = { isMenuExpanded = false },
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.98f),
+                modifier = Modifier.background(MaterialTheme.colorScheme.background),
             ) {
                 DropdownMenuItem(
                     text = {
-                        if (isSaved) {
-                            Text(text = "Delete from favorites")
+                        if (isUserSaved) {
+                            Text(text = "Delete tuitter creator from favorites")
                         } else {
-                            Text(text = "Add to favorites")
+                            Text(text = "Add tuitter creator to favorites")
                         }
                     },
                     onClick = {
-                        onBookmarkClick(tuit)
+                        onBookmarkClick(TuitAction.FavoriteUser(tuit = tuit))
+                        isMenuExpanded = false
+                    },
+                )
+                CustomDivider()
+                DropdownMenuItem(
+                    text = {
+                        if (isTuitSaved) {
+                            Text(text = "Delete saved tuit")
+                        } else {
+                            Text(text = "Save tuit in favorites")
+                        }
+                    },
+                    onClick = {
+                        onBookmarkClick(TuitAction.FavoriteTuit(tuit))
                         isMenuExpanded = false
                     },
                 )

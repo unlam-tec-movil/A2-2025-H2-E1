@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitIDEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitsBorrador
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,9 @@ interface TuiterDao {
 
     @Query(value = "SELECT * FROM authKeys ORDER BY token DESC")
     fun getAllTuits(): Flow<List<AuthKey>>
+
+    @Query(value = "SELECT * FROM favoriteTuits ORDER BY tuitId DESC")
+    fun getAllFavoritesTuitsIDs(): Flow<List<TuitIDEntity>>
 
     @Delete
     suspend fun deleteSavedTuit(key: AuthKey)
@@ -55,4 +59,10 @@ interface TuiterDao {
 
     @Delete
     suspend fun deleteSavedUserById(userSavedEntity: UserSavedEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveFavoriteTuitId(tuitIdEntity: TuitIDEntity)
+
+    @Delete
+    suspend fun deleteFavoriteTuitId(tuitIdEntity: TuitIDEntity)
 }

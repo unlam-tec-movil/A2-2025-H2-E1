@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
@@ -27,6 +26,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.R
+import ar.edu.unlam.mobile.scaffolding.data.repositories.events.TuitAction
+import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomErrorView
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomLoadingState
 import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.TuitCard
@@ -42,11 +43,19 @@ fun FeedTuitsScreen(
     val uiState by feedViewModel.uiState.collectAsStateWithLifecycle()
     val feedTuitsState by feedViewModel.feedTuitsState.collectAsState()
     val usersSavedState by feedViewModel.savedUsersState.collectAsState()
-    // al usar remember(key) le indico que recuerde el resulado del codigo en las llaves siguientes
+    // al usar remember(key) le indico que recuerde el resutlado del codigo en las llaves siguientes
     // y que solo vuelva a calcular t odo si la key cambia
     val usersSavedMap =
         remember(usersSavedState) {
             usersSavedState.map { it.authorId }.toSet()
+        }
+    val tuitsSavedState by feedViewModel.savedTuits.collectAsState()
+    val tuitsSavedMap =
+        remember(key1 = tuitsSavedState) {
+            tuitsSavedState
+                .map {
+                    it.tuitId
+                }.toSet()
         }
 
     // escucha el refresco del PostScreen
@@ -64,7 +73,6 @@ fun FeedTuitsScreen(
             feedViewModel.getAllTuits()
         }
     }
-
     when (val state = uiState) {
         is FeedUIState.Error -> CustomErrorView(state.message.toString())
         is FeedUIState.Loading -> CustomLoadingState()
@@ -91,49 +99,43 @@ fun FeedTuitsScreen(
                     },
                 )
             }) { paddingValues ->
-                LazyColumn(modifier = Modifier.padding(paddingValues = paddingValues)) {
-                    items(items = feedTuitsState.data) { tuit ->
-                        val isSaved = usersSavedMap.contains(tuit.authorId)
+                LazyColumn(Modifier.padding(paddingValues = paddingValues)) {
+                    itemsIndexed(items = feedTuitsState.data) { index, tuit ->
+                        var isUserSaved = usersSavedMap.contains(tuit.authorId)
+                        var isTuitSaved = tuitsSavedMap.contains(tuit.id)
                         TuitCard(
                             tuit = tuit,
-                            userIsSaved = isSaved,
+                            userIsSaved = isUserSaved,
+                            isTuitSaved = isTuitSaved,
                             navigateToTuitScreen = {
                                 navController.navigate("tuitScreen/${tuit.id}")
                             },
                             onLikeChanged = {
                                 feedViewModel.onLikedChange(it)
                             },
-                            onBookmarkClick = {
-                                feedViewModel.favoriteUsersManagment(
-                                    isSaved,
-                                    tuit,
-                                )
+                            onBookmarkClick = { tuitAction ->
+                                when (tuitAction) {
+                                    is TuitAction.FavoriteTuit -> {
+                                        feedViewModel.favoriteTuitManagment(
+                                            isTuitSaved = isTuitSaved,
+                                            tuit = tuit,
+                                        )
+                                    }
+
+                                    is TuitAction.FavoriteUser -> {
+                                        feedViewModel.favoriteUsersManagment(
+                                            isUserSaved,
+                                            tuit,
+                                        )
+                                    }
+                                }
                             },
                             replies = 0,
                         )
+                        CustomDivider()
                     }
                 }
             }
-            CustomDivider()
         }
     }
 }
-
-@Composable
-fun CustomDivider() {
-    HorizontalDivider(
-        Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.secondary,
-        thickness = 0.25f.dp,
-    )
-}
-// )
-// }) { paddingValues ->
-//    LazyColumn(Modifier.padding(paddingValues = paddingValues)) {
-//        itemsIndexed(items = feedTuitsState.data) { index, tuit ->
-//            TuitCard(tuit = tuit, navigateToTuitScreen = {
-//                navController.navigate("tuitScreen/${tuit.id}")
-//            }, onFavoriteChanged = {
-//                tuitsViewModel.onLikedChange(tuit)
-//            })
-//        }

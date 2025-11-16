@@ -10,17 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
+import ar.edu.unlam.mobile.scaffolding.data.repositories.events.TuitAction
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomAvatar
+import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomSubtitle
 import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.BottomRow
 import ar.edu.unlam.mobile.scaffolding.ui.components.tuit.MiddleRow
-import ar.edu.unlam.mobile.scaffolding.ui.screens.CustomDivider
 
 @Composable
 fun TuitDetail(
     tuit: Tuit,
+    isUserSaved: Boolean,
+    isTuitSaved: Boolean,
     onLikeChanged: (Tuit) -> Unit,
     onclickReply: () -> Unit,
+    onBookmarckClick: (TuitAction) -> Unit,
     replies: Int,
 ) {
     Row(
@@ -63,11 +67,9 @@ fun TuitDetail(
             onClickReply = {
                 onclickReply()
             },
-            isSaved = false,
-//            onLikeClick = {
-//
-//            },
-            onBookmarkClick = {},
+            isUserSaved = isUserSaved,
+            onBookmarkClick = onBookmarckClick,
+            isTuitSaved = isTuitSaved,
             replies = replies,
         )
     }

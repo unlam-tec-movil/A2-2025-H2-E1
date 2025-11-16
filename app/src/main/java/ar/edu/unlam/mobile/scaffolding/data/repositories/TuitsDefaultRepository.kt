@@ -2,6 +2,7 @@ package ar.edu.unlam.mobile.scaffolding.data.repositories
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.dao.TuiterDao
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.AuthKey
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.TuitIDEntity
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.LoginRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Reply
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
@@ -62,17 +63,7 @@ class TuitsDefaultRepository
             password: String,
         ): UserApiResponse = tuiterApi.logIn(LoginRequest(email = email, password = password))
 
-        override fun saveFavoriteTuit(key: Tuit) {
-            TODO("Not yet implemented")
-        }
-
-        override fun deleteTuit(id: String) {
-            TODO("Not yet implemented")
-        }
-
-        override fun getAllFavoriteTuits(): Flow<List<AuthKey>> = tuiterDao.getAllTuits()
-
-        override fun deleteAllFavoriteTuits() {
+        override suspend fun deleteAllFavoriteTuits() {
             TODO("Not yet implemented")
         }
 
@@ -96,6 +87,16 @@ class TuitsDefaultRepository
             } catch (e: Exception) {
                 ApiOperation.Failure(exception = e)
             }
+
+        override suspend fun saveFavoriteTuit(tuit: Tuit) {
+            tuiterDao.saveFavoriteTuitId(TuitIDEntity(tuitId = tuit.id))
+        }
+
+        override suspend fun deleteFavoriteSavedTuit(tuit: Tuit) {
+            tuiterDao.deleteFavoriteTuitId(TuitIDEntity(tuitId = tuit.id))
+        }
+
+        override fun getAllFavoriteTuitIDs(): Flow<List<TuitIDEntity>> = tuiterDao.getAllFavoritesTuitsIDs()
     }
 
 sealed interface ApiOperation<T> {

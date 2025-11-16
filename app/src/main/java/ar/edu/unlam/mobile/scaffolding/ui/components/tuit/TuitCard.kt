@@ -10,16 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
+import ar.edu.unlam.mobile.scaffolding.data.repositories.events.TuitAction
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomAvatar
-import ar.edu.unlam.mobile.scaffolding.ui.screens.CustomDivider
+import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 
 @Composable
 fun TuitCard(
     tuit: Tuit,
+    isTuitSaved: Boolean,
     navigateToTuitScreen: () -> Unit,
     onLikeChanged: (Tuit) -> Unit,
-    onBookmarkClick: () -> Unit,
-//    onBookmarkClick: (Boolean, Tuit) -> Unit,
+    onBookmarkClick: (TuitAction) -> Unit,
     userIsSaved: Boolean,
     replies: Int,
 ) {
@@ -52,9 +53,9 @@ fun TuitCard(
                     onClickReply = {
                         navigateToTuitScreen()
                     },
-                    isSaved = userIsSaved,
-//                    onLikeClick = {},
-                    onBookmarkClick = { onBookmarkClick() },
+                    isUserSaved = userIsSaved,
+                    onBookmarkClick = onBookmarkClick,
+                    isTuitSaved = isTuitSaved,
                     replies = replies,
                 )
             }
@@ -62,19 +63,3 @@ fun TuitCard(
         CustomDivider()
     }
 }
-
-// BottomRow(
-// //                                    tuit,
-// //                                    onLikeClick = {
-// //                                        if (tuit.liked) {
-// //                                            feedViewModel.removeLikes(tuit)
-// //                                        } else {
-// //                                            feedViewModel.addLikes(tuit)
-// //                                        }
-// //                                    },
-// //                                    onBookmarkClick = {
-// //                                        feedViewModel.favoriteUsersManagment(isSaved, tuit)
-// //                                    },
-// //                                    isSaved = usersSavedMap.contains(tuit.authorId),
-// //                                )
-// }

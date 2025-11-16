@@ -104,26 +104,19 @@ fun EditUserScreen(
         }
     }
     Scaffold(
-        modifier = Modifier.padding(25.dp),
         topBar = {
-            (
-                TopAppBar(
-                    modifier =
-                        Modifier
-                            .padding(5.dp)
-                            .height(75.dp),
-                    title = {
-                        Text(
-                            text = "Edit Profile",
-                        )
-                    },
-                    colors =
-                        TopAppBarDefaults.topAppBarColors(
-                            // containerColor = Color.Black,
-                            containerColor = MaterialTheme.colorScheme.tertiary,
-                            titleContentColor = Color.White,
-                        ),
-                )
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Edit Profile",
+                    )
+                },
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        // containerColor = Color.Black,
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        titleContentColor = Color.White,
+                    ),
             )
         },
     ) { paddingValues1 ->
@@ -176,9 +169,10 @@ fun EditUserScreen(
                             tuit = mockTuit,
 //                            onLikeClick = {},
                             onBookmarkClick = { },
-                            isSaved = true,
+                            isUserSaved = true,
                             onClickLiked = {},
                             onClickReply = {},
+                            isTuitSaved = false,
                         )
                     }
                 }
@@ -255,7 +249,6 @@ fun EditUserScreen(
             Button(
                 onClick = {
                     viewModel.logout()
-                    // viewModel.resetUpdateProfileDataState()
                     navController.navigate("logInScreen") {
                         popUpTo(route = "logInScreen") { inclusive = true }
                     }
