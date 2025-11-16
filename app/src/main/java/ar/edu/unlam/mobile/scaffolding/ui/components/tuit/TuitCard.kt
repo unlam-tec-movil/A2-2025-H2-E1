@@ -21,8 +21,6 @@ fun TuitCard(
     navigateToTuitScreen: () -> Unit,
     onLikeChanged: (Tuit) -> Unit,
     onBookmarkClick: (TuitAction) -> Unit,
-//    onBookmarkClick: () -> Unit,
-//    onBookmarkClick: (Boolean, Tuit) -> Unit,
     userIsSaved: Boolean,
     replies: Int,
 ) {
@@ -56,12 +54,8 @@ fun TuitCard(
                         navigateToTuitScreen()
                     },
                     isUserSaved = userIsSaved,
-                    onLikeClick = {},
                     onBookmarkClick = onBookmarkClick,
                     isTuitSaved = isTuitSaved,
-                    isSaved = userIsSaved,
-//                    onLikeClick = {},
-                    onBookmarkClick = { onBookmarkClick() },
                     replies = replies,
                 )
             }
@@ -69,19 +63,3 @@ fun TuitCard(
         CustomDivider()
     }
 }
-
-// BottomRow(
-// //                                    tuit,
-// //                                    onLikeClick = {
-// //                                        if (tuit.liked) {
-// //                                            feedViewModel.removeLikes(tuit)
-// //                                        } else {
-// //                                            feedViewModel.addLikes(tuit)
-// //                                        }
-// //                                    },
-// //                                    onBookmarkClick = {
-// //                                        feedViewModel.favoriteUsersManagment(isSaved, tuit)
-// //                                    },
-// //                                    isSaved = usersSavedMap.contains(tuit.authorId),
-// //                                )
-// }

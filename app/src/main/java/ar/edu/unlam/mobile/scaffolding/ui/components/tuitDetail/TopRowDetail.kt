@@ -31,6 +31,5 @@ fun TopRowDetail(tuit: Tuit) {
             CustomSubtitle(title = "@${tuit.author}", color = MaterialTheme.colorScheme.secondary)
         }
         Spacer(Modifier.weight(1f))
-        CustomIcon(modifier = Modifier.size(17.dp), icon = Icons.Default.MoreVert)
     }
 }

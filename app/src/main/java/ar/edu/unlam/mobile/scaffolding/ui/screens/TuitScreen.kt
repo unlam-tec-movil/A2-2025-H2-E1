@@ -23,8 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
+import ar.edu.unlam.mobile.scaffolding.data.repositories.events.TuitAction
+import ar.edu.unlam.mobile.scaffolding.ui.components.CustomDivider
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomErrorView
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomIcon
 import ar.edu.unlam.mobile.scaffolding.ui.components.CustomLoadingState
@@ -62,7 +63,6 @@ fun TuitScreen(
         feedViewModel.getTuitById(tuitId)
         delay(100)
         feedViewModel.getTuitReplies(tuitId)
-        feedViewModel.getAllTuits()
     }
 
     when (val state = uiState) {
@@ -102,12 +102,32 @@ fun TuitScreen(
                             navController.navigate("replyScreen/${feedTuitsState.tuit.id}")
                         },
                         replies = 0,
+                        onBookmarckClick = { tuitAction ->
+                            when (tuitAction) {
+                                is TuitAction.FavoriteTuit -> {
+                                    feedViewModel.favoriteTuitManagment(
+                                        isTuitSaved = tuitsSavedMap.contains(feedTuitsState.tuit.id),
+                                        tuit = feedTuitsState.tuit,
+                                    )
+                                }
+
+                                is TuitAction.FavoriteUser -> {
+                                    feedViewModel.favoriteUsersManagment(
+                                        isUserSaved = usersSavedMap.contains(feedTuitsState.tuit.authorId),
+                                        feedTuitsState.tuit,
+                                    )
+                                }
+                            }
+                        },
+                        isUserSaved = usersSavedMap.contains(feedTuitsState.tuit.authorId),
+                        isTuitSaved = tuitsSavedMap.contains(tuitId),
                     )
 
                     if (feedTuitsState.replies != emptyList<Tuit>()) {
                         LazyColumn {
                             itemsIndexed(items = feedTuitsState.replies) { index, tuit ->
-                                var isSaved = usersSavedMap.contains(tuit.authorId)
+                                var isUserSaved = usersSavedMap.contains(tuit.authorId)
+                                val isTuitSaved = tuitsSavedMap.contains(tuit.id)
                                 TuitCard(
                                     tuit = tuit,
                                     navigateToTuitScreen = {
@@ -116,34 +136,29 @@ fun TuitScreen(
                                     onLikeChanged = {
                                         feedViewModel.onLikedChange(it)
                                     },
-                                    onBookmarkClick = {},
-                                    userIsSaved = isSaved,
+                                    onBookmarkClick = { tuitAction ->
+                                        when (tuitAction) {
+                                            is TuitAction.FavoriteTuit -> {
+                                                feedViewModel.favoriteTuitManagment(
+                                                    isTuitSaved = isTuitSaved,
+                                                    tuit = tuit,
+                                                )
+                                            }
+
+                                            is TuitAction.FavoriteUser -> {
+                                                feedViewModel.favoriteUsersManagment(
+                                                    isUserSaved,
+                                                    tuit,
+                                                )
+                                            }
+                                        }
+                                    },
+                                    userIsSaved = isUserSaved,
                                     replies = 0,
+                                    isTuitSaved = isTuitSaved,
                                 )
                                 CustomDivider()
                             }
-                    TuitDetail(tuit = feedTuitsState.tuit, onLikeChanged = {
-                        feedViewModel.onLikedChange(feedTuitsState.tuit)
-                    }, onclickReply = {
-                        navController.navigate("replyScreen/${feedTuitsState.tuit.id}")
-                    })
-                    LazyColumn {
-                        itemsIndexed(items = feedTuitsState.replies) { index, tuit ->
-                            val isSaved = usersSavedMap.contains(tuit.authorId)
-                            val isTuitSaved = tuitsSavedMap.contains(tuit.id)
-                            TuitCard(
-                                tuit = tuit,
-                                navigateToTuitScreen = {
-                                    navController.navigate("tuitScreen/${tuit.id}")
-                                },
-                                onLikeChanged = {
-                                    feedViewModel.onLikedChange(tuit)
-                                },
-                                onBookmarkClick = {},
-                                userIsSaved = isSaved,
-                                isTuitSaved = isTuitSaved,
-                            )
-                            CustomDivider()
                         }
                     }
                 }
