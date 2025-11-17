@@ -22,11 +22,13 @@ class UserViewModel
         private val _registerState = MutableStateFlow<UserApiResponse?>(null)
         val registerState = _registerState.asStateFlow()
 
+        private val _emailDuplicated = MutableStateFlow(false)
+        val emailDuplicated = _emailDuplicated.asStateFlow()
+
         fun register(
             name: String,
             password: String,
             email: String,
-            context: Context,
         ) {
             viewModelScope.launch {
                 val response = repository.register(RegisterRequest(name, password, email))
@@ -48,16 +50,9 @@ class UserViewModel
                     println("Cuerpo del error: $errorBody")
 
                     if (code == 500) {
-                        Toast
-                            .makeText(
-                                context,
-                                "Error al crear usuario: Email duplicado",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                        _emailDuplicated.value = true
                     }
                 }
-
-                // Se podria manejar con catch en caso de ocurrr algun exception.
             }
         }
     }

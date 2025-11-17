@@ -29,14 +29,6 @@ class UserDefaultRepository
             return userDataStore.getUserToken().filterNotNull()
         }
 
-        override suspend fun createUser(
-            name: String,
-            email: String,
-            password: String,
-        ) {
-            TODO("Not yet implemented")
-        }
-
         override suspend fun loginUser(
             email: String,
             password: String,

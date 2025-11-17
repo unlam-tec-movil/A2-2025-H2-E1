@@ -31,9 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ar.edu.unlam.mobile.scaffolding.ui.components.FormUserInput
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
-import ar.edu.unlam.mobile.scaffolding.ui.components.UserInput
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.UserViewModel
+import ar.edu.unlam.mobile.scaffolding.utils.validateFormRegister
 import kotlinx.coroutines.launch
 
 data class ValidationResult(
@@ -52,6 +53,7 @@ fun FormScreen(
     val scope = rememberCoroutineScope()
 
     val registerState by viewModel.registerState.collectAsState()
+    val emailDuplicated by viewModel.emailDuplicated.collectAsState()
 
     LaunchedEffect(registerState) {
         registerState?.let { response ->
@@ -63,12 +65,18 @@ fun FormScreen(
         }
     }
 
+    LaunchedEffect(emailDuplicated) {
+        if (emailDuplicated) {
+            snackbarHostState.showSnackbar(
+                SnackbarVisualsWithError("Email duplicated", true),
+            )
+        }
+    }
+
     Box(
         modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        // GradientBackground()
-
         var nameState by remember { mutableStateOf("") }
         var emailState by remember { mutableStateOf("") }
         var passwordState by remember { mutableStateOf("") }
@@ -84,7 +92,7 @@ fun FormScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(top = 64.dp),
+                    .padding(top = 64.dp, start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -98,25 +106,25 @@ fun FormScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            UserInput(
+            FormUserInput(
                 title = "name",
                 text = nameState,
                 onTextChange = { nameState = it },
             )
 
-            UserInput(
+            FormUserInput(
                 title = "email",
                 text = emailState,
                 onTextChange = { emailState = it },
             )
 
-            UserInput(
+            FormUserInput(
                 title = "password",
                 text = passwordState,
                 onTextChange = { passwordState = it },
             )
 
-            UserInput(
+            FormUserInput(
                 title = "repeatPassword",
                 text = repeatPasswordState,
                 onTextChange = { repeatPasswordState = it },
@@ -149,7 +157,7 @@ fun FormScreen(
                     ),
                 onClick = {
                     val res =
-                        validateForm(
+                        validateFormRegister(
                             nameState,
                             emailState,
                             passwordState,
@@ -160,7 +168,6 @@ fun FormScreen(
                             name = nameState,
                             password = passwordState,
                             email = emailState,
-                            context = context,
                         )
                     }
                     scope.launch {
@@ -173,36 +180,4 @@ fun FormScreen(
             )
         }
     }
-}
-
-fun validateForm(
-    name: String,
-    email: String,
-    password: String,
-    repeatPassword: String,
-): ValidationResult {
-    if (name.isEmpty()) {
-        return ValidationResult(
-            isValid = false,
-            message = "El nombre no puede estar vacío",
-        )
-    }
-
-    if (!email.contains("@")) {
-        return ValidationResult(
-            isValid = false,
-            message = "El email debe ser válido",
-        )
-    }
-
-    if (password != repeatPassword) {
-        return ValidationResult(
-            isValid = false,
-            message = "Las contraseñas deben coincidir",
-        )
-    }
-    return ValidationResult(
-        isValid = true,
-        message = "Formulario válido ",
-    )
 }

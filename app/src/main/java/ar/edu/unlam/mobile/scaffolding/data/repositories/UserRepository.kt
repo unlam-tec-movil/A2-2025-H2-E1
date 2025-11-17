@@ -14,12 +14,6 @@ interface UserRepository {
 
     suspend fun deleteUserToken()
 
-    suspend fun createUser(
-        name: String,
-        email: String,
-        password: String,
-    )
-
     suspend fun loginUser(
         email: String,
         password: String,
