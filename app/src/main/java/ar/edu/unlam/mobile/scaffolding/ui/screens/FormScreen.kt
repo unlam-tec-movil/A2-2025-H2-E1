@@ -187,7 +187,7 @@ fun FormScreen(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = "¿Do you have an account?")
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 TextButton(
                     onClick = { navController.navigate("logInScreen") },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White),
