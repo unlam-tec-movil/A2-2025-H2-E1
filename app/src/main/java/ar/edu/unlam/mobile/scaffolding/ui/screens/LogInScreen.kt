@@ -34,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -188,7 +189,7 @@ fun LogInScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary, contentColor = Color.White),
         ) {
             Text(text = "LOG IN")
         }
@@ -197,6 +198,7 @@ fun LogInScreen(
 
         // Registro
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -204,7 +206,7 @@ fun LogInScreen(
             // Spacer(modifier = Modifier.width(4.dp))
             TextButton(
                 onClick = { navController.navigate("form") },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             ) {
                 Text("Sign Up")
             }
