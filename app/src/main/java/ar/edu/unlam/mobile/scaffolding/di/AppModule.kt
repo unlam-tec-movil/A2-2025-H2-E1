@@ -39,6 +39,13 @@ object AppModule {
     @Singleton
     fun tuitDaoProvider(db: FavoriteTuitsDatabase): TuiterDao = db.tuitDao()
 
+    // DATASTORE
+    @Provides
+    @Singleton
+    fun provideUserDataStore(
+        @ApplicationContext context: Context,
+    ): UserDataStore = UserDataStore(context)
+
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor =
@@ -112,11 +119,4 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(TuiterApi::class.java)
-
-    // DATASTORE
-    @Provides
-    @Singleton
-    fun provideUserDataStore(
-        @ApplicationContext context: Context,
-    ): UserDataStore = UserDataStore(context)
 }

@@ -3,9 +3,18 @@ package ar.edu.unlam.mobile.scaffolding.utils
 import ar.edu.unlam.mobile.scaffolding.ui.screens.ValidationResult
 
 fun validateForm(
+    name: String,
     email: String,
     password: String,
+    repeatPassword: String,
+    type: String,
 ): ValidationResult {
+    if (type == "register" && name.isEmpty()) {
+        return ValidationResult(
+            isValid = false,
+            message = "Name cannot be empty.",
+        )
+    }
     if (!email.contains("@")) {
         return ValidationResult(
             isValid = false,
@@ -16,6 +25,12 @@ fun validateForm(
         return ValidationResult(
             isValid = false,
             message = "Password cannot be empty.",
+        )
+    }
+    if (type == "register" && password != repeatPassword) {
+        return ValidationResult(
+            isValid = false,
+            message = "Password must be the same.",
         )
     }
     if (password.length < 6) {
