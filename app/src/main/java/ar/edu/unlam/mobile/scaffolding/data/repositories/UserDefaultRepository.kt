@@ -45,7 +45,7 @@ class UserDefaultRepository
             tuiterDao.deleteSavedUserById(userSavedEntity = userSavedEntity)
         }
 
-        suspend fun register(request: RegisterRequest): Response<UserApiResponse> = publicApi.register(request)
+        override suspend fun register(request: RegisterRequest): Response<UserApiResponse> = publicApi.register(request)
 
         override suspend fun getUserProfileData(): UserProfileDataApiResponse = authApi.getUserProfileData()
 
