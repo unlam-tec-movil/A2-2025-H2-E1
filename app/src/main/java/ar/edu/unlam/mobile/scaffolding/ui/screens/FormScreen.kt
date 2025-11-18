@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
 import ar.edu.unlam.mobile.scaffolding.ui.components.UserInput
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.UserViewModel
+import ar.edu.unlam.mobile.scaffolding.utils.validateForm
 import kotlinx.coroutines.launch
 
 data class ValidationResult(
@@ -154,7 +155,9 @@ fun FormScreen(
                             emailState,
                             passwordState,
                             repeatPasswordState,
+                            type = "register",
                         )
+
                     if (res.isValid) {
                         viewModel.register(
                             name = nameState,
@@ -173,36 +176,4 @@ fun FormScreen(
             )
         }
     }
-}
-
-fun validateForm(
-    name: String,
-    email: String,
-    password: String,
-    repeatPassword: String,
-): ValidationResult {
-    if (name.isEmpty()) {
-        return ValidationResult(
-            isValid = false,
-            message = "El nombre no puede estar vacío",
-        )
-    }
-
-    if (!email.contains("@")) {
-        return ValidationResult(
-            isValid = false,
-            message = "El email debe ser válido",
-        )
-    }
-
-    if (password != repeatPassword) {
-        return ValidationResult(
-            isValid = false,
-            message = "Las contraseñas deben coincidir",
-        )
-    }
-    return ValidationResult(
-        isValid = true,
-        message = "Formulario válido ",
-    )
 }

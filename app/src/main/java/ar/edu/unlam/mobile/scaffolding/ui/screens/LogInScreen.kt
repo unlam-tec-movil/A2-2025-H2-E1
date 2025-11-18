@@ -3,12 +3,15 @@ package ar.edu.unlam.mobile.scaffolding.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -173,7 +176,14 @@ fun LogInScreen(
         Button(
             onClick = {
                 scope.launch {
-                    val res = validateForm(email, password)
+                    val res =
+                        validateForm(
+                            name = "",
+                            email,
+                            password,
+                            repeatPassword = "",
+                            type = "login",
+                        )
                     if (!res.isValid) {
                         snackbarHostState.showSnackbar(
                             visuals = SnackbarVisualsWithError(res.message, true),
@@ -198,13 +208,18 @@ fun LogInScreen(
         // Registro
         Row(
             horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = "¿Don´t have an account?")
-            // Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(4.dp))
             TextButton(
                 onClick = { navController.navigate("form") },
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                modifier =
+                    Modifier
+                        .heightIn(min = 0.dp)
+                        .padding(0.dp),
             ) {
                 Text("Sign Up")
             }
