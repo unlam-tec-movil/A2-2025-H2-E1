@@ -91,19 +91,17 @@ fun FormScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(top = 32.dp, start = 16.dp, end = 16.dp),
+                    .padding(top = 48.dp, start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = "Tuiter",
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 50.sp),
-                // color = Color.White,
+                text = "Sign Up",
+                style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
             )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
 
             FormUserInput(
                 title = "name",
