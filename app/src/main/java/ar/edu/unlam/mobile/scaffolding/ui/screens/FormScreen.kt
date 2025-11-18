@@ -29,13 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ar.edu.unlam.mobile.scaffolding.ui.components.FormUserInput
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.UserViewModel
-import ar.edu.unlam.mobile.scaffolding.utils.validateFormRegister
+import ar.edu.unlam.mobile.scaffolding.utils.validateForm
 import kotlinx.coroutines.launch
 
 data class ValidationResult(
@@ -154,11 +153,12 @@ fun FormScreen(
                     ),
                 onClick = {
                     val res =
-                        validateFormRegister(
+                        validateForm(
                             nameState,
                             emailState,
                             passwordState,
                             repeatPasswordState,
+                            type = "register",
                         )
                     if (res.isValid) {
                         viewModel.register(
