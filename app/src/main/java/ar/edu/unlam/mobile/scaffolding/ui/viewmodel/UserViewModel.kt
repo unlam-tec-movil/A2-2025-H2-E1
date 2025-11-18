@@ -1,7 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest

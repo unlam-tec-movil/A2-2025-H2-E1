@@ -59,6 +59,9 @@ fun FormScreen(
             val token = response.token
             if (!token.isNullOrEmpty()) {
                 navController.navigate("feedTuitScreen")
+                snackbarHostState.showSnackbar(
+                    SnackbarVisualsWithError("Signed up successfully!", false),
+                )
             }
         }
     }
