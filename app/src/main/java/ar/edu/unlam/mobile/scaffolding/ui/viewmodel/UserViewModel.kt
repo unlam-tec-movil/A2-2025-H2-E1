@@ -1,7 +1,5 @@
 package ar.edu.unlam.mobile.scaffolding.ui.viewmodel
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
@@ -21,17 +19,18 @@ class UserViewModel
     ) : ViewModel() {
         private val _registerState = MutableStateFlow<UserApiResponse?>(null)
         val registerState = _registerState.asStateFlow()
+        private val _emailDuplicated = MutableStateFlow(false)
+        val emailDuplicated = _emailDuplicated.asStateFlow()
 
         fun register(
             name: String,
             password: String,
             email: String,
-            context: Context,
         ) {
             viewModelScope.launch {
                 val response = repository.register(RegisterRequest(name, password, email))
 
-                if (response.isSuccessful) { // acá, verificamos que la respuesta de la api sea exitosa.
+                if (response.isSuccessful) {
                     val userResponse = response.body()
                     _registerState.value = userResponse
 
@@ -40,24 +39,10 @@ class UserViewModel
                     }
                 } else {
                     val code = response.code()
-                    val message = response.message()
-                    val errorBody = response.errorBody()?.string()
-                    println("⚠️ Error en registro:")
-                    println("Código: $code")
-                    println("Mensaje: $message")
-                    println("Cuerpo del error: $errorBody")
-
                     if (code == 500) {
-                        Toast
-                            .makeText(
-                                context,
-                                "Error al crear usuario: Email duplicado",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                        _emailDuplicated.value = true
                     }
                 }
-
-                // Se podria manejar con catch en caso de ocurrr algun exception.
             }
         }
     }

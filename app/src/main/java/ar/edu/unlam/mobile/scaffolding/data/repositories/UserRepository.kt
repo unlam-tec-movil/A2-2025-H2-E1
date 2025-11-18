@@ -1,11 +1,13 @@
 package ar.edu.unlam.mobile.scaffolding.data.repositories
 
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.entities.UserSavedEntity
+import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.RegisterRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.Tuit
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserApiResponse
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiRequest
 import ar.edu.unlam.mobile.scaffolding.data.datasources.local.model.UserProfileDataApiResponse
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
 interface UserRepository {
     suspend fun saveUserToken(token: String): Flow<String>
@@ -14,16 +16,12 @@ interface UserRepository {
 
     suspend fun deleteUserToken()
 
-    suspend fun createUser(
-        name: String,
-        email: String,
-        password: String,
-    )
-
     suspend fun loginUser(
         email: String,
         password: String,
     ): UserApiResponse
+
+    suspend fun register(request: RegisterRequest): Response<UserApiResponse>
 
     suspend fun getUserProfileData(): UserProfileDataApiResponse
 

@@ -24,7 +24,10 @@ fun CustomMultilineTextField(
         onValueChange = onValueChange,
         maxLines = maxLines,
         placeholder = {
-            Text(text = if (value.isEmpty()) hintText else "", color = MaterialTheme.colorScheme.secondary)
+            Text(
+                text = if (value.isEmpty()) hintText else "",
+                color = MaterialTheme.colorScheme.secondary,
+            )
         },
         textStyle =
             TextStyle(

@@ -1,19 +1,21 @@
 package ar.edu.unlam.mobile.scaffolding.ui.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,14 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ar.edu.unlam.mobile.scaffolding.ui.components.FormUserInput
 import ar.edu.unlam.mobile.scaffolding.ui.components.SnackbarVisualsWithError
-import ar.edu.unlam.mobile.scaffolding.ui.components.UserInput
 import ar.edu.unlam.mobile.scaffolding.ui.viewmodel.UserViewModel
 import ar.edu.unlam.mobile.scaffolding.utils.validateForm
 import kotlinx.coroutines.launch
@@ -49,18 +49,28 @@ fun FormScreen(
     viewModel: UserViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val registerState by viewModel.registerState.collectAsState()
+    val emailDuplicated by viewModel.emailDuplicated.collectAsState()
 
     LaunchedEffect(registerState) {
         registerState?.let { response ->
             val token = response.token
             if (!token.isNullOrEmpty()) {
-                Toast.makeText(context, response.token, Toast.LENGTH_SHORT).show()
                 navController.navigate("feedTuitScreen")
+                snackbarHostState.showSnackbar(
+                    SnackbarVisualsWithError("Signed up successfully!", false),
+                )
             }
+        }
+    }
+
+    LaunchedEffect(emailDuplicated) {
+        if (emailDuplicated) {
+            snackbarHostState.showSnackbar(
+                SnackbarVisualsWithError("Email duplicated", true),
+            )
         }
     }
 
@@ -68,8 +78,6 @@ fun FormScreen(
         modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        // GradientBackground()
-
         var nameState by remember { mutableStateOf("") }
         var emailState by remember { mutableStateOf("") }
         var passwordState by remember { mutableStateOf("") }
@@ -85,39 +93,37 @@ fun FormScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(top = 64.dp),
+                    .padding(top = 48.dp, start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = "Tuiter",
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 50.sp),
-                // color = Color.White,
+                text = "Sign Up",
+                style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(4.dp))
 
-            UserInput(
+            FormUserInput(
                 title = "name",
                 text = nameState,
                 onTextChange = { nameState = it },
             )
 
-            UserInput(
+            FormUserInput(
                 title = "email",
                 text = emailState,
                 onTextChange = { emailState = it },
             )
 
-            UserInput(
+            FormUserInput(
                 title = "password",
                 text = passwordState,
                 onTextChange = { passwordState = it },
             )
 
-            UserInput(
+            FormUserInput(
                 title = "repeatPassword",
                 text = repeatPasswordState,
                 onTextChange = { repeatPasswordState = it },
@@ -157,13 +163,11 @@ fun FormScreen(
                             repeatPasswordState,
                             type = "register",
                         )
-
                     if (res.isValid) {
                         viewModel.register(
                             name = nameState,
                             password = passwordState,
                             email = emailState,
-                            context = context,
                         )
                     }
                     scope.launch {
@@ -174,6 +178,23 @@ fun FormScreen(
                 },
                 enabled = enabled,
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(text = "¿Do you have an account?")
+                Spacer(modifier = Modifier.width(5.dp))
+                TextButton(
+                    onClick = { navController.navigate("logInScreen") },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                ) {
+                    Text("Login")
+                }
+            }
         }
     }
 }

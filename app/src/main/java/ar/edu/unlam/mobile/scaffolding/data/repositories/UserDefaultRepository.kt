@@ -29,14 +29,6 @@ class UserDefaultRepository
             return userDataStore.getUserToken().filterNotNull()
         }
 
-        override suspend fun createUser(
-            name: String,
-            email: String,
-            password: String,
-        ) {
-            TODO("Not yet implemented")
-        }
-
         override suspend fun loginUser(
             email: String,
             password: String,
@@ -53,7 +45,7 @@ class UserDefaultRepository
             tuiterDao.deleteSavedUserById(userSavedEntity = userSavedEntity)
         }
 
-        suspend fun register(request: RegisterRequest): Response<UserApiResponse> = publicApi.register(request)
+        override suspend fun register(request: RegisterRequest): Response<UserApiResponse> = publicApi.register(request)
 
         override suspend fun getUserProfileData(): UserProfileDataApiResponse = authApi.getUserProfileData()
 
